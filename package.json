@@ -16,9 +16,9 @@
   "homepage": "https://raulsebastianmihaila.github.io/crizmas-mvc-docs",
   "repository": {
     "type": "git",
-    "url": "https://raulsebastianmihaila.github.io/crizmas-mvc"
+    "url": "https://github.com/raulsebastianmihaila/crizmas-mvc"
   },
-  "bugs": "https://raulsebastianmihaila.github.io/crizmas-mvc/issues",
+  "bugs": "https://github.com/raulsebastianmihaila/crizmas-mvc/issues",
   "keywords": [
     "mvc",
     "react",
