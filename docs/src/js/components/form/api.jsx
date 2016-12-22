@@ -73,15 +73,15 @@ export default () => <div>
 
   <ul className="simple-list">
     <li>An input configuration can contain a name, initialValue, getValue, setValue,
-    validate, init, onFormChange, preventInputPendingBlocking, preventPendingBlocking
-    an actions object and a children array of configuration options.</li>
+    validate, init, onFormChange, preventInputPendingBlocking, preventPendingBlocking,
+    an actions object and a children array of configuration objects.</li>
     <li>None of the options is required.</li>
     <li>Whenever a function from the form config is called, it's called as a method
     of an input (event if it's not necessarily an input method).</li>
     <li>init is called when the input is created.</li>
-    <li>If preventInputPendingBlocking is true, the isBlocked property doesn't
+    <li>If preventInputPendingBlocking is true, the isPendingBlocked property doesn't
     depend on the isInputPending property.</li>
-    <li>If preventPendingBlocking is true, the isBlocked property doesn't
+    <li>If preventPendingBlocking is true, the isPendingBlocked property doesn't
     depend on the isPending property.</li>
     <li>Triggers the validation with the init event and root as target.</li>
   </ul>
@@ -196,15 +196,22 @@ export default () => <div>
     <li>If needed this can be used to disable an input with async validation.</li>
   </ul>
 
+  <Api id="input.isPendingBlocked" text="input.isPendingBlocked" />
+
+  <ul className="simple-list">
+    <li>This is true if the input is pending or it's input pending.</li>
+    <li>If the preventInputPendingBlocking option is true in the configuration then
+    isPendingBlocked doesn't depend on isInputPending.</li>
+    <li>If the preventPendingBlocking option is true in the configuration then
+    isPendingBlocked doesn't depend on isPending.</li>
+    <li>If it's true it prevents resetting and clearing the input.</li>
+  </ul>
+
   <Api id="input.isBlocked" text="input.isBlocked" />
 
   <ul className="simple-list">
-    <li>This is true if the input has errors or it's pending or it's input pending.</li>
-    <li>If the preventInputPendingBlocking option is true in the configuration then
-    isBlocked doesn't depend on isInputPending.</li>
-    <li>If the preventPendingBlocking option is true in the configuration then
-    isBlocked doesn't depend on isPending.</li>
-    <li>If it's true it prevents submission, resetting and clearing the input.</li>
+    <li>This is true if the input has errors or it's pending blocked.</li>
+    <li>If it's true it prevents submission.</li>
   </ul>
 
   <Api id="input.getValue" text="input.getValue()" />
@@ -244,7 +251,7 @@ export default () => <div>
     an object with the event, target and input. If any of the
     validation functions involved in this process returns a promise, the validate method
     returns a promise. The validation process updates the hasError and errors properties,
-    either syncrhonously or asynchronously, when all the validation promises are settled.</li>
+    either synchronously or asynchronously, when all the validation promises are settled.</li>
     <li>The input's errors array includes the children's errors.</li>
   </ul>
 
@@ -281,7 +288,7 @@ export default () => <div>
   <Api id="input.onFormChange" text="input.onFormChange({target, input})" />
 
   <ul className="simple-list">
-    <li>This is the onFormChange function from the actions configuration.</li>
+    <li>This is the onFormChange function from the configuration.</li>
     <li>Called when the input's onChange method is called or when a descendant's
     onChange method is called.</li>
     <li>Receives an object as argument with the target of the change event and itself as input.</li>
@@ -342,27 +349,27 @@ export default () => <div>
   <Api id="input.reset" text="input.reset()" />
 
   <ul className="simple-list">
-    <li>If the input is blocked, it does nothing.</li>
+    <li>If the input is pending blocked, it does nothing.</li>
     <li>Calls the reset method for each child.</li>
     <li>Calls setValue with its initial value.</li>
     <li>Sets isSubmitted and isTouched to false.</li>
     <li>Updates the dirty state.</li>
     <li>Triggers the root validation with the reset event and itself as target.</li>
-    <li>If the input is not blocked after validating and if there is a passed
+    <li>If the input is not pending blocked after validating and if there is a passed
     reset action, it calls the reset action.</li>
   </ul>
 
   <Api id="input.clear" text="input.clear()" />
 
   <ul className="simple-list">
-    <li>If the input is blocked, it does nothing.</li>
+    <li>If the input is pending blocked, it does nothing.</li>
     <li>Calls the clear method for each child.</li>
     <li>If its initial value is truthy, it sets it to null.</li>
     <li>Calls setValue with its initial value.</li>
     <li>Sets isSubmitted and isTouched to false.</li>
     <li>Updates the dirty state.</li>
     <li>Triggers the root validation with the clear event and itself as target.</li>
-    <li>If the input is not blocked after validating and if there is a passed
+    <li>If the input is not pending blocked after validating and if there is a passed
     clear action, it calls the clear action.</li>
   </ul>
 

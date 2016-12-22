@@ -344,6 +344,10 @@ export default [
             label: 'input.isPending'
           },
           {
+            link: 'input.isPendingBlocked',
+            label: 'input.isPendingBlocked'
+          },
+          {
             link: 'input.isBlocked',
             label: 'input.isBlocked'
           },

@@ -277,8 +277,9 @@ export default () => <div>
   Or if you observe an already observed function, the result is the already observed function.
   An observed object is the same value as the original object.
   Basically its methods are replaced with the observed ones. If you want to add a new method
-  to an observed object, after you observed the object, you must reobserve the object so that
-  the new method is observed. Or you can just add the already observed function as a method.</p>
+  to an observed object, after you observed the object, and observe the method,
+  you must reobserve the object so that the new method is observed.
+  Or you can just add the already observed function as a method.</p>
 
   <p>What happens when <Ticks text="asyncMethod4" /> is called depends on the state of the cached
   promise. If it hasn't been settled yet, when it is settled, the view is updated only once.

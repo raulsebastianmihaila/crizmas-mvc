@@ -48,6 +48,8 @@ export default () => <div>
     <li>The path can be <Ticks text="*" /> in which case it matches anything.</li>
     <li>The controller is optional and can be an object or a function that is constructed to
     create the controller object, before the route fragment is entered.</li>
+    <li>The controller function can return a promise that is fulfilled with the controller
+    object.</li>
     <li>If the controller object is an observed object, it is rooted before the route fragment
     is entered and unrooted when the route fragment is left.</li>
     <li>The component is a React component. It's optional and it receives <Ticks
@@ -209,7 +211,7 @@ export default () => <div>
   <Api id="routeFragment.abstractPath" text="routeFragment.abstractPath" />
 
   <ul className="simple-list">
-    <li>The abstractPath.</li>
+    <li>The abstract path.</li>
   </ul>
 
   <Api id="routeFragment.urlPath" text="routeFragment.urlPath" />

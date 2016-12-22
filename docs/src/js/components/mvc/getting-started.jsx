@@ -101,7 +101,7 @@ export default () => <div>
       };
     `} />
 
-    <p>The controller stands between the view and the model, as the UI should't try
+    <p>The controller stands between the view and the model, as the UI shouldn't try
     to modify the state of the model through direct interaction. The controller asks the model
     to update itself based on certain input or actions. The controller can also provide
     instructions to the view (preferably in a reactive fashion) and can create the connection

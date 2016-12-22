@@ -19,7 +19,7 @@ ol.simple-list li{list-style-type:decimal;}
 p + .simple-list{margin-top:-10px;}
 a{color:#522;}
 button{cursor:pointer;}
-p{margin:0 0 20px;text-align:justify;}
+p{margin:0 0 20px;}
 .code{padding:10px;margin:20px 0;overflow:auto;border:1px solid rgba(0,140,255,1);border-radius:6px;
   font-family:monospace;background:#eadbde;font-size:12px;white-space:pre;}
 .ticks{padding:3px;border-radius:3px;color:#8c2121;font-weight:bold;background:#d0afaf;}
@@ -44,7 +44,8 @@ header .links a{margin:0 0 0 10px;}
 .contents-menu ul > li{padding:10px 0;}
 .contents-menu .is-active + ul,.contents-menu .is-descendant-active + ul{display:block;}
 .contents-menu.expanded{width:220px;}
-.content{flex:1;padding:40px 50px;overflow:auto;line-height:1.5;background:#f3efeb;}
+.content{flex:1;padding:40px 50px;overflow:auto;line-height:1.5;background:#f3efeb;
+  text-align:justify;}
 .contents-submenu{display:flex;flex-direction:column;background:rgba(239,223,163,0.4);
   box-shadow:-3px 0 4px #ccc;}
 .contents-submenu button{align-self:flex-end;}

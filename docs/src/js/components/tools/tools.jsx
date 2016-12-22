@@ -36,7 +36,8 @@ export default () => <div>
 
   <p>The promise queue is a queue of promises that allows us to discard previous pending
   promises when we have a new promise that we're interested in. The add method
-  returns a promise (the queue promise) that is locked on the last promise that was added.
+  returns a promise (the queue promise) that will match the state of
+  the last promise that was added.
   If a previous promise is fulfilled before the last promise is settled,
   the update callback is called. If a previous promise is rejected before
   the last promise is settled, the catch callback is called and the queue promise is rejected.

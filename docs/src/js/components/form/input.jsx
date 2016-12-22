@@ -37,8 +37,10 @@ export default () => <div>
     <li>
       initialValue
       <ul>
-        <li>If it's falsy and the type of the input is numeric,
-        it's used when the input is cleared instead of the empty string.</li>
+        <li>If the input is numeric and it's cleared, instead of using the empty string as
+        the new value, the initialValue can be used.</li>
+        <li>In order to use the initialValue, it must be falsy. If it's undefined, then
+        undefined is used, otherwise null is used.</li>
       </ul>
     </li>
     <li>errors</li>

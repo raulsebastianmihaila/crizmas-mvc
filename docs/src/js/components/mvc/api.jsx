@@ -36,6 +36,7 @@ export default () => <div>
 
   <ul className="simple-list">
     <li>This is called when the mvc instance is created.</li>
+    <li>Mounts the router, if one was passed.</li>
     <li>Can be used to remount an unmounted mvc instance.</li>
   </ul>
 
@@ -43,6 +44,7 @@ export default () => <div>
 
   <ul className="simple-list">
     <li>Unmounts an mvc instance that can later be remounted.</li>
+    <li>Unmounts the router, if one was passed.</li>
     <li>It calls <Ticks text="ReactDOM.unmountComponentAtNode" /></li>
   </ul>
 

@@ -122,7 +122,8 @@ export default () => <div>
   <p>Beside the value, an input can have other state as well.
   The <Ticks text="isDirty" />, <Ticks text="isTouched" />, <Ticks
   text="isInputPending" />, <Ticks text="hasErrors" />, <Ticks
-  text="errors" /> and <Ticks text="isBlocked" /> properties also depend on the
+  text="errors" />, <Ticks text="isPendingBlocked" /> and <Ticks
+  text="isBlocked" /> properties also depend on the
   state of the child inputs, while the <Ticks text="isSubmitted" /> property doesn't.</p>
 
   <p>The input objects are also observed, so they have the <Ticks
@@ -181,11 +182,13 @@ export default () => <div>
   text="onStartPending" /> method can be called in order to mark the input as input pending.
   When the <Ticks text="onChange" /> method is called, isInputPending is updated (if
   it has no children with isInputPending true, isInputPending is set to false).
+  The input also has an <Ticks text="isPendingBlocked" /> property whose value is true
+  while the input is pending or is input pending. If the form is pending blocked
+  it cannot be reset or cleared. Whether or not the pending blocking state depends on the
+  pending and input pending states can be configured.
   The input also has an <Ticks text="isBlocked" /> property whose value is true
-  while the input either is pending, is input pending or has errors. If the
-  form is blocked it cannot be submitted, reset or cleared.
-  Whether or not the blocking state depends on the pending and input pending states can be
-  configured, but a form will always be blocked if it has errors.</p>
+  while the input either is pending blocked or has errors. If the
+  form is blocked it cannot be submitted.</p>
 
   <h4 id="result">Result</h4>
 
