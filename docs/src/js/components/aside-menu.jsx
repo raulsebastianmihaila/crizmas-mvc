@@ -23,7 +23,9 @@ class AsideMenu extends Component {
     }
 
     return <div className={className}>
-      <button onClick={this.onExpand}>&#9776;</button>
+      <div className="button-wrapper">
+        <button onClick={this.onExpand}>&#9776;</button>
+      </div>
       <div className="menu-content">{this.props.children}</div>
     </div>;
   }

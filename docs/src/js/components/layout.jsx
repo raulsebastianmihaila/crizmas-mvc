@@ -80,8 +80,8 @@ export default class Layout extends Component {
       </header>
       <div className="main">
         <ContentsMenu list={contents} />
-        <div className="content" ref={content => this.content = content}>{this.props.children}</div>
         {this.state.submenu && <ContentsSubmenu list={this.state.submenu} />}
+        <div className="content" ref={content => this.content = content}>{this.props.children}</div>
       </div>
     </div>;
   }
