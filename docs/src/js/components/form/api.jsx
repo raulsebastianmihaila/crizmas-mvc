@@ -26,6 +26,7 @@ export default () => <div>
         },
         {
           name: 'y',
+          clearValue: '',
 
           getValue() {
             return model.y;
@@ -73,12 +74,13 @@ export default () => <div>
 
   <ul className="simple-list">
     <li>An input configuration can contain a name, initialValue, getValue, setValue,
-    validate, init, onFormChange, preventInputPendingBlocking, preventPendingBlocking,
+    validate, clearValue, init, onFormChange, preventInputPendingBlocking, preventPendingBlocking,
     an actions object and a children array of configuration objects.</li>
     <li>None of the options is required.</li>
     <li>Whenever a function from the form config is called, it's called as a method
     of an input (event if it's not necessarily an input method).</li>
     <li>init is called when the input is created.</li>
+    <li>If clearValue is provided it's used when clearing the input.</li>
     <li>If preventInputPendingBlocking is true, the isPendingBlocked property doesn't
     depend on the isInputPending property.</li>
     <li>If preventPendingBlocking is true, the isPendingBlocked property doesn't
@@ -364,7 +366,8 @@ export default () => <div>
   <ul className="simple-list">
     <li>If the input is pending blocked, it does nothing.</li>
     <li>Calls the clear method for each child.</li>
-    <li>If its initial value is truthy, it sets it to null.</li>
+    <li>If the clear value was passed, sets the initial value to the clear value.
+    Otherwise, if its initial value is truthy, it sets it to null.</li>
     <li>Calls setValue with its initial value.</li>
     <li>Sets isSubmitted and isTouched to false.</li>
     <li>Updates the dirty state.</li>
