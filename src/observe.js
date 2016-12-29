@@ -8,7 +8,7 @@
   if (isModule) {
     utils = require('crizmas-utils');
   } else {
-    utils = window.crizmasUtils;
+    utils = window.crizmas.utils;
   }
 
   const {isObj, isFunc, isPromise, resolveThenable} = utils;
@@ -675,6 +675,6 @@
   if (isModule) {
     module.exports = moduleExports;
   } else {
-    window.crizmasObserve = moduleExports;
+    window.crizmas.observe = moduleExports;
   }
 })();

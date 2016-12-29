@@ -14,7 +14,7 @@
   } else {
     React = window.React;
     ReactDOM = window.ReactDOM;
-    observe = window.crizmasObserve;
+    observe = window.crizmas.observe;
   }
 
   function Mvc({element, component, domElement, router}) {
@@ -157,6 +157,6 @@
   if (isModule) {
     module.exports = moduleExports;
   } else {
-    window.CrizmasMvc = moduleExports;
+    window.crizmas.Mvc = moduleExports;
   }
 })();
