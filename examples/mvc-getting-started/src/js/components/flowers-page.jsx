@@ -33,9 +33,7 @@ export default class FlowersPage extends Component {
         <div>
           <form>
             <div>
-              <div>
-                <label>name:</label>
-              </div>
+              <label>name:</label>
             </div>
             <div>
               <Input className="input" {...form.get('name')} />

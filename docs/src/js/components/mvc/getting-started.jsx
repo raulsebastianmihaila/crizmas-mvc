@@ -115,7 +115,7 @@ export default () => <div>
 
       import flowers, {Flower} from 'js/models/flowers-model';
 
-      export default Mvc.controller(class HomeController {
+      export default Mvc.controller(class {
         constructor() {
           this.flowers = flowers;
 

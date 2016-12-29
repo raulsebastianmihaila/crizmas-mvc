@@ -3,7 +3,7 @@ import Form, {validation} from 'crizmas-form';
 
 import flowers, {Flower} from 'js/models/flowers-model';
 
-export default Mvc.controller(class HomeController {
+export default Mvc.controller(class {
   constructor() {
     this.flowers = flowers;
 
