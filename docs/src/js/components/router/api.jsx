@@ -13,7 +13,7 @@ export default () => <div>
 
   <Api id="Router" text={`
     import Router from 'crizmas-router';
-    // in ES5, Router is window.CrizmasRouter
+    // in ES5, Router is window.crizmas.Router
 
     const router = new Router({
       basePath: 'base-path',
@@ -248,7 +248,7 @@ export default () => <div>
 
   <Api id="Link" text={`
     import {Link} from 'crizmas-router';
-    // in ES5, Link is window.CrizmasRouter.Link
+    // in ES5, Link is window.crizmas.Router.Link
 
     <Link to={path}>link text</Link>
   `} />

@@ -13,7 +13,7 @@ export default () => <div>
   <b>
     <Code text={`
       import PromiseQueue from 'crizmas-promise-queue';
-      // in ES5, PromiseQueue is CrizmasPromiseQueue
+      // in ES5, PromiseQueue is window.crizmas.PromiseQueue
 
       const promiseQueue = new PromiseQueue({
         done(value) {},

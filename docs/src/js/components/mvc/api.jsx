@@ -12,7 +12,7 @@ export default () => <div>
 
   <Api id="Mvc" text={`
     import Mvc from 'crizmas-mvc';
-    // in ES5, Mvc is window.CrizmasMvc
+    // in ES5, Mvc is window.crizmas.Mvc
 
     const mvc = new Mvc({
       router: new Router({routes: []}),

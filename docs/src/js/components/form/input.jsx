@@ -11,7 +11,7 @@ export default () => <div>
   <b>
     <Code bold text={`
       import {Input} from 'crizmas-components';
-      // in ES5, Input is window.CrizmasInput;
+      // in ES5, Input is window.crizmas.Input;
 
       <Input type="integer" {...someCrizmasInput} />
 

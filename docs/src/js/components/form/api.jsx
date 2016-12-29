@@ -13,7 +13,7 @@ export default () => <div>
 
   <Api id="Form" text={`
     import Form from 'crizmas-form';
-    // in ES5, Form is window.CrizmasForm
+    // in ES5, Form is window.crizmas.Form
 
     const form = new Form({
       preventInputPendingBlocking: true,
@@ -398,7 +398,7 @@ export default () => <div>
 
   <Api id="validation" text={`
     import Form, {validation} from 'crizmas-form';
-    // in ES5, validation is window.crizmasValidation
+    // in ES5, validation is window.crizmas.validation
 
     const form = new Form({
       validate: validation(...funcs)
