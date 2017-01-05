@@ -131,6 +131,12 @@ export default () => <div>
     <li>It's set to <Ticks text="null" /> when the transition process ends.</li>
   </ul>
 
+  <Api id="router.isMounted" text="router.isMounted" />
+
+  <ul className="simple-list">
+    <li>It's true if the router is mounted (it's listening for URL changes).</li>
+  </ul>
+
   <Api id="router.transitionTo" text="router.transitionTo(path)" />
 
   <ul className="simple-list">

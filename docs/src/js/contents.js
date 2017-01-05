@@ -50,6 +50,10 @@ export default [
         label: 'mvc.unmount()'
       },
       {
+        link: 'mvc.isMounted',
+        label: 'mvc.isMounted'
+      },
+      {
         link: 'Mvc.controller',
         label: 'Mvc.controller()'
       },
@@ -160,6 +164,10 @@ export default [
           {
             link: 'router.targetRouteFragment',
             label: 'router.targetRouteFragment'
+          },
+          {
+            link: 'router.isMounted',
+            label: 'router.isMounted'
           },
           {
             link: 'router.transitionTo',

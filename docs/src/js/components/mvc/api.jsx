@@ -48,6 +48,12 @@ export default () => <div>
     <li>It calls <Ticks text="ReactDOM.unmountComponentAtNode" /></li>
   </ul>
 
+  <Api id="mvc.isMounted" text="mvc.isMounted" />
+
+  <ul className="simple-list">
+    <li>It's true if the mvc instance is mounted.</li>
+  </ul>
+
   <Api id="Mvc.controller" text="Mvc.controller(value)" />
 
   <ul className="simple-list">
