@@ -40,9 +40,6 @@ export default class Layout extends Component {
 
     this.updateScroll = () => {
       this.content.scrollTop = 0;
-
-      // for firefox
-      window.document.body.scrollTop = 0;
     };
 
     this.setSubmenu = (currentRouteFragment) => {
