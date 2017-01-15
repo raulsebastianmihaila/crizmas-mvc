@@ -6,8 +6,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HotModuleReplacementPlugin = webpack.HotModuleReplacementPlugin;
 const NoErrorsPlugin = webpack.NoErrorsPlugin;
-// messes up html like &#9776; and other preserved whitespace
-// const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const DefinePlugin = webpack.DefinePlugin;
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -105,11 +104,11 @@ function getProdConfig() {
       favicon: 'src/assets/favicon.ico',
       assetsPrefix: '/crizmas-mvc-docs'
     }),
-    // new UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
+    new UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
     new CleanWebpackPlugin(['dist']),
     new CopyWebpackPlugin([
       {from: 'src/assets/css', to: 'css'}
