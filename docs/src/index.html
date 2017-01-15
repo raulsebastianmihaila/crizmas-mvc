@@ -12,7 +12,8 @@
       window.location.href = url;
     }
 
-    if (typeof Proxy !== 'function') {
+    // Edge doesn't support URLSearchParams
+    if (typeof Proxy !== 'function' || typeof URLSearchParams !== 'function') {
       redirect(modernBrowserUrl);
     }
   })();
