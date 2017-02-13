@@ -25,8 +25,8 @@ export default () => <div>
     <li>Creates a new mvc instance.</li>
     <li>The router is optional, but recommended, because it also takes care of rooting and
     unrooting.</li>
-    <li>A layout can be provided as component or element. (Therefore things like react-router are
-    supported.)</li>
+    <li>A layout can be provided as component or element. It receives the router as a prop.
+    (Therefore things like react-router are supported.)</li>
     <li>The element and component are also optional, but if the router is not provided,
     one of them must be provided.</li>
     <li>The router is passed on the React context.</li>

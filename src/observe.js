@@ -71,7 +71,7 @@
     notifyCbs.forEach(cb => cb());
   }
 
-  function observeFunction(observableFunc, key, visitedObjects, visitedFunctions) {
+  function observeFunction(observableFunc, key, visitedObjects, visitedFunctions, preventApply) {
     if (ignoredItems.has(observableFunc) || visitedFunctions.has(observableFunc)) {
       return observableFunc;
     }
@@ -86,6 +86,10 @@
       if (!observedFunction) {
         observedFunction = new Proxy(observableFunc, {
           apply(target, thisArg, args) {
+            if (preventApply) {
+              throw new Error('The observed constructor must be invoked with \'new\'.');
+            }
+
             programNotification();
 
             let error;
@@ -328,7 +332,7 @@
     return observableObj;
   }
 
-  function observe(observable, {key} = {}) {
+  function observe(observable, {key, preventApply} = {}) {
     if (ignoredItems.has(observable)) {
       return observable;
     }
@@ -338,7 +342,7 @@
       const visitedObjects = new Set();
 
       if (isFunc(observable)) {
-        return observeFunction(observable, key, visitedObjects, visitedFunctions);
+        return observeFunction(observable, key, visitedObjects, visitedFunctions, preventApply);
       }
 
       if (isObj(observable)) {
@@ -376,7 +380,7 @@
 
     const root = pendingTargetsDetails.has(observable)
       ? observable
-      : observe(observable);
+      : observe(observable, {preventApply: true});
 
     if (isFunc(observable)) {
       rootFunctions.add(root);

@@ -18,6 +18,10 @@
   }
 
   function Mvc({element, component, domElement, router}) {
+    if (!new.target) {
+      throw new Error('The function must be called as a constructor.');
+    }
+
     if (!element && !component && !router) {
       throw new Error('An element or a component or a router must be provided');
     }
@@ -121,7 +125,7 @@
         + ' and it must not be ignored.');
     }
 
-    return observe.observe(controller);
+    return observe.observe(controller, {preventApply: true});
   };
 
   Mvc.observe = function (...args) {
