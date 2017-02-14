@@ -18,10 +18,6 @@
   }
 
   function Mvc({element, component, domElement, router}) {
-    if (!new.target) {
-      throw new Error('The function must be called as a constructor.');
-    }
-
     if (!element && !component && !router) {
       throw new Error('An element or a component or a router must be provided');
     }
@@ -33,6 +29,10 @@
     if (element && component) {
       throw new Error('Must not provide both element and component');
     }
+
+    const mvc = {
+      isMounted: false
+    };
 
     const elementRenderFunc = element
       ? React.cloneElement
@@ -88,10 +88,8 @@
       router: React.PropTypes.object
     };
 
-    this.isMounted = false;
-
-    this.mount = () => {
-      if (!this.isMounted) {
+    mvc.mount = () => {
+      if (!mvc.isMounted) {
         if (router) {
           router.mount();
         }
@@ -99,12 +97,12 @@
         ReactDOM.render(React.createElement(Root), domElement);
         observe.on(notify);
 
-        this.isMounted = true;
+        mvc.isMounted = true;
       }
     };
 
-    this.unmount = () => {
-      if (this.isMounted) {
+    mvc.unmount = () => {
+      if (mvc.isMounted) {
         if (router) {
           router.unmount();
         }
@@ -112,11 +110,13 @@
         observe.off(notify);
         ReactDOM.unmountComponentAtNode(domElement);
 
-        this.isMounted = false;
+        mvc.isMounted = false;
       }
     };
 
-    this.mount();
+    mvc.mount();
+
+    return mvc;
   }
 
   Mvc.controller = function (controller) {
