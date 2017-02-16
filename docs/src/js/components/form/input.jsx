@@ -64,6 +64,9 @@ export default () => <div>
     </li>
     <li>placeholder</li>
     <li>className</li>
+    <li>readOnly</li>
+    <li>disabled</li>
+    <li>autoFocus</li>
     <li>
       debounce
       <ul>

@@ -71,8 +71,14 @@ export default () => <div>
   method, but this method has two different keys in the respective objects. Therefore the method
   will have a single key associated, which is the key that was used when the method was observed.
   So, the argument to <Ticks text="has" /> must be the associated key. If the function doesn't
-  have an associated key, it cannot be pending in relation to an object.
-  </p>
+  have an associated key, it cannot be pending in relation to an object.</p>
+
+  <p><Ticks text="Mvc.observe()" /> can also receive a <Ticks text="preventApply" /> option.
+  If the argument to <Ticks text="Mvc.observe()" /> is a function and this option is passed,
+  the resulted observed function can only be called as a constructor.
+  This is useful when it's clear that the function is a constructor whose purpose is to create
+  observed objects. This option is used internally by <Ticks
+  text="Mvc.controller()" /> and <Ticks text="Mvc.root()" /> (see below).</p>
 
   <h4 id="managing-objects">Managing objects</h4>
 

@@ -58,10 +58,12 @@ export default () => <div>
 
   <ul className="simple-list">
     <li>The value can be either a non-promise object or a function.</li>
+    <li>If the value is a function that is not already observed,
+    the resulted function can only be constructed.</li>
     <li>Returns the observed value.</li>
   </ul>
 
-  <Api id="Mvc.observe" text="Mvc.observe(value, {key})" />
+  <Api id="Mvc.observe" text="Mvc.observe(value, {key, preventApply})" />
 
   <ul className="simple-list">
     <li>Causes the value to be observed if it's a function or an object (including
@@ -72,6 +74,8 @@ export default () => <div>
     adorned with new methods or if the function's prototype has new methods, they will
     be observed.</li>
     <li>The associated key of an observed function cannot be changed.</li>
+    <li>If preventApply is true and the value is a function that is not already observed,
+    the resulted function can only be constructed.</li>
     <li>Returns the observed value or the original value if it cannot be observed.</li>
   </ul>
 
@@ -116,6 +120,8 @@ export default () => <div>
     <li>If the value is an object, it's marked as a root.</li>
     <li>If the value is a function, when it's constructed, the resulted object
     is marked as root.</li>
+    <li>If the value is a function that is not already observed,
+    the resulted function can only be constructed.</li>
     <li>Returns the observed value.</li>
   </ul>
 
