@@ -124,9 +124,10 @@ export default () => <div>
   For instance if the root of a tree is exported by a module, unless that binding's value
   is changed from inside the module, the object cannot be garbage collected because later on it's
   possible that the module is imported again, and since modules are singletons, the same
-  instance must be exported. An even more daunting example is a default export whose value
-  is a plain old object, because it cannot be changed from inside the module
-  (meaning that the object in this case can never be garbage collected).
+  instance must be exported. An even more daunting example is a default export (with the
+  local name <Ticks text="*default*" />, meaning that it can't be referenced directly from
+  inside the module) whose value is a plain old object, because it cannot be changed from inside
+  the module (meaning that the object in this case can never be garbage collected).
   Therefore if we want to stop managing a tree
   of objects, we need a mechanism for this: <Ticks text="Mvc.unroot()" />.
   We must always call this function when we're done with a tree.
