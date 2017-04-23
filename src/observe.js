@@ -17,9 +17,21 @@
   let currentNotificationTrigger = 0;
   const notifyCbs = new Set();
   const ignoredItems = new WeakSet();
+  // <function - observed function> map used for reusing already observed functions when
+  // the same original function is observed
   const observableFunctionsMap = new WeakMap();
+  // <observed obj or func - pending details> map.
+  // the pending details is a <key - wrapper promises set> map that holds the pending wrapper promises
+  // for that key for that particular object. for observed objects, the pending details also
+  // hold the associated managed roots and children
   const pendingTargetsDetails = new WeakMap();
+  // <promise - pending wrapper promise> map. a wrapper promise is used for managing
+  // the pending state and notifying when the promise is settled
   const pendingWrapperPromisesMap = new WeakMap();
+  // <promise wrapper - entries> map that holds an entries array. an entry is an object
+  // with obj and key properties, that represent the associated object and key
+  // of the pending operation (the same wrapper promise can be returned from different
+  // pending operations).
   const pendingWrapperEntriesMap = new Map();
   const roots = new WeakSet();
   const rootFunctions = new WeakSet();
@@ -234,24 +246,24 @@
     return pendingWrapperPromise;
   }
 
-  function setObjPendingPromise(promise, obj, key, pendingWrapperEntries) {
+  function setObjPendingPromise(pendingWrapperPromise, obj, key, pendingWrapperEntries) {
     const objPendingDetails = pendingTargetsDetails.get(obj);
-    const objNamePromises = objPendingDetails.get(key);
+    const objKeyPromises = objPendingDetails.get(key);
 
-    if (objNamePromises) {
-      if (objNamePromises.has(promise)) {
-        return promise;
+    if (objKeyPromises) {
+      if (objKeyPromises.has(pendingWrapperPromise)) {
+        return pendingWrapperPromise;
       }
 
-      objNamePromises.add(promise);
+      objKeyPromises.add(pendingWrapperPromise);
     } else {
-      objPendingDetails.set(key, new Set([promise]));
+      objPendingDetails.set(key, new Set([pendingWrapperPromise]));
     }
 
     pendingWrapperEntries.push({obj, key});
     setPendingState(new Set([obj]));
 
-    return promise;
+    return pendingWrapperPromise;
   }
 
   function unsetPendingProp(pendingWrapperPromise, basePromise) {
@@ -268,11 +280,11 @@
 
       pendingWrapperEntries.forEach(({obj, key}) => {
         const objPendingDetails = pendingTargetsDetails.get(obj);
-        const objNamePromises = objPendingDetails.get(key);
+        const objKeyPromises = objPendingDetails.get(key);
 
-        objNamePromises.delete(pendingWrapperPromise);
+        objKeyPromises.delete(pendingWrapperPromise);
 
-        if (!objNamePromises.size) {
+        if (!objKeyPromises.size) {
           objPendingDetails.delete(key);
         }
 
@@ -506,34 +518,46 @@
     return pendingTargetsDetails.get(root).roots.size === 1;
   }
 
-  function getObjectsActualRoots(objects) {
-    // always add retained roots and objects
-
-    const objectsActualRoots = new Set(retainedRoots);
-
-    retainedObjects.forEach(obj => objectsActualRoots.add(obj));
+  function getManagedTreesFrom(objects) {
+    const managedTrees = new Set();
+    let objectsFound = false;
 
     objects.forEach(obj => {
-      const objRoots = pendingTargetsDetails.get(obj).roots;
+      if (isObj(obj)) {
+        objectsFound = true;
 
-      if (objRoots) {
-        objRoots.forEach(root => {
+        pendingTargetsDetails.get(obj).roots.forEach(root => {
           if (isActualRoot(root)) {
-            objectsActualRoots.add(root);
+            managedTrees.add(root);
           }
         });
       }
     });
 
-    return objectsActualRoots;
+    if (!objectsFound) {
+      // the objects set contains only functions and functions can not be isPending and
+      // therefore can not affect the pending state of the managed trees.
+      return null;
+    }
+
+    // always add retained roots and objects
+
+    retainedRoots.forEach(obj => managedTrees.add(obj));
+    retainedObjects.forEach(obj => managedTrees.add(obj));
+
+    return managedTrees;
   }
 
   function setPendingState(objects) {
-    const resolvedObjects = new Set();
+    const managedTrees = getManagedTreesFrom(objects);
 
-    getObjectsActualRoots(objects).forEach(obj => setObjPendingState(obj, resolvedObjects));
-    unrootRetainedRoots();
-    updateRetainedObjectsList();
+    if (managedTrees) {
+      const resolvedObjects = new Set();
+
+      managedTrees.forEach(obj => setObjPendingState(obj, resolvedObjects));
+      unrootRetainedRoots();
+      updateRetainedObjectsList();
+    }
   }
 
   function unrootRetainedRoots() {

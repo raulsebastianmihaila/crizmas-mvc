@@ -1,3 +1,10 @@
+<a name="0.2.4"></a>
+# [0.2.4](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.3...v0.2.4) (2017-04-23)
+
+### Updates
+- Prevent updating the pending state of the managed trees when all the pending operations associated with the promise that has just been settled are all static methods (the `this` contexts of the pending operations are all functions) because they can not have any effect on the pending state of the managed trees.
+- Refactoring.
+
 <a name="0.2.3"></a>
 # [0.2.3](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.2...v0.2.3) (2017-02-14)
 
