@@ -119,7 +119,7 @@
     return mvc;
   }
 
-  Mvc.controller = function (controller) {
+  Mvc.controller = (controller) => {
     if (!observe.isReliablyObservable(controller)) {
       throw new Error('Controller must be either a function or a non-promise object'
         + ' and it must not be ignored.');
@@ -128,31 +128,31 @@
     return observe.observe(controller, {preventApply: true});
   };
 
-  Mvc.observe = function (...args) {
+  Mvc.observe = (...args) => {
     return observe.observe(...args);
   };
 
-  Mvc.root = function (value) {
+  Mvc.root = (value) => {
     return observe.root(value);
   };
 
-  Mvc.unroot = function (value) {
+  Mvc.unroot = (value) => {
     return observe.unroot(value);
   };
 
-  Mvc.isObservedObject = function (value) {
+  Mvc.isObservedObject = (value) => {
     return observe.isObservedObject(value);
   };
 
-  Mvc.ignore = function (func) {
+  Mvc.ignore = (func) => {
     return observe.ignore(func);
   };
 
-  Mvc.addObservedChild = function (obj, child) {
+  Mvc.addObservedChild = (obj, child) => {
     return observe.addObservedChild(obj, child);
   };
 
-  Mvc.removeObservedChild = function (obj, child) {
+  Mvc.removeObservedChild = (obj, child) => {
     return observe.removeObservedChild(obj, child);
   };
 

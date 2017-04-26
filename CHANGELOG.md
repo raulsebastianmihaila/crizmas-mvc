@@ -1,3 +1,10 @@
+<a name="0.2.5"></a>
+# [0.2.5](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.4...v0.2.5) (2017-04-29)
+
+### Updates
+- Ensure that functions that should not be constructed are not constructors.
+- Update versions of dependencies.
+
 <a name="0.2.4"></a>
 # [0.2.4](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.3...v0.2.4) (2017-04-23)
 

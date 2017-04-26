@@ -9,7 +9,7 @@
   },
   "main": "./src/mvc.js",
   "peerDependencies": {
-    "crizmas-utils": "^0.2",
+    "crizmas-utils": "^0.2.1",
     "react": "15.x",
     "react-dom": "15.x"
   },
