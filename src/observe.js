@@ -21,9 +21,9 @@
   // the same original function is observed
   const observableFunctionsMap = new WeakMap();
   // <observed obj or func - pending details> map.
-  // the pending details is a <key - wrapper promises set> map that holds the pending wrapper promises
-  // for that key for that particular object. for observed objects, the pending details also
-  // hold the associated managed roots and children
+  // the pending details is a <key - wrapper promises set> map that holds the pending wrapper
+  // promises for that key for that particular object. for observed objects, the pending details
+  // also hold the associated managed roots and children
   const pendingTargetsDetails = new WeakMap();
   // <promise - pending wrapper promise> map. a wrapper promise is used for managing
   // the pending state and notifying when the promise is settled
@@ -66,21 +66,29 @@
     }
   };
 
-  const programNotification = () => {
-    currentNotificationTrigger += 1;
-  };
-
-  const checkNotify = (hasError) => {
-    currentNotificationTrigger -= 1;
-
-    // don't notify in case of error because we want to prevent possible side effects
-    if (!hasError && !currentNotificationTrigger) {
-      notify();
+  const observe = (observable, {key, preventApply} = {}) => {
+    if (ignoredItems.has(observable)) {
+      return observable;
     }
-  };
 
-  const notify = () => {
-    notifyCbs.forEach((cb) => cb());
+    if (observable) {
+      const visitedFunctions = new Set();
+      const visitedObjects = new Set();
+
+      if (isFunc(observable)) {
+        return observeFunction(observable, key, visitedObjects, visitedFunctions, preventApply);
+      }
+
+      if (isObj(observable)) {
+        if (isPromise(observable)) {
+          return observePromise(observable);
+        }
+
+        return observeObject(observable, visitedObjects, visitedFunctions);
+      }
+    }
+
+    return observable;
   };
 
   const observeFunction = (observableFunc, key, visitedObjects, visitedFunctions, preventApply) => {
@@ -188,6 +196,23 @@
     return observedFunction;
   };
 
+  const programNotification = () => {
+    currentNotificationTrigger += 1;
+  };
+
+  const checkNotify = (hasError) => {
+    currentNotificationTrigger -= 1;
+
+    // don't notify in case of error because we want to prevent possible side effects
+    if (!hasError && !currentNotificationTrigger) {
+      notify();
+    }
+  };
+
+  const notify = () => {
+    notifyCbs.forEach((cb) => cb());
+  };
+
   const observePromise = (promise, obj, key) => {
     const isMethod = key && pendingTargetsDetails.has(obj);
 
@@ -266,6 +291,116 @@
     return pendingWrapperPromise;
   };
 
+  const setPendingState = (objects) => {
+    const managedTrees = getManagedTreesFrom(objects);
+
+    if (managedTrees) {
+      const resolvedObjects = new Set();
+
+      managedTrees.forEach((obj) => setObjPendingState(obj, resolvedObjects));
+      unrootRetainedRoots();
+      updateRetainedObjectsList();
+    }
+  };
+
+  const getManagedTreesFrom = (objects) => {
+    const managedTrees = new Set();
+    let objectsFound = false;
+
+    objects.forEach((obj) => {
+      if (isObj(obj)) {
+        objectsFound = true;
+
+        pendingTargetsDetails.get(obj).roots.forEach((root) => {
+          if (isActualRoot(root)) {
+            managedTrees.add(root);
+          }
+        });
+      }
+    });
+
+    if (!objectsFound) {
+      // the objects set contains only functions and functions can not be isPending and
+      // therefore can not affect the pending state of the managed trees.
+      return null;
+    }
+
+    // always add retained roots and objects
+
+    retainedRoots.forEach((obj) => managedTrees.add(obj));
+    retainedObjects.forEach((obj) => managedTrees.add(obj));
+
+    return managedTrees;
+  };
+
+  const isActualRoot = (root) => {
+    // an actual root only has itself as a root
+    return pendingTargetsDetails.get(root).roots.size === 1;
+  };
+
+  const setObjPendingState = (obj, resolved = new Set()) => {
+    const objPendingDetails = pendingTargetsDetails.get(obj);
+    let isPending = !!objPendingDetails.size;
+
+    if (objPendingDetails.children) {
+      objPendingDetails.children.forEach((child) => {
+        if (resolved.has(child)) {
+          if (child.isPending) {
+            isPending = true;
+          }
+
+          return;
+        }
+
+        setObjPendingState(child, resolved);
+
+        if (child.isPending) {
+          isPending = true;
+        }
+      });
+    }
+
+    obj.isPending = isPending;
+
+    resolved.add(obj);
+  };
+
+  const unrootRetainedRoots = () => {
+    retainedRoots.forEach((root) => {
+      if (!root.isPending) {
+        retainedRoots.delete(root);
+        unsetRoot(root, root);
+      }
+    });
+  };
+
+  const unsetRoot = (obj, root) => {
+    const objPendingDetails = pendingTargetsDetails.get(obj);
+
+    objPendingDetails.roots.delete(root);
+    objPendingDetails.children.forEach((child) => unsetRoot(child, root));
+  };
+
+  const updateRetainedObjectsList = () => {
+    retainedObjects.forEach((obj) => {
+      if (!obj.isPending) {
+        retainedObjects.delete(obj);
+      }
+    });
+  };
+
+  const ignore = (observable) => {
+    if (pendingTargetsDetails.has(observable)) {
+      throw new Error('Observed non-promise object or function cannot be ignored.');
+    }
+
+    if (isFunc(observable) || isObj(observable)) {
+      ignoredItems.add(observable);
+    }
+
+    return observable;
+  };
+
   const unsetPendingProp = (pendingWrapperPromise, basePromise) => {
     pendingWrapperPromisesMap.delete(basePromise);
 
@@ -293,6 +428,54 @@
 
       setPendingState(objects);
     }
+  };
+
+  const root = (observable) => {
+    if (!isReliablyObservable(observable)) {
+      throwOnNonRootable();
+    }
+
+    if (rootFunctions.has(observable) || roots.has(observable)) {
+      return observable;
+    }
+
+    const root = pendingTargetsDetails.has(observable)
+      ? observable
+      : observe(observable, {preventApply: true});
+
+    if (isFunc(observable)) {
+      rootFunctions.add(root);
+    } else {
+      if (retainedRoots.has(root)) {
+        retainedRoots.delete(root);
+      }
+
+      roots.add(root);
+      setRoot(root, root);
+      // maybe it already has pending children
+      setObjPendingState(root);
+    }
+
+    return root;
+  };
+
+  const setRoot = (obj, root) => {
+    const objPendingDetails = pendingTargetsDetails.get(obj);
+
+    objPendingDetails.roots.add(root);
+    objPendingDetails.children.forEach((child) => setRoot(child, root));
+  };
+
+  const isReliablyObservable = (value) => {
+    // this should be used by APIs that make the code clearer by marking values
+    // as observable (e.g. roots)
+    return (isFunc(value) || isObj(value) && !isPromise(value))
+      && !ignoredItems.has(value);
+  };
+
+  const throwOnNonRootable = () => {
+    throw new Error('Root must be either a function or a non-promise object and it must'
+      + ' not be ignored.');
   };
 
   const observeCbPromise = (promise, cb, obj, key) => {
@@ -344,102 +527,27 @@
     return observableObj;
   };
 
-  const observe = (observable, {key, preventApply} = {}) => {
-    if (ignoredItems.has(observable)) {
-      return observable;
+  const pendingDecorate = (obj) => {
+    if (hasOwnProp(obj, 'isPending') || hasOwnProp(obj, 'pending')) {
+      throw new Error('Observed object or function must not have an \'isPending\''
+        + ' or \'pending\' property.');
     }
 
-    if (observable) {
-      const visitedFunctions = new Set();
-      const visitedObjects = new Set();
+    const pendingDetails = new Map();
 
-      if (isFunc(observable)) {
-        return observeFunction(observable, key, visitedObjects, visitedFunctions, preventApply);
-      }
-
-      if (isObj(observable)) {
-        if (isPromise(observable)) {
-          return observePromise(observable);
-        }
-
-        return observeObject(observable, visitedObjects, visitedFunctions);
-      }
+    if (!isFunc(obj)) {
+      pendingDetails.roots = new Set();
+      pendingDetails.children = Array.from(getChildrenPendingTargets(obj));
     }
 
-    return observable;
-  };
+    definePropValue(obj, 'isPending', false);
+    definePropValue(obj, 'pending', {
+      has: (key) => pendingDetails.has(key)
+    });
 
-  const isReliablyObservable = (value) => {
-    // this should be used by APIs that make the code clearer by marking values
-    // as observable (e.g. roots)
-    return (isFunc(value) || isObj(value) && !isPromise(value))
-      && !ignoredItems.has(value);
-  };
+    pendingTargetsDetails.set(obj, pendingDetails);
 
-  const throwOnNonRootable = () => {
-    throw new Error('Root must be either a function or a non-promise object and it must'
-      + ' not be ignored.');
-  };
-
-  const root = (observable) => {
-    if (!isReliablyObservable(observable)) {
-      throwOnNonRootable();
-    }
-
-    if (rootFunctions.has(observable) || roots.has(observable)) {
-      return observable;
-    }
-
-    const root = pendingTargetsDetails.has(observable)
-      ? observable
-      : observe(observable, {preventApply: true});
-
-    if (isFunc(observable)) {
-      rootFunctions.add(root);
-    } else {
-      if (retainedRoots.has(root)) {
-        retainedRoots.delete(root);
-      }
-
-      roots.add(root);
-      setRoot(root, root);
-      // maybe it already has pending children
-      setObjPendingState(root);
-    }
-
-    return root;
-  };
-
-  const unroot = (observable) => {
-    if (isFunc(observable)) {
-      rootFunctions.delete(observable);
-    } else {
-      if (roots.has(observable)) {
-        roots.delete(observable);
-
-        if (observable.isPending) {
-          retainedRoots.add(observable);
-        } else {
-          unsetRoot(observable, observable);
-        }
-      }
-    }
-  };
-
-  const ignore = (observable) => {
-    if (pendingTargetsDetails.has(observable)) {
-      throw new Error('Observed non-promise object or function cannot be ignored.');
-    }
-
-    if (isFunc(observable) || isObj(observable)) {
-      ignoredItems.add(observable);
-    }
-
-    return observable;
-  };
-
-  const isObservedObject = (value) => {
-    return !isFunc(value) && pendingTargetsDetails.has(value);
+    return obj;
   };
 
   function* getChildrenPendingTargets(obj, visited = new Set()) {
@@ -466,152 +574,20 @@
     }
   }
 
-  const pendingDecorate = (obj) => {
-    if (hasOwnProp(obj, 'isPending') || hasOwnProp(obj, 'pending')) {
-      throw new Error('Observed object or function must not have an \'isPending\''
-        + ' or \'pending\' property.');
-    }
+  const unroot = (observable) => {
+    if (isFunc(observable)) {
+      rootFunctions.delete(observable);
+    } else {
+      if (roots.has(observable)) {
+        roots.delete(observable);
 
-    const pendingDetails = new Map();
-
-    if (!isFunc(obj)) {
-      pendingDetails.roots = new Set();
-      pendingDetails.children = Array.from(getChildrenPendingTargets(obj));
-    }
-
-    definePropValue(obj, 'isPending', false);
-    definePropValue(obj, 'pending', {
-      has: (key) => pendingDetails.has(key)
-    });
-
-    pendingTargetsDetails.set(obj, pendingDetails);
-
-    return obj;
-  };
-
-  const setRoot = (obj, root) => {
-    const objPendingDetails = pendingTargetsDetails.get(obj);
-
-    objPendingDetails.roots.add(root);
-    objPendingDetails.children.forEach((child) => setRoot(child, root));
-  };
-
-  const unsetRoot = (obj, root) => {
-    const objPendingDetails = pendingTargetsDetails.get(obj);
-
-    objPendingDetails.roots.delete(root);
-    objPendingDetails.children.forEach((child) => unsetRoot(child, root));
-  };
-
-  const unsetUnreachableRoot = (obj, root) => {
-    if (!isDescendantOfOrEqual(obj, root)) {
-      const objPendingDetails = pendingTargetsDetails.get(obj);
-
-      objPendingDetails.roots.delete(root);
-
-      objPendingDetails.children.forEach((child) => unsetUnreachableRoot(child, root));
-    }
-  };
-
-  const isActualRoot = (root) => {
-    // an actual root only has itself as a root
-    return pendingTargetsDetails.get(root).roots.size === 1;
-  };
-
-  const getManagedTreesFrom = (objects) => {
-    const managedTrees = new Set();
-    let objectsFound = false;
-
-    objects.forEach((obj) => {
-      if (isObj(obj)) {
-        objectsFound = true;
-
-        pendingTargetsDetails.get(obj).roots.forEach((root) => {
-          if (isActualRoot(root)) {
-            managedTrees.add(root);
-          }
-        });
-      }
-    });
-
-    if (!objectsFound) {
-      // the objects set contains only functions and functions can not be isPending and
-      // therefore can not affect the pending state of the managed trees.
-      return null;
-    }
-
-    // always add retained roots and objects
-
-    retainedRoots.forEach((obj) => managedTrees.add(obj));
-    retainedObjects.forEach((obj) => managedTrees.add(obj));
-
-    return managedTrees;
-  };
-
-  const setPendingState = (objects) => {
-    const managedTrees = getManagedTreesFrom(objects);
-
-    if (managedTrees) {
-      const resolvedObjects = new Set();
-
-      managedTrees.forEach((obj) => setObjPendingState(obj, resolvedObjects));
-      unrootRetainedRoots();
-      updateRetainedObjectsList();
-    }
-  };
-
-  const unrootRetainedRoots = () => {
-    retainedRoots.forEach((root) => {
-      if (!root.isPending) {
-        retainedRoots.delete(root);
-        unsetRoot(root, root);
-      }
-    });
-  };
-
-  const updateRetainedObjectsList = () => {
-    retainedObjects.forEach((obj) => {
-      if (!obj.isPending) {
-        retainedObjects.delete(obj);
-      }
-    });
-  };
-
-  const setObjPendingState = (obj, resolved = new Set()) => {
-    const objPendingDetails = pendingTargetsDetails.get(obj);
-    let isPending = !!objPendingDetails.size;
-
-    if (objPendingDetails.children) {
-      objPendingDetails.children.forEach((child) => {
-        if (resolved.has(child)) {
-          if (child.isPending) {
-            isPending = true;
-          }
-
-          return;
+        if (observable.isPending) {
+          retainedRoots.add(observable);
+        } else {
+          unsetRoot(observable, observable);
         }
-
-        setObjPendingState(child, resolved);
-
-        if (child.isPending) {
-          isPending = true;
-        }
-      });
+      }
     }
-
-    obj.isPending = isPending;
-
-    resolved.add(obj);
-  };
-
-  const isDescendantOfOrEqual = (child, obj) => {
-    if (child === obj) {
-      return true;
-    }
-
-    const objPendingDetails = pendingTargetsDetails.get(obj);
-
-    return objPendingDetails.children.some((objChild) => isDescendantOfOrEqual(child, objChild));
   };
 
   const addObservedChild = (obj, child) => {
@@ -638,6 +614,20 @@
     objPendingDetails.roots.forEach((root) => setRoot(child, root));
 
     setPendingState(new Set([obj]));
+  };
+
+  const isObservedObject = (value) => {
+    return !isFunc(value) && pendingTargetsDetails.has(value);
+  };
+
+  const isDescendantOfOrEqual = (child, obj) => {
+    if (child === obj) {
+      return true;
+    }
+
+    const objPendingDetails = pendingTargetsDetails.get(obj);
+
+    return objPendingDetails.children.some((objChild) => isDescendantOfOrEqual(child, objChild));
   };
 
   const removeObservedChild = (obj, child) => {
@@ -668,6 +658,16 @@
       }
 
       setPendingState(new Set([obj]));
+    }
+  };
+
+  const unsetUnreachableRoot = (obj, root) => {
+    if (!isDescendantOfOrEqual(obj, root)) {
+      const objPendingDetails = pendingTargetsDetails.get(obj);
+
+      objPendingDetails.roots.delete(root);
+
+      objPendingDetails.children.forEach((child) => unsetUnreachableRoot(child, root));
     }
   };
 

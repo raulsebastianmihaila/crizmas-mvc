@@ -34,25 +34,20 @@
       isMounted: false
     };
 
-    const elementRenderFunc = element
-      ? React.cloneElement
-      : component
-        ? React.createElement
-        : null;
-    const elementRenderBaseArg = element || component;
-    const renderElement = elementRenderFunc
-      ? router
-        ? () => elementRenderFunc(elementRenderBaseArg, {router}, router.getRootElement())
-        : () => elementRenderFunc(elementRenderBaseArg)
-      : () => router.getRootElement();
     let notify;
     let previousIsTransitioning = false;
+    let renderElement;
 
     class Root extends React.Component {
       constructor(...args) {
         super(...args);
 
         notify = this.forceUpdate.bind(this);
+
+        // make sure that we're observing early so that a new rendering process can be
+        // initiated if needed (for instance if an observed function is called in
+        // componentDidMount)
+        observe.on(notify);
       }
 
       getChildContext() {
@@ -88,6 +83,21 @@
       router: React.PropTypes.object
     };
 
+    const init = () => {
+      const elementRenderFunc = element
+        ? React.cloneElement
+        : component
+          ? React.createElement
+          : null;
+      const elementRenderBaseArg = element || component;
+
+      renderElement = elementRenderFunc
+        ? router
+          ? () => elementRenderFunc(elementRenderBaseArg, {router}, router.getRootElement())
+          : () => elementRenderFunc(elementRenderBaseArg)
+        : () => router.getRootElement();
+    };
+
     mvc.mount = () => {
       if (!mvc.isMounted) {
         if (router) {
@@ -95,7 +105,6 @@
         }
 
         ReactDOM.render(React.createElement(Root), domElement);
-        observe.on(notify);
 
         mvc.isMounted = true;
       }
@@ -114,6 +123,7 @@
       }
     };
 
+    init();
     mvc.mount();
 
     return mvc;
