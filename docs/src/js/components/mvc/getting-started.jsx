@@ -45,12 +45,12 @@ export default () => <div>
     <script src="path-to-node_modules/crizmas-router/src/history.js"></script>
     <!-- router depends on react, mvc, history, utils and async utils -->
     <script src="path-to-node_modules/crizmas-router/src/router.js"></script>
-    <!-- form depends on mvc and async utils -->
+    <!-- form depends on mvc, utils and async utils -->
     <script src="path-to-node_modules/crizmas-form/src/form.js"></script>
     <!-- validation depends on utils and promise queue -->
     <script src="path-to-node_modules/crizmas-form/src/validation.js"></script>
     <script src="path-to-node_modules/crizmas-components/src/utils.js"></script>
-    <!-- input depends on react and components utils -->
+    <!-- input depends on react, utils and components utils -->
     <script src="path-to-node_modules/crizmas-components/src/components/input.js"></script>
   `} />
 
