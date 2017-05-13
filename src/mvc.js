@@ -5,15 +5,18 @@
 
   let React;
   let ReactDOM;
+  let PropTypes;
   let observe;
 
   if (isModule) {
     React = require('react');
     ReactDOM = require('react-dom');
+    PropTypes = require('prop-types');
     observe = require('./observe');
   } else {
     React = window.React;
     ReactDOM = window.ReactDOM;
+    PropTypes = window.PropTypes;
     observe = window.crizmas.observe;
   }
 
@@ -80,7 +83,7 @@
     }
 
     Root.childContextTypes = {
-      router: React.PropTypes.object
+      router: PropTypes.object
     };
 
     const init = () => {
@@ -154,8 +157,8 @@
     return observe.isObservedObject(value);
   };
 
-  Mvc.ignore = (func) => {
-    return observe.ignore(func);
+  Mvc.ignore = (value) => {
+    return observe.ignore(value);
   };
 
   Mvc.addObservedChild = (obj, child) => {

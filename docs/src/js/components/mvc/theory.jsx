@@ -91,7 +91,7 @@ export default () => <div>
   it's part of an observed tree. In this case, an observed object is pending while any of
   the observed methods is pending in relation to it or while any of its direct or indirect
   observed child objects is pending. The child observed objects of an observed object are
-  its child objects that are already observed when the object is observed.
+  its child objects that are already observed when the object is observed the first time.
   There is also an API for adding new child observed objects and removing them.
   Normally you shouldn't have to deal with marking
   objects as roots because most probably you will also use the <Link

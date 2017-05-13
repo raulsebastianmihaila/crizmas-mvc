@@ -410,9 +410,7 @@ export default () => <div>
     <li>It calls the functions one by one until there's a synchronous error result.</li>
     <li>If there are also asynchronous validation functions, their results will be awaited
     only if there's no synchronous error returned by the other functions.</li>
-    <li>All the asynchronous functions are awaited (we cannot use <Ticks
-    text="Promise.race" /> because it's possible that the first promise that is settled
-    is not fulfilled with an error).</li>
+    <li>All the asynchronous functions are awaited.</li>
   </ul>
 
   <Api id="validation.required" text="validation.required({messageFunc})" />

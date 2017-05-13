@@ -1,3 +1,11 @@
+<a name="0.2.7"></a>
+# [0.2.7](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.6...v0.2.7) (2017-05-14)
+
+### Updates
+- Small refactoring.
+- Add prop-types as a peer dependency.
+- Update versions of react and react-dom peer dependencies.
+
 <a name="0.2.6"></a>
 # [0.2.6](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.5...v0.2.6) (2017-05-07)
 

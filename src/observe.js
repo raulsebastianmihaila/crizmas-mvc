@@ -19,7 +19,7 @@
   const ignoredItems = new WeakSet();
   // <function - observed function> map used for reusing already observed functions when
   // the same original function is observed
-  const observableFunctionsMap = new WeakMap();
+  const observedFunctionsMap = new WeakMap();
   // <observed obj or func - pending details> map.
   // the pending details is a <key - wrapper promises set> map that holds the pending wrapper
   // promises for that key for that particular object. for observed objects, the pending details
@@ -38,10 +38,10 @@
   const retainedRoots = new Set();
   const retainedObjects = new Set();
 
-  const getPropObj = (obj, prop) => {
+  const getPropRegularObject = (obj, prop) => {
     const descriptor = Reflect.getOwnPropertyDescriptor(obj, prop);
 
-    if (descriptor && isObj(descriptor.value)) {
+    if (descriptor && isObj(descriptor.value) && !isPromise(descriptor.value)) {
       return descriptor.value;
     }
   };
@@ -101,7 +101,7 @@
     if (pendingTargetsDetails.has(observableFunc)) {
       observedFunction = observableFunc;
     } else {
-      observedFunction = observableFunctionsMap.get(observableFunc);
+      observedFunction = observedFunctionsMap.get(observableFunc);
 
       if (!observedFunction) {
         observedFunction = new Proxy(observableFunc, {
@@ -180,14 +180,14 @@
           }
         });
 
-        observableFunctionsMap.set(observableFunc, observedFunction);
+        observedFunctionsMap.set(observableFunc, observedFunction);
       }
     }
 
     visitedFunctions.add(observedFunction);
     observeObject(observedFunction, visitedObjects, visitedFunctions);
 
-    const proto = getPropObj(observableFunc, 'prototype');
+    const proto = getPropRegularObject(observableFunc, 'prototype');
 
     if (proto) {
       observeObject(proto, visitedObjects, visitedFunctions);
@@ -478,7 +478,7 @@
       + ' not be ignored.');
   };
 
-  const observeCbPromise = (promise, cb, obj, key) => {
+  const observeCbPromise = (promise, cb) => {
     // we must observe and notify without caring if the
     // promise was previously ignored because
     // there are cases where the cb must be executed anyway and it can have side effects.
@@ -489,7 +489,7 @@
     // however the promise and the resulted promise after observePromise
     // must be ignored because they cannot have new side effects.
     // at this point we cannot create a wrapper promise based on promise itself
-    // because what happens in observationFunc determines the control flow
+    // because what happens in cb determines the control flow
     // and you wouldn't want a callback to decide the settlment of a cached observed
     // promise.
     // if we wanted to reuse a cached wrapper promise based on promise we could
@@ -497,7 +497,7 @@
     // trigger the notifications twice, which is what we want to avoid.
     // if the promise will be used separately again, a wrapper promise will be created
     // then and it will be reusable, so we don't have to create it in advance.
-    return observePromise(resolveThenable(ignore(promise)).then(cb), obj, key);
+    return observePromise(resolveThenable(ignore(promise)).then(cb));
   };
 
   const observeObject = (observableObj, visitedObjects, visitedFunctions) => {
@@ -556,7 +556,7 @@
     const keys = Reflect.ownKeys(obj);
 
     for (const key of keys) {
-      const child = getPropObj(obj, key);
+      const child = getPropRegularObject(obj, key);
 
       if (child) {
         if (visited.has(child)) {
