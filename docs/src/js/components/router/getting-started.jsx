@@ -55,7 +55,8 @@ export default () => <div>
   <div>
     js/components/layout.jsx
     <Code text={`
-      import React, {PropTypes} from 'react';
+      import React from 'react';
+      import PropTypes from 'prop-types';
 
       const Layout = ({children}) => <div>
         <h1>This is a simple router example.</h1>
@@ -111,7 +112,8 @@ export default () => <div>
   <div>
     js/components/flowers-page.jsx
     <Code text={`
-      import React, {Component, PropTypes} from 'react';
+      import React, {Component} from 'react';
+      import PropTypes from 'prop-types';
       import {Link} from 'crizmas-router';
 
       class FlowersPage extends Component {

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 const tabStartRegExp = /^\t+/;
 const spaceStartRegExp = /^\s+/;
@@ -6,7 +7,7 @@ const textRegExp = /\S/;
 
 function getLines(text) {
   let lines = text.split('\n');
-  const firstLineIndex = lines.findIndex(line => textRegExp.test(line));
+  const firstLineIndex = lines.findIndex((line) => textRegExp.test(line));
 
   if (firstLineIndex === -1) {
     return [];
@@ -21,7 +22,7 @@ function getLines(text) {
   }
 
   lines = lines.slice(firstLineIndex, lastLineIndex + 1)
-    .map(line => line.replace(tabStartRegExp, match => '  '.repeat(match.length)));
+    .map((line) => line.replace(tabStartRegExp, (match) => '  '.repeat(match.length)));
 
   const startSpaceMatch = lines[0].match(spaceStartRegExp);
   const skippedSpaceCount = startSpaceMatch
@@ -29,8 +30,8 @@ function getLines(text) {
     : 0;
 
   if (skippedSpaceCount) {
-    return lines.map(line =>
-      line.replace(spaceStartRegExp, match => ' '.repeat(match.length - skippedSpaceCount)));
+    return lines.map((line) =>
+      line.replace(spaceStartRegExp, (match) => ' '.repeat(match.length - skippedSpaceCount)));
   }
 
   return lines;

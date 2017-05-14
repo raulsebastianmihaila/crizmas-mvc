@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import Logo from 'js/components/logo';
 import contents from 'js/contents';
@@ -12,7 +13,7 @@ function findContentsItem(path) {
 function findContentsItemInList(path, list) {
   let matchedItem;
 
-  list.some(item => {
+  list.some((item) => {
     if (item.link === path) {
       matchedItem = item;
 
@@ -78,7 +79,8 @@ export default class Layout extends Component {
       <div className="main">
         <ContentsMenu list={contents} />
         {this.state.submenu && <ContentsSubmenu list={this.state.submenu} />}
-        <div className="content" ref={content => this.content = content}>{this.props.children}</div>
+        <div className="content"
+          ref={(content) => this.content = content}>{this.props.children}</div>
       </div>
     </div>;
   }

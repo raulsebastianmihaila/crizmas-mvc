@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'crizmas-router';
 
 const NotFound = (props, context) => {
@@ -9,7 +10,7 @@ const NotFound = (props, context) => {
       Page not found: <Link to={toPath}>{toPath}</Link>
     </p>
   </div>;
-}
+};
 
 NotFound.contextTypes = {
   router: PropTypes.object.isRequired

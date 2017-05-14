@@ -84,7 +84,8 @@ export default () => <div>
   <div>
     js/components/view.js
     <Code text={`
-      import React, {PropTypes} from 'react';
+      import React from 'react';
+      import PropTypes from 'prop-types';
       import {Input} from 'crizmas-components';
 
       const View = ({controller}) => {

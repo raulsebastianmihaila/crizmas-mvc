@@ -9,6 +9,7 @@ export default () => <div>
   <Code text={`
     npm i react
     npm i react-dom
+    npm i prop-types
     npm i crizmas-utils # peer dependency
     npm i crizmas-mvc
   `} />
@@ -20,7 +21,7 @@ export default () => <div>
 
     <script src="path-to-node_modules/crizmas-utils/src/utils.js"></script>
     <script src="path-to-node_modules/crizmas-mvc/src/observe.js"></script>
-    <!-- mvc depends on react, react-dom, utils and observe -->
+    <!-- mvc depends on react, react-dom, prop-types, utils and observe -->
     <script src="path-to-node_modules/crizmas-mvc/src/mvc.js"></script>
   `} />
 
@@ -43,14 +44,14 @@ export default () => <div>
     <script src="path-to-node_modules/crizmas-async-utils/src/async-utils.js"></script>
     <script src="path-to-node_modules/crizmas-promise-queue/src/promise-queue.js"></script>
     <script src="path-to-node_modules/crizmas-router/src/history.js"></script>
-    <!-- router depends on react, mvc, history, utils and async utils -->
+    <!-- router depends on react, prop-types, mvc, history, utils and async utils -->
     <script src="path-to-node_modules/crizmas-router/src/router.js"></script>
     <!-- form depends on mvc, utils and async utils -->
     <script src="path-to-node_modules/crizmas-form/src/form.js"></script>
     <!-- validation depends on utils and promise queue -->
     <script src="path-to-node_modules/crizmas-form/src/validation.js"></script>
     <script src="path-to-node_modules/crizmas-components/src/utils.js"></script>
-    <!-- input depends on react, utils and components utils -->
+    <!-- input depends on react, prop-types, utils and components utils -->
     <script src="path-to-node_modules/crizmas-components/src/components/input.js"></script>
   `} />
 
@@ -168,7 +169,8 @@ export default () => <div>
 
     js/components/flowers-page.jsx
     <Code text={`
-      import React, {Component, PropTypes} from 'react';
+      import React, {Component} from 'react';
+      import PropTypes from 'prop-types';
       import {Input} from 'crizmas-components';
 
       export default class FlowersPage extends Component {
