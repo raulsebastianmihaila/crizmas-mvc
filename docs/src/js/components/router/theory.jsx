@@ -164,7 +164,8 @@ export default () => <div>
   checked as an exact match. If that fails, if it starts with <Ticks text=":" />, and the rest
   of it are characters that are part of the <Ticks text="\w" /> regular expression class,
   the abstract path is considered a URL parameter, whose name is the abstract path and
-  whose value is the actual URL path fragment. If the abstract path doesn't start with
+  whose value is the actual decoded (using <Ticks text="decodeURIComponent"/>) URL path fragment.
+  If the abstract path doesn't start with
   a colon, the match is tried transforming the abstract path in a regular expression
   that starts with <Ticks text="^" /> and ends with <Ticks text="$" /> (so those shouldn't
   be part of the abstract path). The matching is greedy, which means that as many
@@ -213,8 +214,10 @@ export default () => <div>
   will be awaited before the route is entered. If the method returns false or if the
   promise is fulfilled with false, the route fragment will not be entered, and the
   parent route fragment remains the current route fragment. Also it's possible
-  to initiate a new transition from the onEnter method. In this case, after the
-  onEnter method is called, irrespective of the result, the current transition
+  to initiate a new transition from the onEnter method, or from outside while the eventual
+  promise returned by onEnter is being settled. In this case, after the
+  onEnter method is called (or after the eventual promise returned by it is settled),
+  irrespective of the result, the current transition
   is stopped and the new transition begins. If there are multiple transitions
   initiated, the last one wins and the others are discarded.
   If the controller object is an observed object, it's rooted before onEnter is called.
@@ -223,6 +226,17 @@ export default () => <div>
   The controller can also have an <Ticks text="onLeave" /> method.
   This method is treated similar to onEnter and if it returns false
   (or the promise is fulfilled with false) the route fragment is not left.</p>
+
+  <p>If the controller is an observed constructor and we want to track the pending state
+  of the resulted observed controller object and we want to initiate some pending operations
+  when entering the route fragment, the recommended way of doing that is to initiate the
+  operations in the onEnter method because the controller object becomes observed by default
+  only after the constructor call has finished and therefore if the operations are initiated
+  in the constructor call, the resulted object will not be pending. Since the onEnter method
+  is called after the controller object is obtained, initiating pending operations in it has
+  the expected effect. Another more verbose solution would be to observe the controller
+  object, as well as the functions, explicitly in the constructor before
+  initiating the pending operations.</p>
 
   <p><Ticks text="router.isTransitioning" /> is true while a transition takes place.</p>
 

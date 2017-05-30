@@ -246,7 +246,7 @@ export default () => <div>
   <Api id="input.validate" text="input.validate({event, target})" />
 
   <ul className="simple-list">
-    <li>The event is optional.</li>
+    <li>The argument is optional.</li>
     <li>The target defaults to the input.</li>
     <li>Calls the validate method of the children inputs. Performs the validation on the
     input by calling the validate method option from the configuration, passing it
@@ -413,15 +413,30 @@ export default () => <div>
     <li>All the asynchronous functions are awaited.</li>
   </ul>
 
+  <Api id="validation.validate" text="validation.validate(func, {events: [...events]})" />
+
+  <ul className="simple-list">
+    <li>Creates a validation function based on the func argument, which is expected
+    to validate the input synchronously.</li>
+    <li>Passes the value of the input to the func function.</li>
+    <li>If there is an existing error message, it returns it until the input becomes
+    valid.</li>
+    <li>After the input has become valid, if afterwards it becomes invalid, the error
+    is displayed only if (the validation event is included in the list of events and the
+    target is the input itself) or if (the event is submit and the target is the input
+    itself or a parent input (even if 'submit' is not included in the list of events)).</li>
+    <li>The second object argument is optional.</li>
+    <li>The default events list consists of 'change' and 'blur'.</li>
+  </ul>
+
   <Api id="validation.required" text="validation.required({messageFunc})" />
 
   <ul className="simple-list">
     <li>The configuration argument is optional.</li>
     <li>If the input has a value different from null, undefined and empty string,
     it returns null.</li>
-    <li>If the event is submit or ((event is change or blur) and the target is the
-    input itself) returns an error message.</li>
-    <li>Otherwise it returns the current error message if there is one.</li>
+    <li>It's based on the <Ticks text="validation.validate()" /> functionality, with
+    the default list of events.</li>
     <li>The default error message is 'Required'. This can be overwritten by
     setting a validation.required.messageFunc default function, which can be
     overwritten by passing the messageFunc.</li>

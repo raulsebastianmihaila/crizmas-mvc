@@ -98,6 +98,7 @@ export default () => <div>
   <ul className="simple-list">
     <li>This is a standard URLSearchParams instance (<Ticks text="new URLSearchParams()" />)
     representing the URL params resulted from param matching.</li>
+    <li>The values are decoded using <Ticks text="decodeURIComponent"/>.</li>
   </ul>
 
   <Api id="router.isTransitioning" text="router.isTransitioning" />

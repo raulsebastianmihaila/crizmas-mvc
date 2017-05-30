@@ -24,14 +24,17 @@ export default () => <div>
   <p>If you have your own components, this can be seen as a reference implementation
   of how to deal with the input controller.</p>
 
+  <p>Input has the 'crizmas-input' css class and the 'has-errors' class when it has errors.</p>
+
   <p>The props that Input can receive are (all optional):</p>
   <ul className="simple-list">
     <li>value</li>
     <li>
       type
       <ul>
-        <li>One of 'string', 'text', 'number', 'integer', 'checkbox', 'radio'.</li>
-        <li>Defaults to 'string'.</li>
+        <li>One of 'text', 'password', 'number', 'integer', 'textarea', 'email', 'url',
+        'tel', 'search', 'hidden', 'radio', 'checkbox', 'string' (same as 'text').</li>
+        <li>Defaults to 'text'.</li>
       </ul>
     </li>
     <li>
@@ -64,6 +67,13 @@ export default () => <div>
     </li>
     <li>placeholder</li>
     <li>className</li>
+    <li>inputClassName</li>
+    <li>
+      inputProps
+      <ul>
+        <li>An object of props that are passed directly to the HTML input or textarea element.</li>
+      </ul>
+    </li>
     <li>readOnly</li>
     <li>disabled</li>
     <li>autoFocus</li>
@@ -106,5 +116,7 @@ export default () => <div>
   </ul>
 
   <p>The default debounce is 100. It can be overwritten by the inputDebounce context prop,
-  which can be overwritten by the debounce prop.</p>
+  which can be overwritten by the debounce prop. The default debounce when the type is
+  checkbox or radio is 0. It can only be overwritten by the debounce prop and not by
+  the inputDebounce context prop.</p>
 </div>;

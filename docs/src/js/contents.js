@@ -436,6 +436,10 @@ export default [
             label: 'validation()'
           },
           {
+            link: 'validation.validate',
+            label: 'validation.validate()'
+          },
+          {
             link: 'validation.required',
             label: 'validation.required()'
           },
