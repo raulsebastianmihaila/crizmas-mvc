@@ -238,6 +238,11 @@ export default () => <div>
   object, as well as the functions, explicitly in the constructor before
   initiating the pending operations.</p>
 
+  <p>It's possible for a route that is intended to be matched based on a regular expression
+  to be matched exactely. In this case the match is probably unexpected and so it would
+  be a good idea to check in onEnter if the <Ticks text="path" /> and <Ticks
+  text="abstractPath" /> properties of the route fragment have the same value.</p>
+
   <p><Ticks text="router.isTransitioning" /> is true while a transition takes place.</p>
 
   <p>Head over to the <Link to="/router/api">API</Link> section for more details.</p>
