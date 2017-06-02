@@ -272,7 +272,7 @@ export default () => <div>
   <ul className="simple-list">
     <li>If there are no children, it returns the result of getValue.</li>
     <li>If the array children is empty, it returns an empty array.</li>
-    <li>If all the children have a name, it return an object where for each
+    <li>If all the children have a name, it returns an object where for each
     child the name is the key and the value is <Ticks text="child.getResult()" />.</li>
     <li>If there is at least one child with no name, the result is an array
     of <Ticks text="child.getResult()" /> values.</li>
