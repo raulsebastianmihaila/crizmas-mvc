@@ -63,8 +63,8 @@ export default () => <div>
   text="pending.has('pendingOperation')" /> is <Ticks text="true" />.
   It's possible that an observed function
   resulted from observing an object, since observing an object means observing its own methods.
-  An observed function has a key (string or symbol) associated with it. If the function results
-  from observing an object, the key is the method's key.
+  An observed function has a key (a truthy value, usually a string or symbol) associated with it.
+  If the function results from observing an object, the key is the method's key.
   If a function is observed independently, <Ticks text="Mvc.observe()" /> can
   receive a key for the function which will become the
   associated key. This is especially useful when having two objects that share the same observed
