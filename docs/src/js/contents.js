@@ -30,6 +30,10 @@ export default [
       {
         link: 'ignoring',
         label: 'Ignoring'
+      },
+      {
+        link: 'observing-proxies',
+        label: 'Observing proxies'
       }
     ]
   },

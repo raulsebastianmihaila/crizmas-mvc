@@ -332,6 +332,32 @@ export default () => <div>
   to prevent values from being observed. It can be used with functions, objects or promises
   (and thenables).</p>
 
+  <h4 id="observing-proxies">Observing proxies</h4>
+
+  <p>When observing proxies care must be taken. When we're observing an object
+  (including functions), we're checking if the <Ticks text="isPending" /> and <Ticks
+  text="pending" /> properties already exist. If they do, an error is thrown.
+  Therefore, in the case of proxies, if we're successfully setting the properties
+  on the observed object, and later we're checking them again on the proxy target
+  (assuming that the observed object is a proxy) or on the proxy for wich the
+  observed object represents the target, we're throwing the error in case the
+  properties are reported as existing. In particular, if we observe a proxy whose target
+  is a traditional function that has its default properties, we get an error because
+  the prototype property and the prototype's constructor property will also be observed.
+  Since the constructor is the same as the proxy's target, both the proxy and the
+  target are observed. In case of an arrow function, for instance, by default there
+  will be no such issue since the arrow function will not have a prototype property.
+  There are two ways to avoid this issue.
+  1) Make sure that either the proxy or the target are observed and not both.
+  2) Or, if both must be observed, make sure that the proxy is lying about the
+  existance of its pending state related properties or that it doesn't define
+  them on the target as well, when the proxy is observed
+  (which is possible because the properties will be configurable).</p>
+
+  <p>A proxy and its target shouldn't share the
+  pending state related properties because they could be located in different managed
+  trees and so the pending state of the trees could become corrupt.</p>
+
   <p>Head over to the <Link to="/api">API</Link> section for more details about how
   to use the framework.</p>
 </div>;
