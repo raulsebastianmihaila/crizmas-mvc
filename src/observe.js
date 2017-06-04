@@ -12,7 +12,6 @@
   }
 
   const {isObj, isFunc, isPromise, resolveThenable} = utils;
-  const hasOwnProp = Function.prototype.call.bind(Object.prototype.hasOwnProperty);
 
   let currentNotificationTrigger = 0;
   const notifyCbs = new Set();
@@ -24,7 +23,7 @@
   // the pending details is a <key - wrapper promises set> map that holds the pending wrapper
   // promises for that key for that particular object. for observed objects, the pending details
   // also hold the associated managed roots and children
-  const pendingTargetsDetails = new WeakMap();
+  const pendingTargetsDetailsMap = new WeakMap();
   // <promise - pending wrapper promise> map. a wrapper promise is used for managing
   // the pending state and notifying when the promise is settled
   const pendingWrapperPromisesMap = new WeakMap();
@@ -37,6 +36,8 @@
   const rootFunctions = new WeakSet();
   const retainedRoots = new Set();
   const retainedObjects = new Set();
+
+  const hasOwnProp = Function.prototype.call.bind(Object.prototype.hasOwnProperty);
 
   const getPropRegularObject = (obj, prop) => {
     const descriptor = Reflect.getOwnPropertyDescriptor(obj, prop);
@@ -54,12 +55,12 @@
     }
   };
 
-  const definePropValue = (obj, prop, value) => {
+  const definePropValue = (obj, prop, value, writable = true) => {
     // make sure it throws if the prop cannot be defined
     if (!Reflect.defineProperty(obj, prop, {
       value,
-      writable: true,
-      enumerable: true,
+      writable,
+      enumerable: false,
       configurable: true
     })) {
       throw new Error('Cannot define property');
@@ -98,7 +99,7 @@
 
     let observedFunction;
 
-    if (pendingTargetsDetails.has(observableFunc)) {
+    if (pendingTargetsDetailsMap.has(observableFunc)) {
       observedFunction = observableFunc;
     } else {
       observedFunction = observedFunctionsMap.get(observableFunc);
@@ -214,7 +215,7 @@
   };
 
   const observePromise = (promise, obj, key) => {
-    const isMethod = key && pendingTargetsDetails.has(obj);
+    const isMethod = key && pendingTargetsDetailsMap.has(obj);
 
     if (!isMethod && ignoredItems.has(promise)) {
       return promise;
@@ -272,7 +273,7 @@
   };
 
   const setObjPendingPromise = (pendingWrapperPromise, obj, key, pendingWrapperEntries) => {
-    const objPendingDetails = pendingTargetsDetails.get(obj);
+    const objPendingDetails = pendingTargetsDetailsMap.get(obj);
     const objKeyPromises = objPendingDetails.get(key);
 
     if (objKeyPromises) {
@@ -311,7 +312,7 @@
       if (isObj(obj)) {
         objectsFound = true;
 
-        pendingTargetsDetails.get(obj).roots.forEach((root) => {
+        pendingTargetsDetailsMap.get(obj).roots.forEach((root) => {
           if (isActualRoot(root)) {
             managedTrees.add(root);
           }
@@ -335,11 +336,11 @@
 
   const isActualRoot = (root) => {
     // an actual root only has itself as a root
-    return pendingTargetsDetails.get(root).roots.size === 1;
+    return pendingTargetsDetailsMap.get(root).roots.size === 1;
   };
 
   const setObjPendingState = (obj, resolved = new Set()) => {
-    const objPendingDetails = pendingTargetsDetails.get(obj);
+    const objPendingDetails = pendingTargetsDetailsMap.get(obj);
     let isPending = !!objPendingDetails.size;
 
     if (objPendingDetails.children) {
@@ -375,7 +376,7 @@
   };
 
   const unsetRoot = (obj, root) => {
-    const objPendingDetails = pendingTargetsDetails.get(obj);
+    const objPendingDetails = pendingTargetsDetailsMap.get(obj);
 
     objPendingDetails.roots.delete(root);
     objPendingDetails.children.forEach((child) => unsetRoot(child, root));
@@ -390,7 +391,7 @@
   };
 
   const ignore = (observable) => {
-    if (pendingTargetsDetails.has(observable)) {
+    if (pendingTargetsDetailsMap.has(observable)) {
       throw new Error('Observed non-promise object or function cannot be ignored.');
     }
 
@@ -414,7 +415,7 @@
       const objects = new Set();
 
       pendingWrapperEntries.forEach(({obj, key}) => {
-        const objPendingDetails = pendingTargetsDetails.get(obj);
+        const objPendingDetails = pendingTargetsDetailsMap.get(obj);
         const objKeyPromises = objPendingDetails.get(key);
 
         objKeyPromises.delete(pendingWrapperPromise);
@@ -439,7 +440,7 @@
       return observable;
     }
 
-    const root = pendingTargetsDetails.has(observable)
+    const root = pendingTargetsDetailsMap.has(observable)
       ? observable
       : observe(observable, {preventApply: true});
 
@@ -459,13 +460,6 @@
     return root;
   };
 
-  const setRoot = (obj, root) => {
-    const objPendingDetails = pendingTargetsDetails.get(obj);
-
-    objPendingDetails.roots.add(root);
-    objPendingDetails.children.forEach((child) => setRoot(child, root));
-  };
-
   const isReliablyObservable = (value) => {
     // this should be used by APIs that make the code clearer by marking values
     // as observable (e.g. roots)
@@ -476,6 +470,13 @@
   const throwOnNonRootable = () => {
     throw new Error('Root must be either a function or a non-promise object and it must'
       + ' not be ignored.');
+  };
+
+  const setRoot = (obj, root) => {
+    const objPendingDetails = pendingTargetsDetailsMap.get(obj);
+
+    objPendingDetails.roots.add(root);
+    objPendingDetails.children.forEach((child) => setRoot(child, root));
   };
 
   const observeCbPromise = (promise, cb) => {
@@ -507,7 +508,7 @@
 
     visitedObjects.add(observableObj);
 
-    if (!pendingTargetsDetails.has(observableObj)) {
+    if (!pendingTargetsDetailsMap.has(observableObj)) {
       pendingDecorate(observableObj);
     }
 
@@ -515,7 +516,7 @@
       const method = getPropFunc(observableObj, prop);
 
       if (method && !ignoredItems.has(method)) {
-        const alreadyObserved = pendingTargetsDetails.has(method);
+        const alreadyObserved = pendingTargetsDetailsMap.has(method);
         const observedFunction = observeFunction(method, prop, visitedObjects, visitedFunctions);
 
         if (!alreadyObserved) {
@@ -543,9 +544,9 @@
     definePropValue(obj, 'isPending', false);
     definePropValue(obj, 'pending', {
       has: (key) => pendingDetails.has(key)
-    });
+    }, false);
 
-    pendingTargetsDetails.set(obj, pendingDetails);
+    pendingTargetsDetailsMap.set(obj, pendingDetails);
 
     return obj;
   };
@@ -563,7 +564,7 @@
           continue;
         }
 
-        if (pendingTargetsDetails.has(child)) {
+        if (pendingTargetsDetailsMap.has(child)) {
           visited.add(child);
 
           yield child;
@@ -603,7 +604,7 @@
       throw new Error('The child is an ascendant of the object or is the same object.');
     }
 
-    const objPendingDetails = pendingTargetsDetails.get(obj);
+    const objPendingDetails = pendingTargetsDetailsMap.get(obj);
 
     if (objPendingDetails.children.includes(child)) {
       return;
@@ -617,7 +618,7 @@
   };
 
   const isObservedObject = (value) => {
-    return !isFunc(value) && pendingTargetsDetails.has(value);
+    return !isFunc(value) && pendingTargetsDetailsMap.has(value);
   };
 
   const isDescendantOfOrEqual = (child, obj) => {
@@ -625,7 +626,7 @@
       return true;
     }
 
-    const objPendingDetails = pendingTargetsDetails.get(obj);
+    const objPendingDetails = pendingTargetsDetailsMap.get(obj);
 
     return objPendingDetails.children.some((objChild) => isDescendantOfOrEqual(child, objChild));
   };
@@ -639,7 +640,7 @@
       throw new Error('Trying to remove non-observed child.');
     }
 
-    const objPendingDetails = pendingTargetsDetails.get(obj);
+    const objPendingDetails = pendingTargetsDetailsMap.get(obj);
     const childIndex = objPendingDetails.children.indexOf(child);
 
     if (childIndex === -1) {
@@ -648,7 +649,7 @@
 
     objPendingDetails.children.splice(childIndex, 1);
 
-    const childPendingDetails = pendingTargetsDetails.get(child);
+    const childPendingDetails = pendingTargetsDetailsMap.get(child);
 
     childPendingDetails.roots.forEach((root) => unsetUnreachableRoot(child, root));
 
@@ -663,7 +664,7 @@
 
   const unsetUnreachableRoot = (obj, root) => {
     if (!isDescendantOfOrEqual(obj, root)) {
-      const objPendingDetails = pendingTargetsDetails.get(obj);
+      const objPendingDetails = pendingTargetsDetailsMap.get(obj);
 
       objPendingDetails.roots.delete(root);
 

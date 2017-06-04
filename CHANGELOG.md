@@ -1,3 +1,11 @@
+<a name="0.2.8"></a>
+# [0.2.8](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.7...v0.2.8) (2017-06-04)
+
+### Updates
+- Make `isPending` non-enumerable.
+- Make `pending` non-enumerable and non-writable.
+- Small refactoring.
+
 <a name="0.2.7"></a>
 # [0.2.7](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.6...v0.2.7) (2017-05-14)
 
