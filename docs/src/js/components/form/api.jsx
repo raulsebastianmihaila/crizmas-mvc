@@ -78,7 +78,7 @@ export default () => <div>
     an actions object and a children array of configuration objects.</li>
     <li>None of the options is required.</li>
     <li>Whenever a function from the form config is called, it's called as a method
-    of an input (event if it's not necessarily an input method).</li>
+    of an input (even if it's not necessarily an input method).</li>
     <li>init is called when the input is created.</li>
     <li>If clearValue is provided it's used when clearing the input.</li>
     <li>If preventInputPendingBlocking is true, the isPendingBlocked property doesn't
