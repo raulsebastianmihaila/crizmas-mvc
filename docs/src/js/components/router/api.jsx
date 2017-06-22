@@ -177,6 +177,27 @@ export default () => <div>
     <li>Removes onBeforeChange listeners.</li>
   </ul>
 
+  <Api id="router.onSearchChange" text="router.onSearchChange(cb)" />
+
+  <ul className="simple-list">
+    <li>The cb must be a function.</li>
+    <li>Attaches listeners that are called when the search params are changed.</li>
+    <li><Ticks text="x=1&y=2" /> is equal to <Ticks text="y=2&x=1" /> but <Ticks
+    text="x=1&x=2" /> is different from <Ticks text="x=2&x=1" />.</li>
+    <li>Cb is called with an object <Ticks text={`{
+      router, currentRouteFragment, targetRouteFragment, oldSearchParams, newSearchParams
+    }`} /></li>
+    <li>In case of a route transition, the callbacks are called after the
+    onBeforeChange callbacks and before any route fragments are left or entered.</li>
+  </ul>
+
+  <Api id="router.offSearchChange" text="router.offSearchChange(cb)" />
+
+  <ul className="simple-list">
+    <li>The cb must be a function.</li>
+    <li>Removes onSearchChange listeners.</li>
+  </ul>
+
   <Api id="router.onChange" text="router.onChange(cb)" />
 
   <ul className="simple-list">
@@ -253,6 +274,30 @@ export default () => <div>
     <li>The parent route fragment.</li>
   </ul>
 
+  <Api id="routeFragment.onSearchChange" text="routeFragment.onSearchChange(cb)" />
+
+  <ul className="simple-list">
+    <li>The cb must be a function.</li>
+    <li>Attaches listeners that are called when the search params are changed, but only
+    after the route fragment was entered and until the route fragment is left (if the
+    route fragment is going to be left in the current transition the callbacks
+    are not called).</li>
+    <li><Ticks text="x=1&y=2" /> is equal to <Ticks text="y=2&x=1" /> but <Ticks
+    text="x=1&x=2" /> is different from <Ticks text="x=2&x=1" />.</li>
+    <li>Cb is called with an object <Ticks text={`{
+      router, currentRouteFragment, targetRouteFragment, oldSearchParams, newSearchParams
+    }`} /></li>
+    <li>The callbacks are called after the router.onSearchChange callbacks and before
+    any route fragments are left or entered, in the router.currentRouteFragments order.</li>
+  </ul>
+
+  <Api id="routeFragment.offSearchChange" text="routeFragment.offSearchChange(cb)" />
+
+  <ul className="simple-list">
+    <li>The cb must be a function.</li>
+    <li>Removes onSearchChange listeners.</li>
+  </ul>
+
   <Api id="Link" text={`
     import {Link} from 'crizmas-router';
     // in ES5, Link is window.crizmas.Router.Link
@@ -265,6 +310,7 @@ export default () => <div>
     <li>The anchor is adorned with the <Ticks text="is-active" /> and the <Ticks
     text="is-descendant-active" /> classes based on <Ticks
     text="router.isPathActive" /> and <Ticks text="router.isDescendantPathActive" />.</li>
+    <li>The <Ticks text="to" /> prop should contain only the path, search and hash of a URL.</li>
   </ul>
 
   <Api id="Router.fallbackRoute" text="Router.fallbackRoute({to: path})" />

@@ -194,6 +194,14 @@ export default [
             label: 'router.offBeforeChange()'
           },
           {
+            link: 'router.onSearchChange',
+            label: 'router.onSearchChange()'
+          },
+          {
+            link: 'router.offSearchChange',
+            label: 'router.offSearchChange()'
+          },
+          {
             link: 'router.onChange',
             label: 'router.onChange()'
           },
@@ -236,6 +244,14 @@ export default [
           {
             link: 'routeFragment.parent',
             label: 'routeFragment.parent'
+          },
+          {
+            link: 'routeFragment.onSearchChange',
+            label: 'routeFragment.onSearchChange()'
+          },
+          {
+            link: 'routeFragment.offSearchChange',
+            label: 'routeFragment.offSearchChange()'
           },
           {
             link: 'Link',
