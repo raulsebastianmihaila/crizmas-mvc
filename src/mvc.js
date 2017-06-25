@@ -38,7 +38,7 @@
     };
 
     let notify;
-    let previousIsTransitioning = false;
+    let handledUrl = false;
     let renderElement;
 
     class Root extends React.Component {
@@ -65,15 +65,10 @@
       }
 
       componentDidUpdate() {
-        if (router) {
-          const isTransitioning = router.isTransitioning;
+        if (handledUrl) {
+          handledUrl = false;
 
-          // if finished route transitioning jump to hash
-          if (previousIsTransitioning && !isTransitioning) {
-            router.jumpToHash();
-          }
-
-          previousIsTransitioning = isTransitioning;
+          router.jumpToHash();
         }
       }
 
@@ -105,6 +100,7 @@
       if (!mvc.isMounted) {
         if (router) {
           router.mount();
+          router.onUrlHandle(handleUrl);
         }
 
         ReactDOM.render(React.createElement(Root), domElement);
@@ -113,10 +109,15 @@
       }
     };
 
+    const handleUrl = () => {
+      handledUrl = true;
+    };
+
     mvc.unmount = () => {
       if (mvc.isMounted) {
         if (router) {
           router.unmount();
+          router.offUrlHandle(handleUrl);
         }
 
         observe.off(notify);

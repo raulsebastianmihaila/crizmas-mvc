@@ -164,7 +164,8 @@ export default () => <div>
 
   <ul className="simple-list">
     <li>The cb must be a function.</li>
-    <li>Attaches listeners that are called before transitioning.</li>
+    <li>Attaches listeners that are called before transitioning (if at least one route
+    fragment will be left or entered).</li>
     <li>Cb is called with an object <Ticks text={`{
       router, currentRouteFragment, targetRouteFragment
     }`} /></li>
@@ -202,7 +203,8 @@ export default () => <div>
 
   <ul className="simple-list">
     <li>The cb must be a function.</li>
-    <li>Attaches listeners that are called after transitioning.</li>
+    <li>Attaches listeners that are called after transitioning (if at least one route
+    fragment will be left or entered).</li>
     <li>Cb is called with an object <Ticks text={`{
       router, currentRouteFragment, oldRouteFragment
     }`} /></li>

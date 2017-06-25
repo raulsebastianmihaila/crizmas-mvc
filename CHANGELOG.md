@@ -1,3 +1,12 @@
+<a name="0.2.9"></a>
+# [0.2.9](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.8...v0.2.9) (2017-07-06)
+
+### Fixes
+- Fix jumping to hash after synchronous transitions.
+
+### Notes
+- From this version on, if crizmas-mvc is used in conjunction with crizmas-router, it depends on crizmas-router's `onUrlHandle` API from version 0.3.0.
+
 <a name="0.2.8"></a>
 # [0.2.8](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.7...v0.2.8) (2017-06-04)
 
