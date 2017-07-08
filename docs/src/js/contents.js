@@ -108,6 +108,18 @@ export default [
         label: 'Theory',
         submenu: [
           {
+            link: 'the-router',
+            label: 'The router'
+          },
+          {
+            link: 'input-route-fragments-paths',
+            label: 'Input route fragments paths'
+          },
+          {
+            link: 'input-route-fragments',
+            label: 'Input route fragments'
+          },
+          {
             link: 'route-fragments',
             label: 'Route fragments'
           },
@@ -116,16 +128,24 @@ export default [
             label: 'Matching'
           },
           {
-            link: 'example',
-            label: 'Example'
+            link: 'transitioning',
+            label: 'Transitioning'
+          },
+          {
+            link: 'refresh',
+            label: 'Refresh'
+          },
+          {
+            link: 'router-manager',
+            label: 'Router manager'
           },
           {
             link: 'lazy-loading',
             label: 'Lazy loading'
           },
           {
-            link: 'transitioning',
-            label: 'Transitioning'
+            link: 'observed-controller-objects',
+            label: 'Observed controller objects'
           }
         ]
       },
@@ -144,6 +164,14 @@ export default [
           {
             link: 'controllerObject.onLeave',
             label: 'controllerObject.onLeave()'
+          },
+          {
+            link: 'router.basePath',
+            label: 'router.basePath'
+          },
+          {
+            link: 'router.isCaseInsensitive',
+            label: 'router.isCaseInsensitive'
           },
           {
             link: 'router.url',
@@ -186,6 +214,10 @@ export default [
             label: 'router.unmount()'
           },
           {
+            link: 'router.refresh',
+            label: 'router.refresh()'
+          },
+          {
             link: 'router.onBeforeChange',
             label: 'router.onBeforeChange()'
           },
@@ -210,6 +242,14 @@ export default [
             label: 'router.offChange()'
           },
           {
+            link: 'router.onUrlHandle',
+            label: 'router.onUrlHandle()'
+          },
+          {
+            link: 'router.offUrlHandle',
+            label: 'router.offUrlHandle()'
+          },
+          {
             link: 'router.isPathActive',
             label: 'router.isPathActive()'
           },
@@ -218,8 +258,32 @@ export default [
             label: 'router.isDescendantPathActive()'
           },
           {
+            link: 'router.list',
+            label: 'router.list()'
+          },
+          {
+            link: 'router.get',
+            label: 'router.get()'
+          },
+          {
+            link: 'router.has',
+            label: 'router.has()'
+          },
+          {
+            link: 'router.add',
+            label: 'route.add()'
+          },
+          {
+            link: 'router.remove',
+            label: 'router.remove()'
+          },
+          {
             link: 'routeFragment.path',
             label: 'routeFragment.path'
+          },
+          {
+            link: 'routeFragment.normalizedPath',
+            label: 'routeFragment.normalizedPath'
           },
           {
             link: 'routeFragment.abstractPath',
@@ -228,6 +292,14 @@ export default [
           {
             link: 'routeFragment.urlPath',
             label: 'routeFragment.urlPath'
+          },
+          {
+            link: 'routeFragment.normalizedUrlPath',
+            label: 'routeFragment.normalizedUrlPath'
+          },
+          {
+            link: 'routeFragment.canCaseVary',
+            label: 'routeFragment.canCaseVary'
           },
           {
             link: 'routeFragment.component',
@@ -246,12 +318,40 @@ export default [
             label: 'routeFragment.parent'
           },
           {
+            link: 'routeFragment.router',
+            label: 'routeFragment.router'
+          },
+          {
             link: 'routeFragment.onSearchChange',
             label: 'routeFragment.onSearchChange()'
           },
           {
             link: 'routeFragment.offSearchChange',
             label: 'routeFragment.offSearchChange()'
+          },
+          {
+            link: 'routeFragment.refresh',
+            label: 'routeFragment.refresh()'
+          },
+          {
+            link: 'routerManager.list',
+            label: 'routerManager.list()'
+          },
+          {
+            link: 'routerManager.get',
+            label: 'routerManager.get()'
+          },
+          {
+            link: 'routerManager.has',
+            label: 'routerManager.has()'
+          },
+          {
+            link: 'routerManager.add',
+            label: 'routerManager.add()'
+          },
+          {
+            link: 'routerManager.remove',
+            label: 'routerManager.remove()'
           },
           {
             link: 'Link',
