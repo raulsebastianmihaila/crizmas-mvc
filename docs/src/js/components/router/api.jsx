@@ -153,10 +153,11 @@ export default () => <div>
     <li>It's true if the router is mounted (it's listening for URL changes).</li>
   </ul>
 
-  <Api id="router.transitionTo" text="router.transitionTo(path)" />
+  <Api id="router.transitionTo" text="router.transitionTo(path, { replace })" />
 
   <ul className="simple-list">
     <li>Initiates a transition.</li>
+    <li>The second argument is optional.</li>
   </ul>
 
   <Api id="router.mount" text="router.mount()" />
@@ -175,10 +176,13 @@ export default () => <div>
     <li>When this is called, the router stops listening for URL changes.</li>
   </ul>
 
-  <Api id="router.refresh" text="router.refresh(routeFragment = router.currentRouteFragments[0])" />
+  <Api id="router.refresh" text={'router.refresh({ routeFragment = router.currentRouteFragments[0],'
+    + ' replace })'} />
 
   <ul className="simple-list">
     <li>Initiates a refresh starting with the specified route fragment.</li>
+    <li>The argument is optional (the default route fragment is
+    router.currentRouteFragments[0]).</li>
     <li>The route fragment must be part of router.currentRouteFragments.</li>
     <li>The router must be mounted.</li>
   </ul>
@@ -414,10 +418,13 @@ export default () => <div>
     <li>Removes onSearchChange listeners.</li>
   </ul>
 
-  <Api id="routeFragment.refresh" text="routeFragment.refresh()" />
+  <Api id="routeFragment.refresh" text="routeFragment.refresh({ replace })" />
 
   <ul className="simple-list">
-    <li>Equivalent to routeFragment.router.refresh(routeFragment).</li>
+    <li>The argument is optional.</li>
+    <li>
+      Equivalent to <Ticks text="routeFragment.router.refresh({ routeFragment, replace })" />.
+    </li>
   </ul>
 
   <Api id="routerManager.list" text="routerManager.list()" />
@@ -464,7 +471,7 @@ export default () => <div>
     import {Link} from 'crizmas-router';
     // in ES5, Link is window.crizmas.Router.Link
 
-    <Link to={path}>link text</Link>
+    <Link to={path} replace>link text</Link>
   `} />
 
   <ul className="simple-list">
@@ -473,11 +480,13 @@ export default () => <div>
     text="is-descendant-active" /> classes based on <Ticks
     text="router.isPathActive" /> and <Ticks text="router.isDescendantPathActive" />.</li>
     <li>The <Ticks text="to" /> prop should contain only the path, search and hash of a URL.</li>
+    <li>The <Ticks text="replace" /> prop is optional.</li>
   </ul>
 
-  <Api id="Router.fallbackRoute" text="Router.fallbackRoute({to: path})" />
+  <Api id="Router.fallbackRoute" text="Router.fallbackRoute({ to: path, replace })" />
 
   <ul className="simple-list">
     <li>Creates a fallback route that redirects to the path on entering.</li>
+    <li>The <Ticks text="replace" /> property is optional.</li>
   </ul>
 </div>;

@@ -491,7 +491,7 @@ export default () => <div>
   <p>The transition can also be interrupted. For instance, a route fragment can refuse
   to enter if its controller either returns false from its onEnter method or it returns
   a promise fulfilled with false. In this case, if the controller object is an observed
-  object, it's unrooted right away. At this point the url is also updated to match the
+  object, it's unrooted right away. At this point the browser URL is also updated to match the
   last route fragment's urlPath. Similarly, a route fragment can refuse to leave. A transition
   can also be interrupted by initiating a new transition, either synchronously from a
   controller constructor or an onEnter
@@ -506,10 +506,42 @@ export default () => <div>
   its isTransitioning property) while resolving input route fragments, if the transition is
   interrupted at that point the urlHandle event is not triggered. It is certain that
   the next transition will start after the current promise that is awaited in the
-  current transition is settled. If more transitions are initiated while the router is
-  transitioning, only the last transition will happen.</p>
+  current transition is settled (in other words the next transition is put on hold).
+  If more transitions are initiated while the router is transitioning,
+  only the last transition will happen.</p>
 
   <p><Ticks text="router.isTransitioning" /> is true while a transition takes place.</p>
+
+  <p>A transition can be made with a boolean replace option. If replace is true,
+  the current entry in the browser history is replaced with the new URL. Note that
+  if the browser URL is the same as the transition URL when the transition is initiated,
+  there won't be a new entry in the history (and therefore, if the replace option
+  is passed, the current entry will not be replaced). This option is especially
+  useful when the URL is changed, but one of the route fragments refuses to leave/enter.
+  If at this point the currentRouteFragment.urlPath is different from the current
+  browser URL path, there will be a new transition initiated so that the browser
+  URL is updated (to match the current state of the router). This means that a new entry
+  in the history is created. However we might not want to keep the previous URL
+  (for which the transition was interrupted) in the history. In this case, we can initiate
+  a new transition from the onLeave/onEnter method of the route fragment that refused
+  to leave/enter, with the currentRouteFragment.urlPath (which is the most recently
+  entered route fragment) and pass the replace option. In other words, the transition
+  for updating the browser URL (when a route fragment refuses to leave/enter and the
+  currentRouteFragment.urlPath is different from the browser URL path) is initiated
+  only if there is no other transition put on hold. Note that if the transition is
+  interrupted by refusing to leave/enter and a new transition is initiated to
+  update the browser URL, the same replace option that was used for the initial
+  transition will be used. The refresh (see below) can also receive a replace option,
+  but in that case it's only useful if during a transition there is a new
+  transition initiated with a different URL, which is put on hold, and then there
+  is a refresh. The refresh URL will be the current transition's URL, but if we
+  want to replace the history entry for the transition that was put on hold, we have
+  to use the replace option. However it's possible for multiple transitions
+  to be initiated in between and so to have more entries in the history.
+  The replace option can be used to replace a single entry in the history.
+  This means that most of the time it would be wiser to display an overlay
+  to prevent creating more entries in the history during an async transition
+  by clicking multiple links.</p>
 
   <h4 id="refresh">Refresh</h4>
 
