@@ -9,9 +9,10 @@ The main advantages and features are:
 - management of pending trees of objects  
 - doesn't touch your model, allowing you to write it anyway you want
 - router
-  - option for case insensitivity
   - refresh from any fragment of the route
   - router manager for listing, adding and removing routes dynamically
+  - lazy loading
+  - option for case insensitivity
 - form
   - input management with or without a model
   - synchronous and asynchronous event based validation

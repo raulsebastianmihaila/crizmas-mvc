@@ -18,9 +18,10 @@ export default () => <div>
     <li>
       router
       <ul>
-        <li>option for case insensitivity</li>
         <li>refresh from any fragment of the route</li>
         <li>router manager for listing, adding and removing routes dynamically</li>
+        <li>lazy loading</li>
+        <li>option for case insensitivity</li>
       </ul>
     </li>
     <li>
