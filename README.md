@@ -17,5 +17,7 @@ The main advantages and features are:
   - input management with or without a model
   - synchronous and asynchronous event based validation
 
+[Real world example](https://raulsebastianmihaila.github.io/crizmas-mvc-realworld-site/) ([repo](https://github.com/raulsebastianmihaila/crizmas-mvc-realworld))
+
 Check out the examples folder for small working examples. Also the documentation (docs folder)
 is implemented with crizmas-mvc.
