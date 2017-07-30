@@ -1,5 +1,5 @@
 <a name="1.0.0"></a>
-# [1.0.0](https://github.com/raulsebastianmihaila/crizmas-async-utils/compare/v0.2.9...v1.0.0) (2017-07-30)
+# [1.0.0](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.9...v1.0.0) (2017-07-30)
 
 ### Updates
 - Updated the version of crizmas-utils peer dependency.
