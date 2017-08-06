@@ -14,10 +14,7 @@
     PropTypes = require('prop-types');
     observe = require('./observe');
   } else {
-    React = window.React;
-    ReactDOM = window.ReactDOM;
-    PropTypes = window.PropTypes;
-    observe = window.crizmas.observe;
+    ({React, ReactDOM, PropTypes, crizmas: {observe}} = window);
   }
 
   function Mvc({element, component, domElement, router}) {

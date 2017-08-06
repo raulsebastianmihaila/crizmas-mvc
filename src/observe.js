@@ -236,7 +236,7 @@
       unsetPendingProp(pendingWrapperPromise, promise);
       notify();
 
-      return Promise.reject(err);
+      throw err;
     }));
 
     const pendingWrapperEntries = [];
@@ -483,20 +483,25 @@
     // we must observe and notify without caring if the
     // promise was previously ignored because
     // there are cases where the cb must be executed anyway and it can have side effects.
+    // for instance if the cb is the observe function and the input is an object, it will
+    // reobserve it which can lead to new methods on the object to be replaced with observed
+    // ones.
     // theoretically if the promise resulted from calling the same callback
-    // and if the callback had the same result with no new side effects
+    // and if the callback would have the same result with no new side effects
     // the promise could be reused, but we cannot know that.
-    // this is a rare case anyway.
+    // calling observeCbPromise is a rare case anyway.
     // however the promise and the resulted promise after observePromise
-    // must be ignored because they cannot have new side effects.
-    // at this point we cannot create a wrapper promise based on promise itself
+    // must be ignored because they cannot have new side effects (in case they are returned
+    // from other observed functions in the future).
+    // also at this point we cannot return a reused wrapper promise based on promise itself
     // because what happens in cb determines the control flow
-    // and you wouldn't want a callback to decide the settlment of a cached observed
-    // promise.
-    // if we wanted to reuse a cached wrapper promise based on promise we could
-    // observe it separately, but in that case we basically observe two promises which
-    // trigger the notifications twice, which is what we want to avoid.
-    // if the promise will be used separately again, a wrapper promise will be created
+    // and we wouldn't want a callback to decide the settlment of a cached promise.
+    // if we wanted to reuse a cached wrapper promise based on promise, instead of
+    // the resolveThenable(ignore(promise)) part of the expression below, we could
+    // use observePromise for that, but in that case we basically observe two promises which
+    // trigger the notifications twice (because we call observePromise twice with two
+    // different inputs), which is what we want to avoid.
+    // if the input promise will be used separately again, a wrapper promise will be created
     // then and it will be reusable, so we don't have to create it in advance.
     return observePromise(resolveThenable(ignore(promise)).then(cb));
   };
@@ -559,11 +564,7 @@
     for (const key of keys) {
       const child = getPropRegularObject(obj, key);
 
-      if (child) {
-        if (visited.has(child)) {
-          continue;
-        }
-
+      if (child && !visited.has(child)) {
         if (pendingTargetsDetailsMap.has(child)) {
           visited.add(child);
 

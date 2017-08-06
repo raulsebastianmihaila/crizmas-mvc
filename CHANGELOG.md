@@ -1,3 +1,13 @@
+<a name="1.0.2"></a>
+# [1.0.2](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.0.1...v1.0.2) (2018-04-21)
+
+### Updates
+- Add tests.
+- Replace `Promise.reject` with throwing.
+- Small refactoring.
+- Updated the version of crizmas-utils peer dependency.
+- Add MIT license to package.json.
+
 <a name="1.0.1"></a>
 # [1.0.1](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.0.0...v1.0.1) (2017-11-18)
 
