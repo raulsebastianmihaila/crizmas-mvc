@@ -1,3 +1,9 @@
+<a name="1.0.1"></a>
+# [1.0.1](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.0.0...v1.0.1) (2017-11-18)
+
+### Updates
+- Updated the versions of react and react-dom peer dependencies.
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v0.2.9...v1.0.0) (2017-07-30)
 
