@@ -1,6 +1,7 @@
 {
+  "private": true,
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server"
+    "start": "cross-env NODE_ENV=development webpack-dev-server"
   },
   "dependencies": {
     "babel-core": "^6.9.0",
@@ -12,6 +13,7 @@
     "crizmas-mvc": "*",
     "crizmas-router": "*",
     "crizmas-utils": "*",
+    "cross-env": "^5.1.4",
     "html-webpack-plugin": "^2.17.0",
     "react": "15",
     "react-dom": "15",

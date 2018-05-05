@@ -151,7 +151,16 @@ export default () => <div>
   that there's no error if the input has a value. And it should return the error
   message if ((the event is change or blur) and the target is the input itself) or
   if (the event is submit and (the target is the input itself or a parent input)).
-  Otherwise it should return the old error. For most common cases <Logo
+  Otherwise it should return the old error. Another example that shows how the target is
+  useful is the case where we have a start date and an end date, and the end date must
+  be greater than the start date, we can use the target of the event to display the error in the
+  right place, which allows for better user experience. For instance, if I'm setting the dates
+  properly and then later I change my mind and update the end date to be earlier than
+  the start date, normally the end date is the one that is correct, because
+  I probably had a reason to make the changes by starting with the end date.
+  Therefore, in this case, the start date is incorrect and the error should be displayed
+  under the start date, not under the end date, even though the end date is the input
+  that the user interacted with most recently. For most common cases <Logo
   text="crizmas-form" /> provides validation functions so you don't have to deal with it.</p>
 
   <p>The events for which <Logo text="crizmas-form" /> automatically triggers the
@@ -166,12 +175,85 @@ export default () => <div>
   and <Ticks text="remove" /> (when the <Ticks text="remove" /> or <Ticks
   text="removeChild" /> are called; removeChild is called by remove).</p>
 
-  <p>With the exception of the init and submit events, the other events can have as an effect
+  <p>With the exception of the init and submit events, the other events can have as a direct effect
   the change of the state of the parent nodes. For instance isDirty or isTouched of a parent
-  could be modified. Therefore when these events and the init event occur the validation is
+  could be modified. Therefore when these events occur the validation is
   initiated by calling the root's validate method, instead of the target's method.
   A validate method can also be called by the user whenever she sees fit.
   Custom events can be used as well.</p>
+
+  <p><Logo text="crizmas-form" /> provides an API to create validation functions for standard
+  cases. Note that some of these API functions create closures that keep some local state and
+  therefore the resulted functions can not be reused for multiple inputs, since they would
+  use the same internal state from the closures. Take a look at each one of them on the API
+  page to see which ones can be reused and which ones can not.</p>
+
+  <p>Since crizmas-form allows you to associate models with forms and inputs, the validation
+  process allows reflecting the validation state of the model in the form as well.</p>
+
+  <h4 id="async-validation-strategy">Async validation strategy</h4>
+
+  <p>A form framework must provide means to validate the inputs, by allowing you to specify
+  validation functions that are called when certain events occur. This means that the validation
+  process has two sides: 1) the form framework has a certain logic of calling the validation
+  functions and 2) the validation functions themselves have a certain logic of deciding whether
+  the input has a valid state or not.</p>
+
+  <p>In order to validate inputs that are different from the event's target we must validate the
+  entire tree of inputs, which is what happens most of the times. When validating an input,
+  crizmas-form first validates its children. This allows the current input to get access to the
+  children errors during its own validation.</p>
+
+  <p>The parent input will contain not only its own errors, but also its children errors. After
+  validating the children, their errors are collected into an array. After the parent's validation
+  function is called, its errors are added to that array and after that the errors array is set on
+  the parent input.</p>
+
+  <p>With async validations, it's possible to have interlaid async validations with other either
+  sync or async validations. These interlaid validations must be managed so that they don't lead
+  to inconsistencies or surprising race conditions. Different approaches are possible.
+  For instance, we may want an event that triggers async validations to be treated atomically.
+  But what happens if a new event occurs, perhaps even with new form state, while the
+  initial async validation is in progress? Should the initial validation be suppressed
+  by the new validation? Should the new validation be ignored if there is another validation in
+  progress? Or perhaps we want to allow both validations and keep only the result
+  from the one that finishes first. Or the one that finishes last.</p>
+
+  <p>Many different scenarios are possible and in each case one or another approach can be more
+  appropriate. With our approach the input initially clears the errors. After that, as mentioned,
+  the parent gathers the children errors after they are validated. This means that if, during the
+  validation process, the children are validated synchronously and the parent asynchronously, the
+  children errors are gathered before the parent's validation function is called and if a second
+  validation is initiated during the parent's initial async validation, at the end of the parent's
+  first validation, the children errors that were gathered may be stale, in case the children have
+  new errors from the second validation. Or perhaps the children are validated asynchronously and a
+  second sync validation is performed, which means that, during the initial validation, the parent
+  will gather the children errors resulted from the second sync validation. What if the children
+  errors were gathered after the parent's validation has finalized? The issue in this case is
+  that at the end of the validation process that has an event associated with it, the parent will
+  reflect children errors that were caused by another validation with possibly a different
+  associated event, which may lead to logical inconsistencies. At the same time, it wouldn't make
+  sense to disallow interlaid validations, because it would be against the natural
+  flow determined by the user's actions together with the changing state of the world. All these
+  approaches have downsides, so how do we solve this?</p>
+
+  <p>The key is separation of concerns. As mentioned before: 1) the form framework has a certain
+  logic of calling the validation functions and 2) the validation functions themselves have a
+  certain logic of deciding whether the input has a valid state or not. The helps us taking the
+  simplest route: the form framework does whatever is easier to understand and the validation
+  functions can have any custom logic and can be as complex as needed in order to reflect whatever
+  behavior is desired. We considered that gathering the children errors right before the parent
+  validation function is called is the most intuitive approach as it appears to be an atomic
+  process from the parent's perspective and at the same time is agnostic and permissive,
+  meaning that interlaid validations are allowed and the parent doesn't care in which validation
+  process the children errors were set. Whatever extra logic is needed to obtain the desired
+  behavior must be contained in the validation functions.</p>
+
+  <p>This means that in complicated situations the validation functions must be aware of possible
+  interlaid validations and must be explicit in handling the possible race conditions in order to
+  clearly express the desired behavior. This can be complicated, but crizmas-form saves the day by
+  providing a useful API for implementing interlaid async validations for practical cases (see
+  the API section).</p>
 
   <h4 id="blocking">Blocking</h4>
 

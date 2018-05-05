@@ -1,6 +1,7 @@
 {
+  "private": true,
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server"
+    "start": "cross-env NODE_ENV=development webpack-dev-server"
   },
   "dependencies": {
     "babel-core": "^6.9.0",
@@ -9,12 +10,13 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "crizmas-async-utils": "*",
+    "crizmas-components": "*",
+    "crizmas-form": "*",
     "crizmas-mvc": "*",
+    "crizmas-promise-queue": "*",
     "crizmas-router": "*",
     "crizmas-utils": "*",
-    "crizmas-form": "*",
-    "crizmas-components": "*",
-    "crizmas-promise-queue": "*",
+    "cross-env": "^5.1.4",
     "html-webpack-plugin": "^2.17.0",
     "react": "15",
     "react-dom": "15",

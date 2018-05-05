@@ -248,11 +248,13 @@ export default () => <div>
   <ul className="simple-list">
     <li>The argument is optional.</li>
     <li>The target defaults to the input.</li>
-    <li>Calls the validate method of the children inputs. Performs the validation on the
+    <li>Initially clears the errors and hasErrors properties.</li>
+    <li>Calls the validate method of the children inputs, waiting for any resulted promises and
+    gathering the errors from the children afterwards. Then performs the validation on the
     input by calling the validate method option from the configuration, passing it
     an object with the event, target and input. If any of the
     validation functions involved in this process returns a promise, the validate method
-    returns a promise. The validation process updates the hasError and errors properties,
+    returns a promise. The validation process updates the hasErrors and errors properties,
     either synchronously or asynchronously, when all the validation promises are settled.</li>
     <li>The input's errors array includes the children's errors.</li>
   </ul>
@@ -285,6 +287,8 @@ export default () => <div>
     <li>This should normally be called from the view.</li>
     <li>Updates the touched state.</li>
     <li>Triggers the root validation with the blur event and the input as target.</li>
+    <li>This is also useful for custom non-HTML elements that can have a custom
+    blur event that could be triggered whenever the user finished interacting with the element.</li>
   </ul>
 
   <Api id="input.onFormChange" text="input.onFormChange({target, input})" />
@@ -311,7 +315,7 @@ export default () => <div>
     <li>This method is ignored.</li>
   </ul>
 
-  <Api id="input.add" text="input.add(inputConfig)" />
+  <Api id="input.add" text="input.add(inputConfig, index)" />
 
   <ul className="simple-list">
     <li>Adds a new child input based on inputConfig.</li>
@@ -319,9 +323,11 @@ export default () => <div>
     <li>Updates the input pending and dirty states based on the child's state.</li>
     <li>Triggers the root validation with the add event and the current input (not the child)
     as target.</li>
+    <li>If the optional index is provided, the child is inserted at that position
+    using <Ticks text="Array.prototype.splice" />.</li>
   </ul>
 
-  <Api id="input.addChild" text="input.addChild(childInput)" />
+  <Api id="input.addChild" text="input.addChild(childInput, index)" />
 
   <ul className="simple-list">
     <li>Adds childInput as child.</li>
@@ -329,6 +335,8 @@ export default () => <div>
     <li>Updates the input pending and dirty states based on the child's state.</li>
     <li>Triggers the root validation with the add event and the current input (not the child)
     as target.</li>
+    <li>If the optional index is provided, the child is inserted at that position
+    using <Ticks text="Array.prototype.splice" />.</li>
   </ul>
 
   <Api id="input.remove" text="input.remove()" />
@@ -376,6 +384,15 @@ export default () => <div>
     clear action, it calls the clear action.</li>
   </ul>
 
+  <Api id="input.markAsDirty" text="input.markAsDirty()" />
+
+  <ul className="simple-list">
+    <li>Updates the isDirty state of itself and its children.</li>
+    <li>It's called by several input methods when it's possible for the input's value to
+    have changed, but can be called from outside as well in case the value changes
+    by different means.</li>
+  </ul>
+
   <Api id="Form.asyncValidationError" text="Form.asyncValidationError" />
 
   <ul className="simple-list">
@@ -407,10 +424,17 @@ export default () => <div>
 
   <ul className="simple-list">
     <li>Creates a validation function from more validation functions.</li>
-    <li>It calls the functions one by one until there's a synchronous error result.</li>
+    <li>It calls the functions one by one until there's a synchronous error result, passing
+    them whatever arguments the resulted validation function receives.</li>
     <li>If there are also asynchronous validation functions, their results will be awaited
     only if there's no synchronous error returned by the other functions.</li>
-    <li>All the asynchronous functions are awaited.</li>
+    <li>All the asynchronous functions are awaited and their results are combined.</li>
+    <li>If a sync error is returned, the previously initiated in progress async validation
+    is suppressed.</li>
+    <li>If an async valdation results, the previously initiated in progress async validation
+    is suppressed.</li>
+    <li>Creates a closure that keeps internal state and therefore the resulted function
+    can not be reused for multiple inputs. However, the function arguments can be reused.</li>
   </ul>
 
   <Api id="validation.validate" text="validation.validate(func, {events: [...events]})" />
@@ -427,6 +451,8 @@ export default () => <div>
     itself or a parent input (even if 'submit' is not included in the list of events)).</li>
     <li>The second object argument is optional.</li>
     <li>The default events list consists of 'change' and 'blur'.</li>
+    <li>Creates a closure that keeps internal state and therefore the resulted function
+    can not be reused for multiple inputs. However, the function argument can be reused.</li>
   </ul>
 
   <Api id="validation.required" text="validation.required({messageFunc})" />
@@ -440,6 +466,8 @@ export default () => <div>
     <li>The default error message is 'Required'. This can be overwritten by
     setting a validation.required.messageFunc default function, which can be
     overwritten by passing the messageFunc.</li>
+    <li>Creates a closure that keeps internal state and therefore the resulted function
+    can not be reused for multiple inputs.</li>
   </ul>
 
   <Api id="validation.min" text="validation.min(minValue, {messageFunc})" />
@@ -450,7 +478,9 @@ export default () => <div>
     <li>The default error message is `Minimum allowed is {'${minValue}'}`.
     This can be overwritten by
     setting a validation.min.messageFunc default function, which can be
-    overwritten by passing the messageFunc.</li>
+    overwritten by passing the messageFunc. The messageFunc function receives a <Ticks
+    text="{minValue, value}" /> object argument, where the minValue is the minValue passed to
+    validation.min and the value is the input's current value.</li>
   </ul>
 
   <Api id="validation.max" text="validation.max(maxValue, {messageFunc})" />
@@ -458,10 +488,12 @@ export default () => <div>
   <ul className="simple-list">
     <li>The second object argument is optional.</li>
     <li>If the input value is greater than maxValue returns an error message.</li>
-    <li>The default error message is `Maximum allowed is {'${minValue}'}`.
+    <li>The default error message is `Maximum allowed is {'${maxValue}'}`.
     This can be overwritten by
     setting a validation.max.messageFunc default function, which can be
-    overwritten by passing the messageFunc.</li>
+    overwritten by passing the messageFunc. The messageFunc function receives a <Ticks
+    text="{maxValue, value}" /> object argument, where the maxValue is the maxValue passed to
+    validation.max and the value is the input's current value.</li>
   </ul>
 
   <Api id="validation.minLength" text="validation.minLength(minLength, {messageFunc})" />
@@ -473,7 +505,9 @@ export default () => <div>
     <li>The default error message is `Minimum allowed length is {'${minLength}'}`.
     This can be overwritten by
     setting a validation.minLength.messageFunc default function, which can be
-    overwritten by passing the messageFunc.</li>
+    overwritten by passing the messageFunc. The messageFunc function receives a <Ticks
+    text="{minLength, value}" /> object argument, where the minLength is the minLength passed to
+    validation.minLength and the value is the input's current value.</li>
   </ul>
 
   <Api id="validation.maxLength" text="validation.maxLength(maxLength, {messageFunc})" />
@@ -485,7 +519,9 @@ export default () => <div>
     <li>The default error message is `Maximum allowed length is {'${maxLength}'}`.
     This can be overwritten by
     setting a validation.maxLength.messageFunc default function, which can be
-    overwritten by passing the messageFunc.</li>
+    overwritten by passing the messageFunc. The messageFunc function receives a <Ticks
+    text="{maxLength, value}" /> object argument, where the maxLength is the maxLength passed to
+    validation.maxLength and the value is the input's current value.</li>
   </ul>
 
   <Api id="validation.async" text="validation.async(promiseFunc, {events: [...events]})" />
@@ -493,12 +529,17 @@ export default () => <div>
   <ul className="simple-list">
     <li>promiseFunc must return a promise.</li>
     <li>The second object argument is optional.</li>
+    <li>Passes the value of the input to the promiseFunc function.</li>
     <li>promiseFunc is called only if the target is the input itself and if the
     event is in the events list.</li>
     <li>The default events list consists only of 'change'.</li>
     <li>If promiseFunc is called, in progress validations triggered by promiseFunc
     are discarded.</li>
+    <li>If, when the resulted promise is fulfilled, it is observed that the value of the input
+    changed, the possibly reported error is discarded.</li>
     <li>If promiseFunc is not called, if the value is the same as the old value,
     the old error is returned, if it exists. Otherwise null is returned.</li>
+    <li>Creates a closure that keeps internal state and therefore the resulted function
+    can not be reused for multiple inputs. However, the function argument can be reused.</li>
   </ul>
 </div>;

@@ -91,7 +91,8 @@ export default () => <div>
   it's part of an observed tree. In this case, an observed object is pending while any of
   the observed methods is pending in relation to it or while any of its direct or indirect
   observed child objects is pending. The child observed objects of an observed object are
-  its child objects that are already observed when the object is observed the first time.
+  its child (descendants at any level) objects that are already observed when the object
+  is observed the first time.
   There is also an API for adding new child observed objects and removing them.
   Normally you shouldn't have to deal with marking
   objects as roots because most probably you will also use the <Link
@@ -112,7 +113,7 @@ export default () => <div>
   upstream of the tree needs to be updated as well. Therefore we need to somehow hold
   a reference to the upstream, so we mark the roots.
   An alternative to holding references to the roots would have been
-  for each object to hold references to its parents. However if an object is shared by
+  for each object to hold references to its parents. However, if an object is shared by
   trees A and B, and we wanted the root of A to be garbage collected when there are no other
   references to it except from its children, it could not be gc-ed
   because tree B would continue to reference
@@ -147,7 +148,10 @@ export default () => <div>
   have only two: explicit roots and normal observed objects.
   Also, since we can move objects around, it's easier to identify the roots by reading
   the code if they are explicitly marked as such or if we have conventional points in the
-  code for rooting and unrooting (as we do with the <Link to="/router">router</Link>).</p>
+  code for rooting and unrooting (as we do with the <Link to="/router">router</Link>). (It might
+  be worth pointing out that if a root is referenced only by its child observed descendants,
+  then if the children are garbage collected, then the root is garbage collected as well and
+  it doesn't need to be unrooted anymore just to prevent leaks.)</p>
 
   <h4 id="example">Example</h4>
 
@@ -330,7 +334,26 @@ export default () => <div>
   observed, we would end up calling functions that would notify and update the view in the middle
   of the notification process. Therefore we provide the <Ticks text="Mvc.ignore()" /> mechanism
   to prevent values from being observed. It can be used with functions, objects or promises
-  (and thenables).</p>
+  (and thenables). An observed function that returns an ignored promise can still be pending
+  in relation to an observed object.</p>
+
+  <h4 id="big-models">Big models</h4>
+
+  <p>In a web application it's likely that the controller has access to a model and the model
+  is the value of a property of the controller, in order to access the model through the controller
+  in the view. We assume that the controller is defined using <Ticks text="Mvc.controller()" />,
+  which means that it's an observed object. Often the model data must be fetched from the server,
+  which means that it's likely that the controller is observed before the model is set to one
+  of its properties. However, this isn't always the case. For instance, it's possible that some
+  controller composition is implemented and one of the controller constructors receives
+  the model as an argument when instantiated and then it sets the model to one of the resulted
+  object's properties. When observing an object, all its non-function data properties are checked
+  to find child observed objects and this verification is done any number of levels deep,
+  until all the keys are checked.
+  While typically controllers are small enough to not care about traversing a huge tree of objects,
+  it's likely that some models are big. In order to prevent the traversal of big child objects,
+  the properties can be defined as getters (accessor properties) instead of normal data
+  properties.</p>
 
   <h4 id="observing-proxies">Observing proxies</h4>
 

@@ -32,6 +32,10 @@ export default [
         label: 'Ignoring'
       },
       {
+        link: 'big-models',
+        label: 'Big models'
+      },
+      {
         link: 'observing-proxies',
         label: 'Observing proxies'
       }
@@ -394,6 +398,10 @@ export default [
             label: 'Validation'
           },
           {
+            link: 'async-validation-strategy',
+            label: 'Async validation strategy'
+          },
+          {
             link: 'blocking',
             label: 'Blocking'
           },
@@ -542,6 +550,10 @@ export default [
           {
             link: 'input.clear',
             label: 'input.clear()'
+          },
+          {
+            link: 'input.markAsDirty',
+            label: 'input.markAsDirty()'
           },
           {
             link: 'Form.asyncValidationError',
