@@ -1,5 +1,9 @@
 export default [
   {
+    link: '/',
+    label: 'Home'
+  },
+  {
     link: '/getting-started',
     label: 'Getting started'
   },
@@ -606,5 +610,9 @@ export default [
   {
     link: '/tools',
     label: 'Tools'
+  },
+  {
+    link: '/articles',
+    label: 'Articles'
   }
 ];

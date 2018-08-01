@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'crizmas-router';
 
 import Logo from 'js/components/logo';
+import Articles from 'js/components/articles/articles';
 
 export default () => <div>
   <p>
@@ -16,7 +17,7 @@ export default () => <div>
     <li>management of pending trees of objects</li>
     <li>doesn't touch your model, allowing you to write it anyway you want</li>
     <li>
-      router
+      <Logo text="router" to="/router" />
       <ul>
         <li>refresh from any fragment of the route</li>
         <li>router manager for listing, adding and removing routes dynamically</li>
@@ -25,10 +26,12 @@ export default () => <div>
       </ul>
     </li>
     <li>
-      form
+      <Logo text="form" to="/form" />
       <ul>
+        <li>trees of forms and inputs</li>
         <li>input management with or without a model</li>
         <li>synchronous and asynchronous event based validation</li>
+        <li>race conditions management in interlaid async validations</li>
       </ul>
     </li>
   </ul>
@@ -49,4 +52,6 @@ export default () => <div>
 
   <p>Only the browsers with JS proxies are supported. As of 2017/07/08 Edge doesn't
   support URLSearchParams, which is used in <Logo text="crizmas-router" />.</p>
+
+  <Articles />
 </div>;

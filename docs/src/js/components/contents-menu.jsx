@@ -7,7 +7,7 @@ import AsideMenu from './aside-menu';
 const Menu = ({list, hasParent}, {router}) => <ul>
   {list.map((item, i) => {
     let className = router.isPathActive(item.link)
-      || (!hasParent && router.isDescendantPathActive(item.link))
+      || (!hasParent && item.link !== '/' && router.isDescendantPathActive(item.link))
         ? 'tree'
         : '';
 

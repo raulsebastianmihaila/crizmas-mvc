@@ -3,7 +3,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HotModuleReplacementPlugin = webpack.HotModuleReplacementPlugin;
-const NoErrorsPlugin = webpack.NoErrorsPlugin;
 
 module.exports = {
   context: __dirname,
@@ -23,23 +22,21 @@ module.exports = {
     }
   },
   resolve: {
-    modulesDirectories: ['node_modules', 'src'],
-    extensions: ['', '.js', '.jsx']
+    modules: ['node_modules', 'src'],
+    extensions: ['.js', '.jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
-      filename: '../index.html'
+      template: 'src/index.html'
     }),
-    new HotModuleReplacementPlugin(),
-    new NoErrorsPlugin()
+    new HotModuleReplacementPlugin()
   ],
   module: {
     loaders: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules(?!\/crizmas)/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           presets: ['es2015', 'react'],
           plugins: ['transform-runtime']

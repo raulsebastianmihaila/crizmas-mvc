@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HotModuleReplacementPlugin = webpack.HotModuleReplacementPlugin;
-const NoErrorsPlugin = webpack.NoErrorsPlugin;
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const DefinePlugin = webpack.DefinePlugin;
 
@@ -20,8 +19,8 @@ function getCommonConfig() {
     context: __dirname,
     entry: ['./src/js/main.js'],
     resolve: {
-      modulesDirectories: ['node_modules', 'src'],
-      extensions: ['', '.js', '.jsx']
+      modules: ['node_modules', 'src'],
+      extensions: ['.js', '.jsx']
     },
     plugins: [],
     module: {
@@ -29,7 +28,7 @@ function getCommonConfig() {
         {
           test: /\.jsx?$/,
           exclude: /node_modules(?!\/crizmas)/,
-          loader: 'babel',
+          loader: 'babel-loader',
           query: {
             presets: ['es2015', 'react'],
             plugins: ['transform-runtime']
@@ -69,12 +68,10 @@ function getDevConfig() {
   config.plugins.push(
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      filename: '../index.html',
       favicon: 'src/assets/favicon.ico',
       assetsPrefix: ''
     }),
     new HotModuleReplacementPlugin(),
-    new NoErrorsPlugin(),
     new DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),
@@ -93,7 +90,7 @@ function getProdConfig() {
     output: {
       filename: '[name].bundle-[hash].js',
       publicPath: '/crizmas-mvc-docs/assets/',
-      path: 'dist/assets'
+      path: `${__dirname}/dist/assets`
     },
   });
 

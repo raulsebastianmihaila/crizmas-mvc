@@ -23,7 +23,8 @@ export default class FlowersPage extends Component {
       <button onClick={this.onRandomizeAges}>randomize ages</button>
 
       {flowers.items.map((flower, i) => {
-        return <div key={i}
+        return <div
+          key={i}
           style={flower.isAlive ? null : {textDecoration: 'line-through'}}>
           {flower.name}, {flower.daysLeft} days left
         </div>;
@@ -45,7 +46,8 @@ export default class FlowersPage extends Component {
             <div>
               <Input className="input" {...form.get('daysLeft')} type="integer" />
             </div>
-            <button onClick={this.onAdd}
+            <button
+              onClick={this.onAdd}
               disabled={form.isBlocked}>add</button>
           </form>
         </div>

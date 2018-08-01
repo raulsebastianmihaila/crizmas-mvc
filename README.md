@@ -14,10 +14,16 @@ The main advantages and features are:
   - lazy loading
   - option for case insensitivity
 - [form](https://www.npmjs.com/package/crizmas-form)
+  - trees of forms and inputs
   - input management with or without a model
   - synchronous and asynchronous event based validation
+  - race conditions management in interlaid async validations
 
 [Real world example](https://raulsebastianmihaila.github.io/crizmas-mvc-realworld-site/) ([repo](https://github.com/raulsebastianmihaila/crizmas-mvc-realworld))
 
 Check out the examples folder for small working examples. Also the documentation (docs folder)
 is implemented with [crizmas-mvc](https://www.npmjs.com/package/crizmas-mvc).
+
+## Articles
+
+- [Race conditions management in interlaid async validations](https://medium.com/@raul.mihaila/crizmas-status-update-and-the-form-interlaid-asynchronous-validations-4abf167a54bb)
