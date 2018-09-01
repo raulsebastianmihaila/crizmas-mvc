@@ -17,7 +17,7 @@ export default () => <div>
     <li>management of pending trees of objects</li>
     <li>doesn't touch your model, allowing you to write it anyway you want</li>
     <li>
-      <Logo text="router" to="/router" />
+      <Logo text="crizmas-router" to="/router" />
       <ul>
         <li>refresh from any fragment of the route</li>
         <li>router manager for listing, adding and removing routes dynamically</li>
@@ -26,7 +26,7 @@ export default () => <div>
       </ul>
     </li>
     <li>
-      <Logo text="form" to="/form" />
+      <Logo text="crizmas-form" to="/form" />
       <ul>
         <li>trees of forms and inputs</li>
         <li>input management with or without a model</li>
