@@ -19,10 +19,13 @@ The main advantages and features are:
   - synchronous and asynchronous event based validation
   - race conditions management in interlaid async validations
 
-[Real world example](https://raulsebastianmihaila.github.io/crizmas-mvc-realworld-site/) ([repo](https://github.com/raulsebastianmihaila/crizmas-mvc-realworld))
-
 Check out the examples folder for small working examples. Also the documentation (docs folder)
 is implemented with [crizmas-mvc](https://www.npmjs.com/package/crizmas-mvc).
+
+## Applications
+
+- [Real world example](https://raulsebastianmihaila.github.io/crizmas-mvc-realworld-site/) ([repo](https://github.com/raulsebastianmihaila/crizmas-mvc-realworld))
+- [Chess game](https://raulsebastianmihaila.github.io/chess/) ([repo](https://github.com/raulsebastianmihaila/chess-src))
 
 ## Articles
 

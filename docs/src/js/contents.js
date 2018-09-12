@@ -612,6 +612,10 @@ export default [
     label: 'Tools'
   },
   {
+    link: '/applications',
+    label: 'Applications'
+  },
+  {
     link: '/articles',
     label: 'Articles'
   }

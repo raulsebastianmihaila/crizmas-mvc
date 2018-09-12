@@ -15,6 +15,7 @@ import RouterGettingStarted from 'js/components/router/getting-started';
 import RouterTheory from 'js/components/router/theory';
 import RouterApi from 'js/components/router/api';
 import Tools from 'js/components/tools/tools';
+import Applications from 'js/components/applications/applications';
 import Articles from 'js/components/articles/articles';
 
 new Mvc({
@@ -92,6 +93,10 @@ new Mvc({
           {
             path: 'tools',
             component: Tools
+          },
+          {
+            path: 'applications',
+            component: Applications
           },
           {
             path: 'articles',

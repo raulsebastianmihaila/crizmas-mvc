@@ -4,7 +4,7 @@ body{margin:0;font-family:sans-serif;
   background-image:linear-gradient(45deg,rgba(238,238,238,1) 0%,rgba(245,245,245,1) 100%);
   background-size:20px 20px;font-size:14px;height:100%;}
 h1{margin:0;}
-h2,h3,h4,h5,h6{margin:0 0 20px;}
+h2,h3,h4,h5,h6{margin:20px 0;}
 ul{margin:0;padding:0;}
 li{list-style-type:none;}
 .simple-list{padding:0 20px;margin:10px 0 20px;}
