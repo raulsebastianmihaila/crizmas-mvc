@@ -1,3 +1,5 @@
+'use strict';
+
 const React = require('react');
 const url = require('url');
 const Router = require('crizmas-router');
@@ -143,27 +145,43 @@ describe('mvc', () => {
     });
 
     test('with element', () => {
-      expect.assertions(1);
+      expect.assertions(2);
 
+      const observation = jest.fn();
       const mvc = new Mvc({
-        element: React.createElement(() => false),
+        element: React.createElement(() => {
+          observation();
+
+          return false;
+        }),
         domElement: document.createElement('div')
       });
 
       expect(mvc.isMounted).toBe(true);
+      expect(observation.mock.calls.length).toBe(1);
       mvc.unmount();
     });
 
     test('with element and router', () => {
-      expect.assertions(1);
+      expect.assertions(3);
 
+      const elementObservation = jest.fn();
+      const routeComponentObservation = jest.fn();
       const mvc = new Mvc({
-        element: React.createElement(() => false),
+        element: React.createElement(({children}) => {
+          elementObservation();
+
+          return children;
+        }),
         router: new Router({
           routes: [
             {
               path: '*',
-              component: () => false
+              component: () => {
+                routeComponentObservation();
+
+                return false;
+              }
             }
           ]
         }),
@@ -171,19 +189,31 @@ describe('mvc', () => {
       });
 
       expect(mvc.isMounted).toBe(true);
+      expect(elementObservation.mock.calls.length).toBe(1);
+      expect(routeComponentObservation.mock.calls.length).toBe(1);
       mvc.unmount();
     });
 
     test('with component and router', () => {
-      expect.assertions(1);
+      expect.assertions(3);
 
+      const componentObservation = jest.fn();
+      const routeComponentObservation = jest.fn();
       const mvc = new Mvc({
-        component: () => false,
+        component: ({children}) => {
+          componentObservation();
+
+          return children;
+        },
         router: new Router({
           routes: [
             {
               path: '*',
-              component: () => false
+              component: () => {
+                routeComponentObservation();
+
+                return false;
+              }
             }
           ]
         }),
@@ -191,6 +221,8 @@ describe('mvc', () => {
       });
 
       expect(mvc.isMounted).toBe(true);
+      expect(componentObservation.mock.calls.length).toBe(1);
+      expect(routeComponentObservation.mock.calls.length).toBe(1);
       mvc.unmount();
     });
 
@@ -398,6 +430,117 @@ describe('mvc', () => {
       window.location.hash = '';
       document.body.innerHTML = '';
     });
+
+    test('the router is passed through the context', () => {
+      expect.assertions(1);
+
+      const router = new Router({
+        routes: [
+          {
+            path: '*',
+            component: () => {
+              return React.createElement(Mvc.routerContext.Consumer,
+                null,
+                (router_) => {
+                  expect(router_).toBe(router);
+                });
+            }
+          }
+        ]
+      });
+      const mvc = new Mvc({
+        router,
+        domElement: document.createElement('div')
+      });
+
+      mvc.unmount();
+    });
+
+    test('each mvc instance passes its own router through the context', () => {
+      expect.assertions(6);
+
+      const router1 = new Router({
+        routes: [
+          {
+            path: '*',
+            component: () => {
+              return React.createElement(Mvc.routerContext.Consumer,
+                null,
+                (router_) => {
+                  // called twice because the second router is mounted
+                  // and it does an observed transition
+                  expect(router_).toBe(router1);
+                  expect(router_).not.toBe(router2);
+                });
+            }
+          }
+        ]
+      });
+      const router2 = new Router({
+        routes: [
+          {
+            path: '*',
+            component: () => {
+              return React.createElement(Mvc.routerContext.Consumer,
+                null,
+                (router_) => {
+                  expect(router_).toBe(router2);
+                  expect(router_).not.toBe(router1);
+                });
+            }
+          }
+        ]
+      });
+      const mvc1 = new Mvc({
+        router: router1,
+        domElement: document.createElement('div')
+      });
+      const mvc2 = new Mvc({
+        router: router2,
+        domElement: document.createElement('div')
+      });
+
+      mvc1.unmount();
+      mvc2.unmount();
+    });
+
+    test('two mvc instances can pass the same router through the context', () => {
+      expect.assertions(2);
+
+      const router = new Router({
+        routes: [
+          {
+            path: '*',
+            component: () => false
+          }
+        ]
+      });
+      const mvc1 = new Mvc({
+        router,
+        domElement: document.createElement('div'),
+        component: () => {
+          return React.createElement(Mvc.routerContext.Consumer,
+            null,
+            (router_) => {
+              expect(router_).toBe(router);
+            });
+        }
+      });
+      const mvc2 = new Mvc({
+        router,
+        domElement: document.createElement('div'),
+        component: () => {
+          return React.createElement(Mvc.routerContext.Consumer,
+            null,
+            (router_) => {
+              expect(router_).toBe(router);
+            });
+        }
+      });
+
+      mvc1.unmount();
+      mvc2.unmount();
+    });
   });
 
   describe('unmount', () => {
@@ -444,6 +587,64 @@ describe('mvc', () => {
       func();
       // automount render and 1 observed function call
       expect(observation.mock.calls.length).toBe(2);
+    });
+
+    test('the router is automatically unmounted', () => {
+      expect.assertions(4);
+
+      const router = new Router({
+        routes: [
+          {
+            path: '*',
+            component: () => false
+          }
+        ]
+      });
+      const mvc = new Mvc({
+        router,
+        domElement: document.createElement('div')
+      });
+
+      expect(router.isMounted).toBe(true);
+      expect(mvc.isMounted).toBe(true);
+
+      mvc.unmount();
+
+      expect(router.isMounted).toBe(false);
+      expect(mvc.isMounted).toBe(false);
+    });
+
+    test('unmounting an mvc instance doesn\'t affect other instances', () => {
+      expect.assertions(7);
+
+      const observation = jest.fn();
+      const observedFunc = Mvc.observe(() => {});
+      const mvc1 = new Mvc({
+        domElement: document.createElement('div'),
+        component: () => {
+          observation();
+
+          return false;
+        }
+      });
+      const mvc2 = new Mvc({
+        domElement: document.createElement('div'),
+        component: () => false
+      });
+
+      expect(mvc1.isMounted).toBe(true);
+      expect(mvc2.isMounted).toBe(true);
+      expect(observation.mock.calls.length).toBe(1);
+
+      mvc2.unmount();
+
+      expect(mvc1.isMounted).toBe(true);
+      expect(mvc2.isMounted).toBe(false);
+      expect(observation.mock.calls.length).toBe(1);
+      observedFunc();
+      expect(observation.mock.calls.length).toBe(2);
+
+      mvc1.unmount();
     });
   });
 

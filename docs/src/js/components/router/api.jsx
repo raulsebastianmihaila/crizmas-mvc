@@ -267,6 +267,25 @@ export default () => <div>
     <li>Removes onUrlHandle listeners.</li>
   </ul>
 
+  <Api id="router.onAsyncError" text="router.onAsyncError(cb)" />
+
+  <ul className="simple-list">
+    <li>The cb must be a function.</li>
+    <li>Attaches listeners that are called when an error is caught during an async transition
+    (caused by any means, for instance an async route controller constructor, a resolve function,
+    an async onEnter hook etc.).</li>
+    <li>The router is unstable at this point.</li>
+    <li>The promises that are involved are considered handled (so there won't be any
+    'unhandledrejection' events). Also the error is not propagated any further.</li>
+  </ul>
+
+  <Api id="router.offAsyncError" text="router.offAsyncError(cb)" />
+
+  <ul className="simple-list">
+    <li>The cb must be a function.</li>
+    <li>Removes onAsyncError listeners.</li>
+  </ul>
+
   <Api id="router.isPathActive" text="router.isPathActive(path)" />
 
   <ul className="simple-list">

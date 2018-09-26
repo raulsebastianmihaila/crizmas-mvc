@@ -113,21 +113,14 @@
 
             programNotification();
 
-            let error;
-            let hasError;
             let result;
 
             try {
               result = Reflect.apply(target, thisArg, args);
             } catch (e) {
-              hasError = true;
-              error = e;
-            }
-
-            if (hasError) {
               checkNotify(true);
 
-              throw error;
+              throw e;
             }
 
             if (isPromise(result)) {
@@ -142,21 +135,14 @@
           construct(target, args, newTarget) {
             programNotification();
 
-            let error;
-            let hasError;
             let result;
 
             try {
               result = Reflect.construct(target, args, newTarget);
             } catch (e) {
-              hasError = true;
-              error = e;
-            }
-
-            if (hasError) {
               checkNotify(true);
 
-              throw error;
+              throw e;
             }
 
             const isRoot = rootFunctions.has(observedFunction);

@@ -10,10 +10,9 @@
   },
   "main": "./src/mvc.js",
   "peerDependencies": {
-    "crizmas-utils": "^1.0.1",
-    "prop-types": "^15.5.10",
-    "react": "^15.5.4 || ^16.0.0",
-    "react-dom": "^15.5.4 || ^16.0.0"
+    "crizmas-utils": "^1.0.3",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   },
   "homepage": "https://raulsebastianmihaila.github.io/crizmas-mvc-docs",
   "repository": {
@@ -38,12 +37,12 @@
     "test-coverage": "jest --coverage"
   },
   "devDependencies": {
-    "crizmas-async-utils": "^1.0.1",
-    "crizmas-router": "^1.0.1",
-    "crizmas-utils": "^1.0.1",
-    "jest": "^20.0.4",
-    "prop-types": "^15.5.10",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "crizmas-async-utils": "^1.0.2",
+    "crizmas-router": "^1.1.0",
+    "crizmas-utils": "^1.0.3",
+    "jest": "^23.6.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   }
 }

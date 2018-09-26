@@ -1,3 +1,27 @@
+<a name="1.0.3"></a>
+# [1.0.3](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.0.2...v1.0.3) (2018-12-08)
+
+### Updates
+- Use the new react context API (from v16).
+- Remove prop-types peer dependency because it's not used anymore.
+- Update crizmas-utils, react and react-dom peer dependencies.
+- Update crizmas-utils, crizmas-async-utils, crizmas-router, react, react-dom, prop-types and jest dev dependencies for tests.
+- Update package-lock for dev dependencies to fix jest vulnerabilities.
+- Docs: update home page and add articles.
+- Docs: add applications section.
+- Docs: delete obsolete statement about Edge not supporting URLSearchParams.
+- Docs: add section about big models to core section.
+- Docs: add onAsyncError in the router section.
+- Docs: update form API.
+- Docs: add async validation strategy section to form section.
+- Docs: update dependencies to fix webpack vulnerabilities.
+- Enable strict mode in tests.
+- Small refactoring.
+- Add 6 tests.
+- Improve some tests.
+- Examples: add wizard example.
+- Examples: update dependencies to fix webpack vulnerabilities.
+
 <a name="1.0.2"></a>
 # [1.0.2](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.0.1...v1.0.2) (2018-04-21)
 

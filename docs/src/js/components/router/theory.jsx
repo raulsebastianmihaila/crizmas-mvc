@@ -629,5 +629,14 @@ export default () => <div>
   object (including its methods), explicitly in the constructor before
   initiating the pending operations.</p>
 
+  <h4 id="handling-async-errors">Handling async errors</h4>
+
+  <p>In order to catch errors that are thrown during an async transition (caused for instance by
+  an async route controller constructor, a resolve function, an async onEnter etc.) you can use
+  the onAsyncError function and pass an error handler. You can use this as an opportunity to log
+  the error. In this case the promises that are involved are considered handled (so there won't be
+  any 'unhandledrejection' events) and the error is not propagated any further. Note that
+  at this point the router is unstable (for instance router.isTransitioning remains true).</p>
+
   <p>Head over to the <Link to="/router/api">API</Link> section for more details.</p>
 </div>;

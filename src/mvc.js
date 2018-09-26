@@ -5,17 +5,17 @@
 
   let React;
   let ReactDOM;
-  let PropTypes;
   let observe;
 
   if (isModule) {
     React = require('react');
     ReactDOM = require('react-dom');
-    PropTypes = require('prop-types');
     observe = require('./observe');
   } else {
-    ({React, ReactDOM, PropTypes, crizmas: {observe}} = window);
+    ({React, ReactDOM, crizmas: {observe}} = window);
   }
+
+  const {createElement} = React;
 
   function Mvc({element, component, domElement, router}) {
     if (!element && !component && !router) {
@@ -50,10 +50,6 @@
         observe.on(notify);
       }
 
-      getChildContext() {
-        return {router};
-      }
-
       componentDidMount() {
         // jump to hash after rendering dynamically on page load
         if (router) {
@@ -70,19 +66,17 @@
       }
 
       render() {
-        return renderElement();
+        return createElement(Mvc.routerContext.Provider,
+          {value: router},
+          renderElement());
       }
     }
-
-    Root.childContextTypes = {
-      router: PropTypes.object
-    };
 
     const init = () => {
       const elementRenderFunc = element
         ? React.cloneElement
         : component
-          ? React.createElement
+          ? createElement
           : null;
       const elementRenderBaseArg = element || component;
 
@@ -100,7 +94,7 @@
           router.onUrlHandle(handleUrl);
         }
 
-        ReactDOM.render(React.createElement(Root), domElement);
+        ReactDOM.render(createElement(Root), domElement);
 
         mvc.isMounted = true;
       }
@@ -129,6 +123,8 @@
 
     return mvc;
   }
+
+  Mvc.routerContext = React.createContext();
 
   Mvc.controller = (controller) => {
     if (!observe.isReliablyObservable(controller)) {

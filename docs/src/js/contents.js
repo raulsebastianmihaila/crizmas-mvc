@@ -154,6 +154,10 @@ export default [
           {
             link: 'observed-controller-objects',
             label: 'Observed controller objects'
+          },
+          {
+            link: 'handling-async-errors',
+            label: 'Handling async errors'
           }
         ]
       },
@@ -256,6 +260,14 @@ export default [
           {
             link: 'router.offUrlHandle',
             label: 'router.offUrlHandle()'
+          },
+          {
+            link: 'router.onAsyncError',
+            label: 'router.onAsyncError()'
+          },
+          {
+            link: 'router.offAsyncError',
+            label: 'router.offAsyncError()'
           },
           {
             link: 'router.isPathActive',

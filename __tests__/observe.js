@@ -1,3 +1,5 @@
+'use strict';
+
 const observe = require('../src/observe.js');
 
 describe('observe', () => {
@@ -727,6 +729,23 @@ describe('observe', () => {
         observe.off(observation);
       });
 
+      test('after throwing from observe function, rerendering is possible', () => {
+        expect.assertions(3);
+
+        const observation = jest.fn();
+
+        observe.on(observation);
+
+        const func = observe.observe(() => { throw new Error(); });
+        const func2 = observe.observe(() => {});
+
+        expect(func).toThrow();
+        expect(observation.mock.calls.length).toBe(0);
+        func2();
+        expect(observation.mock.calls.length).toBe(1);
+        observe.off(observation);
+      });
+
       test('observed function\'s static methods are observed', () => {
         expect.assertions(2);
 
@@ -794,7 +813,7 @@ describe('observe', () => {
         const observation = jest.fn();
 
         observe.on(observation);
-        observe.observe({method(){}}).method();
+        observe.observe({method() {}}).method();
         // 1 observed function call
         expect(observation.mock.calls.length).toBe(1);
         observe.off(observation);
@@ -894,19 +913,19 @@ describe('observe', () => {
       test('observing an object that already has a pending property throws', () => {
         expect.assertions(2);
 
-        expect(() => { observe.observe({ pending: true }); })
+        expect(() => { observe.observe({pending: true}); })
           .toThrowError('Observed object or function must not have an \'isPending\''
             + ' or \'pending\' property.');
-        expect(() => { observe.observe({ pending: true }); }).toThrowError(Error);
+        expect(() => { observe.observe({pending: true}); }).toThrowError(Error);
       });
 
       test('observing an object that already has an isPending property throws', () => {
         expect.assertions(2);
 
-        expect(() => { observe.observe({ isPending: true }); })
+        expect(() => { observe.observe({isPending: true}); })
           .toThrowError('Observed object or function must not have an \'isPending\''
             + ' or \'pending\' property.');
-        expect(() => { observe.observe({ isPending: true }); }).toThrowError(Error);
+        expect(() => { observe.observe({isPending: true}); }).toThrowError(Error);
       });
 
       test('not being able to create the isPending or pending properties throws', () => {
@@ -1549,8 +1568,8 @@ describe('observe', () => {
       });
 
       test('if observed object (A) under the object (B) is not an observed child, its observed'
-        + ' children can be positioned so that they are observed children of the object (B)', () =>
-        {
+        + ' children can be positioned so that they are observed children of the object (B)',
+        () => {
           expect.assertions(10);
 
           const observedChild = observe.observe({
@@ -1800,7 +1819,7 @@ describe('observe', () => {
       const observation = jest.fn();
 
       observe.on(observation);
-      observe.root({method(){}}).method();
+      observe.root({method() {}}).method();
       new (observe.root(function () {}));
       // 1 observed function call and 1 construction
       expect(observation.mock.calls.length).toBe(2);
@@ -2293,7 +2312,7 @@ describe('observe', () => {
 
       observe.on(observation);
 
-      const root = observe.root({method(){}});
+      const root = observe.root({method() {}});
 
       root.method();
       // 1 observed function call
@@ -2423,7 +2442,7 @@ describe('observe', () => {
       const observation = jest.fn();
 
       observe.on(observation);
-      observe.observe(observe.ignore({method(){}})).method();
+      observe.observe(observe.ignore({method() {}})).method();
       expect(observation.mock.calls.length).toBe(0);
       observe.off(observation);
     });

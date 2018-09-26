@@ -46,8 +46,7 @@ export default () => <div>
 
   <p>JSX is not used in the framework code so you're not obliged to support JSX.</p>
 
-  <p>Only the browsers with JS proxies are supported. As of 2017/07/08 Edge doesn't
-  support URLSearchParams, which is used in <Logo text="crizmas-router" />.</p>
+  <p>Only the browsers with JS proxies are supported.</p>
 
   <Applications />
   <Articles />
