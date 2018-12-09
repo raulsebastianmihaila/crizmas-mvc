@@ -14,8 +14,8 @@
     "crizmas-utils": "*",
     "cross-env": "^5.1.4",
     "html-webpack-plugin": "^2.17.0",
-    "react": "15",
-    "react-dom": "15",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.2"
   }

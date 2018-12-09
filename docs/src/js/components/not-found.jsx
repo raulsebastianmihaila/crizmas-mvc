@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'crizmas-router';
 
-const NotFound = (props, context) => {
-  const toPath = context.router.currentRouteFragment.urlPath;
+const NotFound = ({routeFragment}) => {
+  const toPath = routeFragment.router.currentRouteFragment.urlPath;
 
   return <div>
     <p>
@@ -12,8 +12,8 @@ const NotFound = (props, context) => {
   </div>;
 };
 
-NotFound.contextTypes = {
-  router: PropTypes.object.isRequired
+NotFound.propTypes = {
+  routeFragment: PropTypes.object.isRequired
 };
 
 export default NotFound;

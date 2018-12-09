@@ -40,7 +40,7 @@ export default () => <div>
   <p>Check the <Link to="/getting-started">getting started</Link> and
     the <Link to="/theory">theory</Link> sections for more reasons to use this framework.</p>
 
-  <p>The code is written in ES2016 (without modules), so it's possible that you need
+  <p>The code is written in modern JS (without modules), so it's possible that you need
   transcompilation. If that is the case, you need to include the framework files
   in your transcompilation process (you can use a regexp that starts with crizmas-).</p>
 

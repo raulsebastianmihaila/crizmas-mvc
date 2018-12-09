@@ -11,32 +11,34 @@ export default () => <div>
   <p>Make sure you check the <Link to="/router">getting started</Link> and <Link
   to="/router/theory">theory</Link> sections before jumping into API details.</p>
 
-  <Api id="Router" text={`
-    import Router from 'crizmas-router';
-    // in ES5, Router is window.crizmas.Router
+  <Api
+    id="Router"
+    text={`
+      import Router from 'crizmas-router';
+      // in ES5, Router is window.crizmas.Router
 
-    const router = new Router({
-      basePath: 'base-path',
-      isCaseInsensitive: true,
-      routes: [
-        {
-          path: 'home',
-          component: HomeComponent,
-          controller: HomeController,
-          children: [
-            {
-              path: 'child/grandchild',
-              resolve() {
-                return Promise.resolve({
-                  component: ChildComponent
-                });
+      const router = new Router({
+        basePath: 'base-path',
+        isCaseInsensitive: true,
+        routes: [
+          {
+            path: 'home',
+            component: HomeComponent,
+            controller: HomeController,
+            children: [
+              {
+                path: 'child/grandchild',
+                resolve() {
+                  return Promise.resolve({
+                    component: ChildComponent
+                  });
+                }
               }
-            }
-          ]
-        }
-      ]
-    });
-  `} />
+            ]
+          }
+        ]
+      });
+    `} />
 
   <ul className="simple-list">
     <li>Creates a new router instance.</li>
@@ -502,10 +504,13 @@ export default () => <div>
     <li>The <Ticks text="replace" /> prop is optional.</li>
   </ul>
 
-  <Api id="Router.fallbackRoute" text="Router.fallbackRoute({ to: path, replace })" />
+  <Api
+    id="Router.fallbackRoute"
+    text="Router.fallbackRoute({ path: matchingPath, to: path, replace })" />
 
   <ul className="simple-list">
     <li>Creates a fallback route that redirects to the path on entering.</li>
+    <li>The (matching) path is optional and defaults to the fallback path.</li>
     <li>The <Ticks text="replace" /> property is optional.</li>
   </ul>
 </div>;

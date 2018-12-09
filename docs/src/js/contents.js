@@ -1,7 +1,8 @@
 export default [
   {
     link: '/',
-    label: 'Home'
+    label: 'Home',
+    preventActiveFromDescendant: true
   },
   {
     link: '/getting-started',
@@ -109,7 +110,8 @@ export default [
     children: [
       {
         link: '/router',
-        label: 'Getting started'
+        label: 'Getting started',
+        preventActiveFromDescendant: true
       },
       {
         link: '/router/theory',
@@ -391,7 +393,8 @@ export default [
     children: [
       {
         link: '/form',
-        label: 'Getting started'
+        label: 'Getting started',
+        preventActiveFromDescendant: true
       },
       {
         link: '/form/theory',
@@ -612,10 +615,136 @@ export default [
             label: 'validation.async()'
           }
         ]
+      }
+    ]
+  },
+  {
+    link: '/components',
+    label: 'Components',
+    children: [
+      {
+        link: '/components',
+        label: 'Getting started',
+        preventActiveFromDescendant: true
       },
       {
-        link: '/form/input-component',
-        label: 'Input component'
+        link: '/components/input',
+        label: 'Input'
+      },
+      {
+        link: '/components/render-clip',
+        label: 'RenderClip',
+        children: [
+          {
+            link: '/components/render-clip',
+            label: 'Getting started',
+            preventActiveFromDescendant: true
+          },
+          {
+            link: '/components/render-clip/render-clip',
+            label: 'RenderClip'
+          },
+          {
+            link: '/components/render-clip/render-clip-controller',
+            label: 'RenderClipController',
+            submenu: [
+              {
+                link: 'RenderClipController',
+                label: 'new RenderClipController()'
+              },
+              {
+                link: 'renderClipController.setItems',
+                label: 'renderClipController.setItems()'
+              },
+              {
+                link: 'renderClipController.setItemsCount',
+                label: 'renderClipController.setItemsCount()'
+              },
+              {
+                link: 'renderClipController.scrollIntoView',
+                label: 'renderClipController.scrollIntoView()'
+              },
+              {
+                link: 'renderClipController.scrollToFit',
+                label: 'renderClipController.scrollToFit()'
+              },
+              {
+                link: 'renderClipController.scrollTo',
+                label: 'renderClipController.scrollTo()'
+              },
+              {
+                link: 'renderClipController.refresh',
+                label: 'renderClipController.refresh()'
+              }
+            ]
+          },
+          {
+            link: '/components/render-clip/render-clip-2d',
+            label: 'RenderClip2D'
+          },
+          {
+            link: '/components/render-clip/render-clip-2d-controller',
+            label: 'RenderClip2DController',
+            submenu: [
+              {
+                link: 'RenderClip2DController',
+                label: 'new RenderClip2DController()'
+              },
+              {
+                link: 'renderClip2DController.verticalRenderClipController',
+                label: 'renderClip2DController.verticalRenderClipController'
+              },
+              {
+                link: 'renderClip2DController.horizontalRenderClipController',
+                label: 'renderClip2DController.horizontalRenderClipController'
+              },
+              {
+                link: 'renderClip2DController.setItemsCount',
+                label: 'renderClip2DController.setItemsCount()'
+              },
+              {
+                link: 'renderClip2DController.refresh',
+                label: 'renderClip2DController.refresh()'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        link: '/components/tree',
+        label: 'Tree',
+        children: [
+          {
+            link: '/components/tree/tree',
+            label: 'Tree'
+          },
+          {
+            link: '/components/tree/tree-controller',
+            label: 'TreeController',
+            submenu: [
+              {
+                link: 'TreeController',
+                label: 'new TreeController()'
+              },
+              {
+                link: 'treeController.renderClipController',
+                label: 'treeController.renderClipController'
+              },
+              {
+                link: 'treeController.setNodes',
+                label: 'treeController.setNodes()'
+              },
+              {
+                link: 'treeController.refresh',
+                label: 'treeController.refresh()'
+              },
+              {
+                link: 'treeController.toggleExpand',
+                label: 'treeController.toggleExpand()'
+              }
+            ]
+          }
+        ]
       }
     ]
   },

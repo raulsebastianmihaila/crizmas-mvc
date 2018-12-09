@@ -14,6 +14,8 @@ export default () => <div>
     npm i crizmas-router
   `} />
 
+  <p>If old script tags are used see the dependencies <Link to="/getting-started">here</Link>.</p>
+
   <h4>Example</h4>
 
   <div>

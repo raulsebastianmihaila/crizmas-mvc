@@ -11,66 +11,68 @@ export default () => <div>
   <p>Make sure you check the <Link to="/form">getting started</Link> and <Link
   to="/form/theory">theory</Link> sections before jumping into API details.</p>
 
-  <Api id="Form" text={`
-    import Form from 'crizmas-form';
-    // in ES5, Form is window.crizmas.Form
+  <Api
+    id="Form"
+    text={`
+      import Form from 'crizmas-form';
+      // in ES5, Form is window.crizmas.Form
 
-    const form = new Form({
-      preventInputPendingBlocking: true,
-      preventPendingBlocking: true,
+      const form = new Form({
+        preventInputPendingBlocking: true,
+        preventPendingBlocking: true,
 
-      children: [
-        {
-          name: 'x',
-          initialValue: 3
-        },
-        {
-          name: 'y',
-          clearValue: '',
-
-          getValue() {
-            return model.y;
+        children: [
+          {
+            name: 'x',
+            initialValue: 3
           },
+          {
+            name: 'y',
+            clearValue: '',
 
-          setValue(value) {
-            model.setY(value);
-          },
+            getValue() {
+              return model.y;
+            },
 
-          validate({event}) {
-            if (event === 'submit') {
-              return model.validateY();
+            setValue(value) {
+              model.setY(value);
+            },
+
+            validate({event}) {
+              if (event === 'submit') {
+                return model.validateY();
+              }
             }
           }
+        ],
+
+        init() {
+          console.log('input created');
+        },
+
+        onFormChange() {
+          console.log('an input changed');
+        },
+
+        actions: {
+          submit() {
+            console.log('result', form.getResult());
+          },
+
+          clear() {
+            console.log('clearing');
+          },
+
+          reset() {
+            console.log('resetting');
+          },
+
+          anotherAction() {
+            console.log('another action');
+          }
         }
-      ],
-
-      init() {
-        console.log('input created');
-      },
-
-      onFormChange() {
-        console.log('an input changed');
-      },
-
-      actions: {
-        submit() {
-          console.log('result', form.getResult());
-        },
-
-        clear() {
-          console.log('clearing');
-        },
-
-        reset() {
-          console.log('resetting');
-        },
-
-        anotherAction() {
-          console.log('another action');
-        }
-      }
-    });
-  `} />
+      });
+    `} />
 
   <ul className="simple-list">
     <li>An input configuration can contain a name, initialValue, getValue, setValue,

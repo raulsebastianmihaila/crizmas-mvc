@@ -15,6 +15,8 @@ export default () => <div>
     npm i crizmas-form
   `} />
 
+  <p>If old script tags are used see the dependencies <Link to="/getting-started">here</Link>.</p>
+
   <h4>Complementary tools</h4>
 
   <Code text={`
@@ -179,7 +181,6 @@ export default () => <div>
     `} />
   </div>
 
-  <p>Head over to the <Link to="/form/theory">theory</Link>, <Link
-  to="/form/api">API</Link> and <Link to="/form/input-component">input</Link> sections
-  for more advanced features and more details.</p>
+  <p>Head over to the <Link to="/form/theory">theory</Link> and <Link
+  to="/form/api">API</Link> sections for more advanced features and more details.</p>
 </div>;

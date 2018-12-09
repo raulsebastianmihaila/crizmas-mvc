@@ -9,11 +9,19 @@ import MvcTheory from 'js/components/mvc/theory';
 import MvcApi from 'js/components/mvc/api';
 import FormGettingStarted from 'js/components/form/getting-started';
 import FormTheory from 'js/components/form/theory';
-import Input from 'js/components/form/input';
 import FormApi from 'js/components/form/api';
 import RouterGettingStarted from 'js/components/router/getting-started';
 import RouterTheory from 'js/components/router/theory';
 import RouterApi from 'js/components/router/api';
+import ComponentsGettingStarted from 'js/components/components/getting-started';
+import Input from 'js/components/components/input';
+import RenderClipGettingStarted from 'js/components/components/render-clip/getting-started';
+import RenderClip from 'js/components/components/render-clip/render-clip';
+import RenderClipController from 'js/components/components/render-clip/render-clip-controller';
+import RenderClip2D from 'js/components/components/render-clip/render-clip-2d';
+import RenderClip2DController from 'js/components/components/render-clip/render-clip-2d-controller';
+import Tree from 'js/components/components/tree/tree';
+import TreeController from 'js/components/components/tree/tree-controller';
 import Tools from 'js/components/tools/tools';
 import Applications from 'js/components/applications/applications';
 import Articles from 'js/components/articles/articles';
@@ -81,12 +89,58 @@ new Mvc({
                 component: FormTheory
               },
               {
-                path: 'input-component',
+                path: 'api',
+                component: FormApi
+              }
+            ]
+          },
+          {
+            path: 'components',
+            children: [
+              {
+                component: ComponentsGettingStarted
+              },
+              {
+                path: 'input',
                 component: Input
               },
               {
-                path: 'api',
-                component: FormApi
+                path: 'render-clip',
+                children: [
+                  {
+                    component: RenderClipGettingStarted
+                  },
+                  {
+                    path: 'render-clip',
+                    component: RenderClip
+                  },
+                  {
+                    path: 'render-clip-controller',
+                    component: RenderClipController
+                  },
+                  {
+                    path: 'render-clip-2d',
+                    component: RenderClip2D
+                  },
+                  {
+                    path: 'render-clip-2d-controller',
+                    component: RenderClip2DController
+                  }
+                ]
+              },
+              {
+                path: 'tree',
+                children: [
+                  Router.fallbackRoute({path: '', to: '/components/tree/tree', replace: true}),
+                  {
+                    path: 'tree',
+                    component: Tree
+                  },
+                  {
+                    path: 'tree-controller',
+                    component: TreeController
+                  }
+                ]
               }
             ]
           },

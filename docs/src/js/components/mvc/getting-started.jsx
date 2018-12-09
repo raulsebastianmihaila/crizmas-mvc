@@ -14,7 +14,7 @@ export default () => <div>
     npm i crizmas-mvc
   `} />
 
-  <p>If script tags are used:</p>
+  <p>If old script tags are used:</p>
 
   <Code text={`
     <!-- not minified -->
@@ -35,7 +35,7 @@ export default () => <div>
     npm i crizmas-components
   `} />
 
-  <p>If script tags are used:</p>
+  <p>If old script tags are used:</p>
 
   <Code text={`
     <!-- not minified -->
@@ -43,16 +43,45 @@ export default () => <div>
     <!-- async utils depends on utils -->
     <script src="path-to-node_modules/crizmas-async-utils/src/async-utils.js"></script>
     <script src="path-to-node_modules/crizmas-promise-queue/src/promise-queue.js"></script>
-    <script src="path-to-node_modules/crizmas-router/src/history.js"></script>
     <!-- router depends on react, prop-types, mvc, history, utils and async utils -->
+    <script src="path-to-node_modules/crizmas-router/src/history.js"></script>
     <script src="path-to-node_modules/crizmas-router/src/router.js"></script>
     <!-- form depends on mvc, utils and async utils -->
     <script src="path-to-node_modules/crizmas-form/src/form.js"></script>
     <!-- validation depends on utils and promise queue -->
     <script src="path-to-node_modules/crizmas-form/src/validation.js"></script>
-    <script src="path-to-node_modules/crizmas-components/src/utils.js"></script>
     <!-- input depends on react, prop-types, utils and components utils -->
+    <script src="path-to-node_modules/crizmas-components/src/utils.js"></script>
     <script src="path-to-node_modules/crizmas-components/src/components/input.js"></script>
+    <!-- render-clip depends on react, prop-types and component utils -->
+    <script
+    src="path-to-node_modules/crizmas-components/src/components/render-clip/render-clip.js">
+    </script>
+    <!-- render-clip-2d depends on react, prop-types and component utils -->
+    <script
+    src="path-to-node_modules/crizmas-components/src/components/render-clip/render-clip-2d.js">
+    </script>
+    <!-- tree depends on react, prop-types and render-clip -->
+    <script src="path-to-node_modules/crizmas-components/src/components/tree.js"></script>
+    <!-- render-clip-controller depends on mvc and render-clip-1d-mixin, and
+    render-clip-1d-mixin depends on smart-mix -->
+    <script src="path-to-node_modules/smart-mix/src/mixin.js"></script>
+    <script
+    src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip-1d-mixin.js">
+    </script>
+    <script
+    src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip.js">
+    </script>
+    <!-- render-clip-2d-controller depends on mvc and render-clip-1d-controller and
+    render-clip-1d-controller depends on mvc and render-clip-1d-mixin -->
+    <script
+    src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip-1d.js">
+    </script>
+    <script
+    src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip-2d.js">
+    </script>
+    <!-- tree-controller depends on mvc and render-clip-controller -->
+    <script src="path-to-node_modules/crizmas-components/src/controllers/tree.js">
   `} />
 
   <h4>Example</h4>

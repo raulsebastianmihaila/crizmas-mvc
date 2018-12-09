@@ -4,39 +4,37 @@ import {Link} from 'crizmas-router';
 
 import AsideMenu from './aside-menu';
 
-const Menu = ({list, hasParent}, {router}) => <ul>
+const Menu = ({list, router}) => <ul>
   {list.map((item, i) => {
-    let className = router.isPathActive(item.link)
-      || (!hasParent && item.link !== '/' && router.isDescendantPathActive(item.link))
+    const className = router.isPathActive(item.link)
+      || (!item.preventActiveFromDescendant && router.isDescendantPathActive(item.link))
         ? 'tree'
         : '';
 
-    return <li className={className} key={i}>
-      <Link to={item.link}>{item.label}</Link>
-      {item.children && <Menu list={item.children} hasParent={true} />}
+    return <li key={i}>
+      <div className={className}><Link to={item.link}>{item.label}</Link></div>
+      {item.children && <Menu list={item.children} router={router} />}
     </li>;
   })}
 </ul>;
 
 Menu.propTypes = {
   list: PropTypes.array.isRequired,
-  hasParent: PropTypes.bool
-};
-
-Menu.contextTypes = {
+  hasParent: PropTypes.bool,
   router: PropTypes.object.isRequired
 };
 
 class ContentsMenu extends Component {
   render() {
     return <AsideMenu className="contents-menu">
-      <Menu list={this.props.list} />
+      <Menu list={this.props.list} router={this.props.router} />
     </AsideMenu>;
   }
 }
 
 ContentsMenu.propTypes = {
-  list: PropTypes.array.isRequired
+  list: PropTypes.array.isRequired,
+  router: PropTypes.object.isRequired
 };
 
 export default ContentsMenu;

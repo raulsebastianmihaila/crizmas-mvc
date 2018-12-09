@@ -10,16 +10,18 @@ export default () => <div>
   <p>Make sure you check the <Link to="/getting-started">getting started</Link> and <Link
   to="/theory">theory</Link> sections before jumping into API details.</p>
 
-  <Api id="Mvc" text={`
-    import Mvc from 'crizmas-mvc';
-    // in ES5, Mvc is window.crizmas.Mvc
+  <Api
+    id="Mvc"
+    text={`
+      import Mvc from 'crizmas-mvc';
+      // in ES5, Mvc is window.crizmas.Mvc
 
-    const mvc = new Mvc({
-      router: new Router({routes: []}),
-      component: ReactComponent, // or element: <ReactComponent />
-      domElement: document.querySelector('#app')
-    });
-  `} />
+      const mvc = new Mvc({
+        router: new Router({routes: []}),
+        component: ReactComponent, // or element: <ReactComponent />
+        domElement: document.querySelector('#app')
+      });
+    `} />
 
   <ul className="simple-list">
     <li>Creates a new mvc instance.</li>

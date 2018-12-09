@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'crizmas-router';
 
 import Logo from 'js/components/logo';
 import Code from 'js/components/code';
@@ -6,10 +7,10 @@ import Code from 'js/components/code';
 export default () => <div>
   <h2><Logo text="crizmas-components" /> - Input</h2>
 
-  <Code text="npm i crizmas-components" />
+  <p>Make sure you check the <Link to="/components">getting started</Link> section first.</p>
 
   <b>
-    <Code bold text={`
+    <Code text={`
       import {Input} from 'crizmas-components';
       // in ES5, Input is window.crizmas.Input;
 

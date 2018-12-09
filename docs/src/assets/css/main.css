@@ -36,11 +36,11 @@ header .links a{margin:0 0 0 10px;}
 .aside-menu.expanded button{margin-bottom:20px;}
 .aside-menu.expanded .menu-content{display:block;}
 .contents-menu{float:left;font-weight:bold;}
-.contents-menu ul ul{padding:10px 0 0 20px;display:none;}
+.contents-menu ul ul{padding:0 0 0 20px;display:none;}
 .contents-menu > ul > li {border-bottom:1px dashed #cac9c9;}
-.contents-menu ul > li{padding:10px 0;}
-.contents-menu .is-active + ul,.contents-menu .is-descendant-active + ul{display:block;}
-.contents-menu.expanded{width:220px;}
+.contents-menu ul > li > div {padding:10px 0;}
+.contents-menu .tree + ul{display:block;}
+.contents-menu.expanded{width:260px;}
 .contents-submenu{float:right;background:rgba(239,223,163,0.4);
   box-shadow:-3px 0 4px #ccc;}
 .contents-submenu .button-wrapper{text-align:right;}

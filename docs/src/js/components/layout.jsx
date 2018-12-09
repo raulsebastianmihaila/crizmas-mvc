@@ -57,7 +57,7 @@ export default class Layout extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.router.onChange(this.handleTransition);
     this.setSubmenu(this.props.router.currentRouteFragment);
   }
@@ -77,9 +77,10 @@ export default class Layout extends Component {
         <h1><Logo to="/" /></h1>
       </header>
       <div className="main">
-        <ContentsMenu list={contents} />
+        <ContentsMenu list={contents} router={this.props.router} />
         {this.state.submenu && <ContentsSubmenu list={this.state.submenu} />}
-        <div className="content"
+        <div
+          className="content"
           ref={(content) => this.content = content}>{this.props.children}</div>
       </div>
     </div>;

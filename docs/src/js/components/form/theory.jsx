@@ -287,6 +287,5 @@ export default () => <div>
   callback based on the arguments that are passed to the submit method, because
   the submit callback will receive them as well.</p>
 
-  <p>Head over to the <Link to="/form/api">API</Link> and <Link
-  to="/form/input-component">input</Link> sections for more details.</p>
+  <p>Head over to the <Link to="/form/api">API</Link> section for more details.</p>
 </div>;
