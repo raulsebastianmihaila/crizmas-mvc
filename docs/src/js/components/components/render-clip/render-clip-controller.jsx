@@ -35,6 +35,12 @@ export default () => <div>
     <li>In order to function properly, the controller will need one of itemsCount or items
     and one of itemWidth or itemHeight.</li>
     <li>The itemWidth must be passed for horizontal lists and itemHeight for vertical lists.</li>
+    <li>The itemWidth and itemHeight can also be functions that return the size of the item,
+    in case the items don't have the same size. When they are called they receive the item index
+    as an argument. If an items array is passed to the controller, the size function will also
+    reiceve the item for that index as the second argument. If there is a size function passed,
+    an internal array for items metadata is created and for optimal performance it is recommended
+    for that array to not be too big. A good length would be one million.</li>
   </ul>
 
   <Api id="renderClipController.setItems" text="renderClipController.setItems(items)" />

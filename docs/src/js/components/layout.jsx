@@ -70,7 +70,6 @@ export default class Layout extends Component {
     return <div className="wrapper">
       <header>
         <div className="links">
-          <span>Links -> </span>
           <a href="https://github.com/raulsebastianmihaila/crizmas-mvc" target="_blank">Github</a>
           <a href="https://www.npmjs.com/package/crizmas-mvc" target="_blank">NPM</a>
         </div>

@@ -32,6 +32,7 @@ export default () => <div>
     npm i crizmas-promise-queue # peer dependency of form
     npm i crizmas-router
     npm i crizmas-form
+    npm i smart-mix # peer dependency of components
     npm i crizmas-components
   `} />
 
@@ -63,17 +64,26 @@ export default () => <div>
     </script>
     <!-- tree depends on react, prop-types and render-clip -->
     <script src="path-to-node_modules/crizmas-components/src/components/tree.js"></script>
-    <!-- render-clip-controller depends on mvc and render-clip-1d-mixin, and
-    render-clip-1d-mixin depends on smart-mix -->
+    <!-- render-clip-controller depends on mvc, utils, render-clip-1d-mixin,
+    render-clip-same-size-1d-mixin and render-clip-individual-size-1d-mixin and
+    render-clip-1d-mixin, render-clip-same-size-1d-mixin and render-clip-individual-size-1d-mixin
+    depend on smart-mix -->
     <script src="path-to-node_modules/smart-mix/src/mixin.js"></script>
     <script
     src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip-1d-mixin.js">
     </script>
     <script
+    src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip-same-size-1d-mixin.js">
+    </script>
+    <script
+    src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip-individual-size-1d-mixin.js">
+    </script>
+    <script
     src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip.js">
     </script>
     <!-- render-clip-2d-controller depends on mvc and render-clip-1d-controller and
-    render-clip-1d-controller depends on mvc and render-clip-1d-mixin -->
+    render-clip-1d-controller depends on mvc, utils, render-clip-1d-mixin,
+    render-clip-same-size-1d-mixin and render-clip-individual-size-1d-mixin -->
     <script
     src="path-to-node_modules/crizmas-components/src/controllers/render-clip/render-clip-1d.js">
     </script>
