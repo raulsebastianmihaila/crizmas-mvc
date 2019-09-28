@@ -293,7 +293,7 @@ export default [
           },
           {
             link: 'router.add',
-            label: 'route.add()'
+            label: 'router.add()'
           },
           {
             link: 'router.remove',
