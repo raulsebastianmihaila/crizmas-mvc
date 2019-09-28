@@ -66,4 +66,10 @@ export default () => <div>
   <ul className="simple-list">
     <li>Calls the 1D controllers' refresh methods.</li>
   </ul>
+
+  <Api id="renderClip2DController.updateLayout" text="renderClip2DController.updateLayout()" />
+
+  <ul className="simple-list">
+    <li>If any of the 1D controllers has the `updateLayout` method, it calls it.</li>
+  </ul>
 </div>;

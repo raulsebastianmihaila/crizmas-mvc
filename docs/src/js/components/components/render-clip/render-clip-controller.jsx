@@ -103,4 +103,12 @@ export default () => <div>
     dimensions changed without a resize event triggered on the window and without a scroll
     event triggered on the render clip component.</li>
   </ul>
+
+  <Api id="renderClipController.updateLayout" text="renderClipController.updateLayout()" />
+
+  <ul className="simple-list">
+    <li>Only the controllers with individual item sizes have this method.</li>
+    <li>Updates the items sizes while trying to preserve the scroll position.</li>
+    <li>This must be called when the size of the items changes.</li>
+  </ul>
 </div>;

@@ -675,6 +675,10 @@ export default [
               {
                 link: 'renderClipController.refresh',
                 label: 'renderClipController.refresh()'
+              },
+              {
+                link: 'renderClipController.updateLayout',
+                label: 'renderClipController.updateLayout()'
               }
             ]
           },
@@ -705,6 +709,10 @@ export default [
               {
                 link: 'renderClip2DController.refresh',
                 label: 'renderClip2DController.refresh()'
+              },
+              {
+                link: 'renderClip2DController.updateLayout',
+                label: 'renderClip2DController.updateLayout()'
               }
             ]
           }
