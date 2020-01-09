@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'crizmas-router';
 
-import Logo from 'js/components/logo';
-import Api from 'js/components/api';
+import Logo from '../../logo';
+import Api from '../../api';
 
 export default () => <div>
   <h2><Logo text="crizmas-components" /> - RenderClipController</h2>

@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'crizmas-router';
 
-import Logo from 'js/components/logo';
-import Api from 'js/components/api';
-import Ticks from 'js/components/ticks';
+import Logo from '../logo';
+import Api from '../api';
+import Ticks from '../ticks';
 
 export default () => <div>
   <h2><Logo text="crizmas-form" /> - API</h2>

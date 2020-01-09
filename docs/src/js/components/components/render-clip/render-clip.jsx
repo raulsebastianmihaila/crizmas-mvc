@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'crizmas-router';
 
-import Logo from 'js/components/logo';
-import Code from 'js/components/code';
+import Logo from '../../logo';
+import Code from '../../code';
 
 export default () => <div>
   <h2><Logo text="crizmas-components" /> - RenderClip</h2>

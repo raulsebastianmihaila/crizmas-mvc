@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Logo from 'js/components/logo';
-import Code from 'js/components/code';
+import Logo from '../logo';
+import Code from '../code';
 
 export default () => <div>
   <h2>Tools</h2>

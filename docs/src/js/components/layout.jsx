@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import Logo from 'js/components/logo';
-import contents from 'js/contents';
-import ContentsMenu from 'js/components/contents-menu';
-import ContentsSubmenu from 'js/components/contents-submenu';
+import contents from '../contents';
+import Logo from './logo';
+import ContentsMenu from './contents-menu';
+import ContentsSubmenu from './contents-submenu';
 
 function findContentsItem(path) {
   return findContentsItemInList(path, contents);
