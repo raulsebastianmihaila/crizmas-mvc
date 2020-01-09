@@ -10,7 +10,7 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "clean-webpack-plugin": "^0.1.9",
-    "copy-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^5.1.1",
     "crizmas-async-utils": "*",
     "crizmas-mvc": "*",
     "crizmas-router": "*",
@@ -19,7 +19,7 @@
     "html-webpack-plugin": "^2.17.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "webpack": "^3.11.0",
-    "webpack-dev-server": "^2.11.2"
+    "webpack": "^4.41.5",
+    "webpack-dev-server": "^2.11.5"
   }
 }
