@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'crizmas-router';
 
-import Logo from 'js/components/logo';
-import Ticks from 'js/components/ticks';
-import Code from 'js/components/code';
+import Logo from '../logo';
+import Ticks from '../ticks';
+import Code from '../code';
 
 export default () => <div>
   <h2 id="introduction"><Logo text="crizmas-form" /> - Theory</h2>

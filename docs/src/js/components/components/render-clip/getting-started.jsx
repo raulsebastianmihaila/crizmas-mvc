@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Logo from 'js/components/logo';
+import Logo from '../../logo';
 
 export default () => <div>
   <h2><Logo text="crizmas-components" /> - RenderClip - Getting started</h2>

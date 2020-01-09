@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'crizmas-router';
 
-import Logo from 'js/components/logo';
-import Applications from 'js/components/applications/applications';
-import Articles from 'js/components/articles/articles';
+import Logo from './logo';
+import Applications from './applications/applications';
+import Articles from './articles/articles';
 
 export default () => <div>
   <p>

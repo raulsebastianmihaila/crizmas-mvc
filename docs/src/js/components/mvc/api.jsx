@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'crizmas-router';
 
-import Api from 'js/components/api';
-import Ticks from 'js/components/ticks';
+import Api from '../api';
+import Ticks from '../ticks';
 
 export default () => <div>
   <h2 id="introduction">API</h2>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'crizmas-router';
 
-import Code from 'js/components/code';
+import Code from '../code';
 
 export default () => <div>
   <h2>Getting started</h2>
