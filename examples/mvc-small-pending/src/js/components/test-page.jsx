@@ -1,6 +1,6 @@
 import React from 'react';
 
-import controller from 'js/controllers/test-controller';
+import controller from '../controllers/test-controller';
 
 export default () => <div>
   {controller.isPending && <div>An operation is pending.</div>}

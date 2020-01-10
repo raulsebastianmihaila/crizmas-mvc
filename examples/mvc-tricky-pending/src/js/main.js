@@ -1,6 +1,6 @@
 import Mvc from 'crizmas-mvc';
 
-import HomePage from 'js/components/home-page';
+import HomePage from './components/home-page';
 
 new Mvc({
   domElement: document.querySelector('#app'),

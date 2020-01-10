@@ -1,7 +1,7 @@
 import Mvc from 'crizmas-mvc';
 import Form, {validation} from 'crizmas-form';
 
-import flowers, {Flower} from 'js/models/flowers-model';
+import flowers, {Flower} from '../models/flowers-model';
 
 export default Mvc.controller(class {
   constructor() {

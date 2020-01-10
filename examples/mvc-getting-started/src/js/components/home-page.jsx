@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {Link} from 'crizmas-router';
 
 export default () => <div>

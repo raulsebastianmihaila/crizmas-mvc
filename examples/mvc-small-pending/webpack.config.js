@@ -1,53 +1,53 @@
 'use strict';
 
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HotModuleReplacementPlugin = webpack.HotModuleReplacementPlugin;
+
+const DefinePlugin = webpack.DefinePlugin;
+const mode = process.env.NODE_ENV;
 
 module.exports = {
-  context: __dirname,
-  entry: ['./src/js/main.js'],
+  mode,
+  entry: './src/js/main.js',
   output: {
-    filename: '[name].bundle.js',
-    publicPath: '/'
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
+    filename: '[name].bundle-[hash].js'
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
   },
   devServer: {
     contentBase: 'src',
-    progress: true,
-    hot: true,
-    inline: true,
     port: 5556,
     historyApiFallback: {
       index: '/'
     }
   },
-  resolve: {
-    modules: ['node_modules', 'src'],
-    extensions: ['.js', '.jsx']
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/index.html'
-    }),
-    new HotModuleReplacementPlugin()
-  ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules(?!\/crizmas)/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015', 'react'],
-          plugins: ['transform-runtime']
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react']
+          }
         }
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'file',
-        query: {name: '[path][name]-[hash].[ext]'}
       }
     ]
   },
-  devtool: 'cheap-module-source-map'
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
+    new DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(mode)
+      }
+    })
+  ],
+  devtool: 'source-map'
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import controller from 'js/controllers/home-controller';
+import controller from '../controllers/home-controller';
 
 export default class extends React.Component {
   render() {

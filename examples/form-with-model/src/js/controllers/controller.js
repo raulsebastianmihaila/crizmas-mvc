@@ -1,6 +1,6 @@
 import Form from 'crizmas-form';
 
-import model from 'js/models/model';
+import model from '../models/model';
 
 export default class {
   constructor() {

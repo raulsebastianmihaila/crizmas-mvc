@@ -1,8 +1,8 @@
 import Mvc from 'crizmas-mvc';
 import Router from 'crizmas-router';
 
-import FlowersPage from 'js/components/flowers-page';
-import FlowersController from 'js/controllers/flowers-controller';
+import FlowersPage from './components/flowers-page';
+import FlowersController from './controllers/flowers-controller';
 
 new Mvc({
   domElement: document.querySelector('#app'),

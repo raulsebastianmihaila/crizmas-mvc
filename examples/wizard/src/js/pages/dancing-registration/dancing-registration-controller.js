@@ -1,6 +1,7 @@
 import Mvc from 'crizmas-mvc';
 import Form from 'crizmas-form';
-import FormWizardController from 'js/controllers/form-wizard';
+
+import FormWizardController from '../../controllers/form-wizard';
 import PersonalInformationController from './personal-information-controller';
 import DancingPreferencesController from './dancing-preferences-controller';
 

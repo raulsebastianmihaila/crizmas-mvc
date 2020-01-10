@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Wizard from 'js/components/wizard/wizard';
+
+import Wizard from '../../components/wizard/wizard';
 import PersonalInformation from './personal-information';
 import DancingPreferences from './dancing-preferences';
 import Summary from './summary';
