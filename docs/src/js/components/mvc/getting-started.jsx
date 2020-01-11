@@ -9,7 +9,6 @@ export default () => <div>
   <Code text={`
     npm i react
     npm i react-dom
-    npm i prop-types
     npm i crizmas-utils # peer dependency
     npm i crizmas-mvc
   `} />
@@ -21,13 +20,14 @@ export default () => <div>
 
     <script src="path-to-node_modules/crizmas-utils/src/utils.js"></script>
     <script src="path-to-node_modules/crizmas-mvc/src/observe.js"></script>
-    <!-- mvc depends on react, react-dom, prop-types, utils and observe -->
+    <!-- mvc depends on react, react-dom, utils and observe -->
     <script src="path-to-node_modules/crizmas-mvc/src/mvc.js"></script>
   `} />
 
   <h4>Complementary tools</h4>
 
   <Code text={`
+    npm i prop-types
     npm i crizmas-async-utils # peer dependency of router and form
     npm i crizmas-promise-queue # peer dependency of form
     npm i crizmas-router
