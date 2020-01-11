@@ -36,7 +36,8 @@ export default () => <div>
   <ul className="simple-list">
     <li>The nodes option is an array of objects with optional children, label and isExpanded
     properties and any other possible properties.</li>
-    <li>The itemHeight must be a number and it is passed to the render clip controller.</li>
+    <li>The itemHeight must be a number or a function and it is passed to the render clip
+    controller.</li>
   </ul>
 
   <Api

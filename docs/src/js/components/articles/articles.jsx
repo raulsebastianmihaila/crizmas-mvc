@@ -11,5 +11,12 @@ export default () => <div>
         Race conditions management in interlaid async validations
       </a>
     </li>
+    <li>
+      <a
+        href="https://dev.to/raulsebastianmihaila/the-crizmas-mvc-front-end-framework-for-enterprise-applications-hjd"
+        target="_blank">
+        The crizmas-mvc front-end framework for enterprise applications
+      </a>
+    </li>
   </ul>
 </div>;

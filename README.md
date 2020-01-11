@@ -2,12 +2,13 @@
 
 [Documentation](https://raulsebastianmihaila.github.io/crizmas-mvc-docs)
 
-A framework based on React and the MVC pattern with the goal of simplifying front-end programming.
+A framework based on [React](https://www.npmjs.com/package/react) and the MVC pattern with the goal of simplifying front-end programming. You can read an introduction [here](https://raulsebastianmihaila.github.io/crizmas-mvc-docs/introduction).
 
 The main advantages and features are:  
 - simplicity for common cases and flexibility for complicated cases  
 - management of pending trees of objects  
 - doesn't touch your model, allowing you to write it anyway you want
+- scroll virtualization
 - [router](https://www.npmjs.com/package/crizmas-router)
   - refresh from any fragment of the route
   - router manager for listing, adding and removing routes dynamically
@@ -30,3 +31,4 @@ is implemented with [crizmas-mvc](https://www.npmjs.com/package/crizmas-mvc).
 ## Articles
 
 - [Race conditions management in interlaid async validations](https://medium.com/@raul.mihaila/crizmas-status-update-and-the-form-interlaid-asynchronous-validations-4abf167a54bb)
+- [The crizmas-mvc front-end framework for enterprise applications](https://dev.to/raulsebastianmihaila/the-crizmas-mvc-front-end-framework-for-enterprise-applications-hjd)

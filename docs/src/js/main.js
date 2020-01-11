@@ -5,6 +5,7 @@ import Layout from './components/layout';
 import NotFound from './components/not-found';
 import Home from './components/home';
 import MvcGettingStarted from './components/mvc/getting-started';
+import MvcIntroduction from './components/mvc/introduction';
 import MvcTheory from './components/mvc/theory';
 import MvcApi from './components/mvc/api';
 import FormGettingStarted from './components/form/getting-started';
@@ -53,6 +54,10 @@ new Mvc({
           {
             path: 'getting-started',
             component: MvcGettingStarted
+          },
+          {
+            path: 'introduction',
+            component: MvcIntroduction
           },
           {
             path: 'theory',

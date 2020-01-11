@@ -87,6 +87,8 @@ export default () => <div>
     depend on the isInputPending property.</li>
     <li>If preventPendingBlocking is true, the isPendingBlocked property doesn't
     depend on the isPending property.</li>
+    <li>A validation function can return an error string or an array of error strings or a promise
+    fulfilled with an error string or array of error strings.</li>
     <li>Triggers the validation with the init event and root as target.</li>
   </ul>
 

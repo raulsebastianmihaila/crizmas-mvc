@@ -362,7 +362,7 @@ export default () => <div>
   text="pending" /> properties already exist. If they do, an error is thrown.
   Therefore, in the case of proxies, if we're successfully setting the properties
   on the observed object, and later we're checking them again on the proxy target
-  (assuming that the observed object is a proxy) or on the proxy for wich the
+  (assuming that the observed object is a proxy) or on the proxy for which the
   observed object represents the target, we're throwing the error in case the
   properties are reported as existing. In particular, if we observe a proxy whose target
   is a traditional function that has its default properties, we get an error because

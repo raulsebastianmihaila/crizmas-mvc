@@ -9,6 +9,36 @@ export default [
     label: 'Getting started'
   },
   {
+    link: '/introduction',
+    label: 'Introduction',
+    submenu: [
+      {
+        link: 'introduction',
+        label: 'Intro'
+      },
+      {
+        link: 'what-to-expect',
+        label: 'What to expect from a framework'
+      },
+      {
+        link: 'main-ideas',
+        label: 'Main ideas'
+      },
+      {
+        link: 'why-and-when',
+        label: 'Why and when it\'s good'
+      },
+      {
+        link: 'comparison',
+        label: 'Compared to other frameworks/approaches'
+      },
+      {
+        link: 'conclusion',
+        label: 'Conclusion'
+      }
+    ]
+  },
+  {
     link: '/theory',
     label: 'Theory',
     submenu: [

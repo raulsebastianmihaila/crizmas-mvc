@@ -9,7 +9,7 @@ export default () => <div>
   <p>
     <Logo /> is a framework based on <a href="https://www.npmjs.com/package/react"
     target="_blank">React</a> and the MVC pattern with the goal of simplifying front-end
-    programming.
+    programming. You can read an introduction <Link to="/introduction">here</Link>.
   </p>
 
   <p>The main advantages and features of <Logo /> are:</p>
@@ -17,6 +17,7 @@ export default () => <div>
     <li>simplicity for common cases and flexibility for complicated cases</li>
     <li>management of pending trees of objects</li>
     <li>doesn't touch your model, allowing you to write it anyway you want</li>
+    <li>scroll virtualization</li>
     <li>
       <Logo text="crizmas-router" to="/router" />
       <ul>
