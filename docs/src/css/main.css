@@ -22,7 +22,7 @@ p{margin:0 0 20px;}
 .tree::before{content:"\1f384\a0";color:green;text-decoration:none;}
 .logo span{font-weight:bold;text-decoration:underline;}
 .wrapper{height:100%;min-width:1000px;}
-header{position:relative;z-index:1;height:72px;padding:20px;box-shadow:0 1px 4px 4px #ccc;
+header{position:relative;z-index:1;height:72px;padding:20px;box-shadow:0 1px 4px 4px #cccccccc;
   background:rgba(255,255,245,0.4);}
 header .links{float:right;font-weight:bold;}
 header .links a{margin:0 0 0 10px;}

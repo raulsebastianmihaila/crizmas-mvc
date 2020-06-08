@@ -284,7 +284,7 @@
     if (managedTrees) {
       const resolvedObjects = new Set();
 
-      managedTrees.forEach((obj) => setObjPendingState(obj, resolvedObjects));
+      managedTrees.forEach((obj) => setObjTreePendingState(obj, resolvedObjects));
       unrootRetainedRoots();
       updateRetainedObjectsList();
     }
@@ -325,10 +325,12 @@
     return pendingTargetsDetailsMap.get(root).roots.size === 1;
   };
 
-  const setObjPendingState = (obj, resolved = new Set()) => {
+  const setObjTreePendingState = (obj, resolved = new Set()) => {
     const objPendingDetails = pendingTargetsDetailsMap.get(obj);
     let isPending = !!objPendingDetails.size;
 
+    // the children need to be updated as well even in case we know
+    // that the current object is pending
     if (objPendingDetails.children) {
       objPendingDetails.children.forEach((child) => {
         if (resolved.has(child)) {
@@ -339,7 +341,7 @@
           return;
         }
 
-        setObjPendingState(child, resolved);
+        setObjTreePendingState(child, resolved);
 
         if (child.isPending) {
           isPending = true;
@@ -440,7 +442,7 @@
       roots.add(root);
       setRoot(root, root);
       // maybe it already has pending children
-      setObjPendingState(root);
+      setObjTreePendingState(root);
     }
 
     return root;

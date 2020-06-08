@@ -242,7 +242,7 @@ export default () => <div>
   controllers could interact with such services (without allowing the view to interact with the
   services). If we look at Angular services we can see that often they are a mix of the API layer,
   models and services as we’ve just described them above. Because there is a clear separation
-  between the the API layer, controllers and models in <Logo text="crizmas-mvc" />, the services in
+  between the API layer, controllers and models in <Logo text="crizmas-mvc" />, the services in
   our approach
   would be very slim, therefore we could actually have this part incorporated in controllers with a
   specific scope and responsibility.</p>
