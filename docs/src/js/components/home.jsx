@@ -39,7 +39,11 @@ export default () => <div>
   </ul>
 
   <p>Check the <Link to="/getting-started">getting started</Link> and
-    the <Link to="/theory">theory</Link> sections for more reasons to use this framework.</p>
+    the <Link to="/theory">theory</Link> sections for more reasons to use this framework. Also
+    take a look at the <a target="_blank"
+    href="https://raulsebastianmihaila.github.io/crizmas-mvc-examples/">examples app</a> (<a
+    href="https://github.com/raulsebastianmihaila/crizmas-mvc-examples"
+    target="_blank">repo</a>).</p>
 
   <p>The code is written in modern JS (without modules), so it's possible that you need
   transcompilation. If that is the case, you need to include the framework files
