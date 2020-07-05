@@ -20,7 +20,7 @@ The main advantages and features are:
   - synchronous and asynchronous event based validation
   - race conditions management in interlaid async validations
 
-Check out the examples folder for small working examples. Also the documentation (docs folder)
+Check out the [examples app](https://raulsebastianmihaila.github.io/crizmas-mvc-examples/) ([repo](https://github.com/raulsebastianmihaila/crizmas-mvc-examples)). Also the documentation (docs folder)
 is implemented with [crizmas-mvc](https://www.npmjs.com/package/crizmas-mvc).
 
 ## Applications
