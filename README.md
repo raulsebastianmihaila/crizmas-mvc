@@ -32,3 +32,4 @@ is implemented with [crizmas-mvc](https://www.npmjs.com/package/crizmas-mvc).
 
 - [Race conditions management in interlaid async validations](https://medium.com/@raul.mihaila/crizmas-status-update-and-the-form-interlaid-asynchronous-validations-4abf167a54bb)
 - [The crizmas-mvc front-end framework for enterprise applications](https://dev.to/raulsebastianmihaila/the-crizmas-mvc-front-end-framework-for-enterprise-applications-hjd)
+- [Implementation examples of common front-end features in complex applications](https://dev.to/raulsebastianmihaila/implementation-examples-of-common-front-end-features-in-complex-applications-6hh)

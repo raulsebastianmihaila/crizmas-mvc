@@ -18,5 +18,12 @@ export default () => <div>
         The crizmas-mvc front-end framework for enterprise applications
       </a>
     </li>
+    <li>
+      <a
+        href="https://dev.to/raulsebastianmihaila/implementation-examples-of-common-front-end-features-in-complex-applications-6hh"
+        target="_blank">
+        Implementation examples of common front-end features in complex applications
+      </a>
+    </li>
   </ul>
 </div>;
