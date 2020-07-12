@@ -125,6 +125,14 @@ export default [
         label: 'Mvc.unroot()'
       },
       {
+        link: 'Mvc.apply',
+        label: 'Mvc.apply()'
+      },
+      {
+        link: 'Mvc.construct',
+        label: 'Mvc.construct()'
+      },
+      {
         link: 'Mvc.addObservedChild',
         label: 'Mvc.addObservedChild()'
       },

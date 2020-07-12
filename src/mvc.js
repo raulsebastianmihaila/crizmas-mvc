@@ -147,6 +147,14 @@
     return observe.unroot(value);
   };
 
+  Mvc.apply = (...args) => {
+    return observe.apply(...args);
+  };
+
+  Mvc.construct = (...args) => {
+    return observe.construct(...args);
+  };
+
   Mvc.isObservedObject = (value) => {
     return observe.isObservedObject(value);
   };

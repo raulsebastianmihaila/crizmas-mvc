@@ -1,3 +1,26 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.0.3...v1.1.0) (2020-07-12)
+
+### Updates
+- Add `Mvc.apply` and `Mvc.construct`.
+- Small refactoring to improve readability.
+- Remove the examples folder and add link to the examples app.
+- Docs: add render-clip and tree components and controllers.
+- Docs: move input component to components section.
+- Docs: add path option to Router.fallbackRoute.
+- Docs: update webpack, webpack-dev-server and copy-webpack-plugin to fix their vulnerabilities.
+- Docs: various tweaks based on the webpack configuration udpate.
+- Docs: add the section with the article about the crizmas-mvc framework.
+- Docs: add section about Cancellation.
+- Docs: add external link to the article about the crizmas-mvc framework.
+- Docs: small updates to the home page and the README.
+- Docs: update getting started section regarding the dependencies.
+- Docs: add link to the examples app.
+- Docs: add article about features in complex applications.
+- Docs: add the `className` prop to `Link`.
+- Docs: other small improvements.
+- Update jest dev dependency to fix its vulnerabilities.
+
 <a name="1.0.3"></a>
 # [1.0.3](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.0.2...v1.0.3) (2018-12-08)
 

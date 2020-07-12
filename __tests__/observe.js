@@ -2500,6 +2500,202 @@ describe('observe', () => {
     });
   });
 
+  describe('apply', () => {
+    test('observe function call', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+      expect(observe.apply((a, b) => a + b, null, [1, 2])).toBe(3);
+      // 1 observed function call
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+
+    test('arguments are optional', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+      observe.apply((...args) => {
+        expect(args).toEqual([]);
+      });
+      // 1 observed function call
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+
+    test('the this arg can be provided', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      const obj = {};
+
+      observe.on(observation);
+      observe.apply(
+        function () {
+          expect(this).toBe(obj);
+        },
+        obj);
+      // 1 observed function call
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+
+    test('doesn\'t observe the function', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+
+      const func = () => {};
+
+      observe.apply(func);
+      // 1 observed function call
+      expect(observation.mock.calls.length).toBe(1);
+      func();
+      // 1 observed function call
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+
+    test('applying an already observed function may result in two different keys', () => {
+      expect.assertions(7);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+
+      const obj = observe.observe({
+        method() { return Promise.resolve(); }
+      });
+
+      expect(obj.pending.has('method')).toBe(false);
+      expect(obj.pending.has('apply')).toBe(false);
+
+      const promises = Promise.all([
+        obj.method(),
+        observe.apply(obj.method, obj, null, {key: 'apply'})
+      ]);
+
+      expect(obj.pending.has('method')).toBe(true);
+      expect(obj.pending.has('apply')).toBe(true);
+
+      return promises.then(() => {
+        expect(obj.pending.has('method')).toBe(false);
+        expect(obj.pending.has('apply')).toBe(false);
+        // 2 observed function calls and 2 settled observed promises
+        expect(observation.mock.calls.length).toBe(4);
+        observe.off(observation);
+      });
+    });
+  });
+
+  describe('construct', () => {
+    test('observe constructor call', () => {
+      expect.assertions(3);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+
+      const obj = {x: null};
+
+      expect(observe.construct(
+        class {
+          constructor(x) {
+            obj.x = x;
+
+            return obj;
+          }
+        },
+
+        [5])).toBe(obj);
+      expect(obj.x).toBe(5);
+      // 1 observed construction
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+
+    test('the arguments are optional', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+
+      observe.construct(class {
+        constructor(...args) {
+          expect(args).toEqual([]);
+        }
+      });
+      // 1 observed construction
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+
+    test('a new target can be provided', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+
+      function F() {}
+
+      observe.construct(
+        class A {
+          constructor() {
+            expect(new.target).toBe(F);
+          }
+        },
+        null,
+        F);
+      // 1 observed construction
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+
+    test('if new target is missing it\'s set to target', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+
+      observe.construct(class A {
+        constructor() {
+          expect(new.target).toBe(A);
+        }
+      });
+      // 1 observed construction
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+
+    test('doesn\'t observe the constructor', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+
+      class A {}
+
+      observe.construct(A);
+      // 1 observed construction
+      expect(observation.mock.calls.length).toBe(1);
+      new A();
+      // 1 observed construction
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+  });
+
   describe('isObservedObject', () => {
     test('an observed regular object is an observed object', () => {
       expect.assertions(1);

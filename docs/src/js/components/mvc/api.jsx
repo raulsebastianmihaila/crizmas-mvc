@@ -136,6 +136,40 @@ export default () => <div>
     until it becomes false, and after that it stops being managed.</li>
   </ul>
 
+  <Api id="Mvc.apply" text="Mvc.apply(func, thisArg, args, {key})" />
+
+  <ul className="simple-list">
+    <li>Useful if we want to observe a function call without creating an observed function,
+    or if we want an observed object to be pending in relation to an operation with a custom key.
+    </li>
+    <li>Only the first argument is required.</li>
+    <li>Calls the function with <Ticks text="thisArg" /> as the <Ticks text="this" /> value,
+    passing the arguments.</li>
+    <li>Behaves as if <Ticks text="func" /> was an observed function, but without actually observing
+    the function, meaning that after the call the function is not an observed function
+    (assuming that prior to the call it wasn't an observed function).</li>
+    <li>If <Ticks text="thisArg" /> is an observed object and the function returns a promise,
+    the observed object will be pending in relation to the provided key.</li>
+    <li>If the function is an already observed function and has a different key and <Ticks
+    text="thisArg" /> is an observed object and the function returns a promise, the object will
+    be pending in relation to both the keys.</li>
+  </ul>
+
+  <Api id="Mvc.construct" text="Mvc.construct(constructor, args, newTarget, {isRoot})" />
+
+  <ul className="simple-list">
+    <li>Useful if we want to observe a function construction without creating an observed function.
+    </li>
+    <li>Only the first argument is required.</li>
+    <li>Constructs the function with <Ticks text="newTarget" /> as the <Ticks
+    text="new.target" /> value, passing the arguments.</li>
+    <li>Behaves as if <Ticks text="constructor" /> was an observed function, but without actually
+    observing the function, meaning that after the call the function is not an observed function
+    (assuming that prior to the call it wasn't an observed function).</li>
+    <li>If <Ticks text="isRoot" /> is true, it behaves as if the constructor was a root constructor.
+    </li>
+  </ul>
+
   <Api id="Mvc.addObservedChild" text="Mvc.addObservedChild(obj, child)" />
 
   <ul className="simple-list">

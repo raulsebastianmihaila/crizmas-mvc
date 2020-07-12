@@ -111,59 +111,15 @@
               throw new Error('The observed constructor must be invoked with \'new\'.');
             }
 
-            programNotification();
-
-            let result;
-
-            try {
-              result = Reflect.apply(target, thisArg, args);
-            } catch (e) {
-              checkNotify(true);
-
-              throw e;
-            }
-
-            if (isPromise(result)) {
-              result = observePromise(result, thisArg, key);
-            }
-
-            checkNotify();
-
-            return result;
+            return apply(target, thisArg, args, {key});
           },
 
           construct(target, args, newTarget) {
-            programNotification();
-
-            let result;
-
-            try {
-              result = Reflect.construct(target, args, newTarget);
-            } catch (e) {
-              checkNotify(true);
-
-              throw e;
-            }
-
-            const isRoot = rootFunctions.has(observedFunction);
-            const observationFunc = isRoot
-              ? root
-              : observe;
-
-            if (isPromise(result)) {
-              result = observeCbPromise(result, observationFunc);
-            } else {
-              if (isRoot && !isReliablyObservable(result)) {
-                checkNotify(true);
-                throwOnNonRootable();
-              }
-
-              result = observationFunc(result);
-            }
-
-            checkNotify();
-
-            return result;
+            return construct(
+              target,
+              args,
+              newTarget,
+              {isRoot: rootFunctions.has(observedFunction)});
           }
         });
 
@@ -181,6 +137,28 @@
     }
 
     return observedFunction;
+  };
+
+  const apply = (target, thisArg, args, {key} = {}) => {
+    programNotification();
+
+    let result;
+
+    try {
+      result = Reflect.apply(target, thisArg, args || []);
+    } catch (e) {
+      checkNotify(true);
+
+      throw e;
+    }
+
+    if (isPromise(result)) {
+      result = observePromise(result, thisArg, key);
+    }
+
+    checkNotify();
+
+    return result;
   };
 
   const programNotification = () => {
@@ -417,6 +395,39 @@
 
       setPendingState(objects);
     }
+  };
+
+  const construct = (target, args, newTarget, {isRoot} = {}) => {
+    programNotification();
+
+    let result;
+
+    try {
+      result = Reflect.construct(target, args || [], newTarget || target);
+    } catch (e) {
+      checkNotify(true);
+
+      throw e;
+    }
+
+    const observationFunc = isRoot
+      ? root
+      : observe;
+
+    if (isPromise(result)) {
+      result = observeCbPromise(result, observationFunc);
+    } else {
+      if (isRoot && !isReliablyObservable(result)) {
+        checkNotify(true);
+        throwOnNonRootable();
+      }
+
+      result = observationFunc(result);
+    }
+
+    checkNotify();
+
+    return result;
   };
 
   const root = (observable) => {
@@ -682,6 +693,8 @@
     root,
     unroot,
     ignore,
+    apply,
+    construct,
     isObservedObject,
     isReliablyObservable,
     addObservedChild,

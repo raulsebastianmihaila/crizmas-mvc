@@ -807,6 +807,47 @@ describe('mvc', () => {
     });
   });
 
+  describe('apply', () => {
+    test('observe function call', () => {
+      expect.assertions(2);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+      expect(Mvc.apply((a, b) => a + b, null, [1, 2])).toBe(3);
+      // 1 observed function call
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+  });
+
+  describe('construct', () => {
+    test('observe constructor call', () => {
+      expect.assertions(3);
+
+      const observation = jest.fn();
+
+      observe.on(observation);
+
+      const obj = {x: null};
+
+      expect(Mvc.construct(
+        class {
+          constructor(x) {
+            obj.x = x;
+
+            return obj;
+          }
+        },
+
+        [5])).toBe(obj);
+      expect(obj.x).toBe(5);
+      // 1 observed construction
+      expect(observation.mock.calls.length).toBe(1);
+      observe.off(observation);
+    });
+  });
+
   describe('isObservedObject', () => {
     test('observed object is an observed object', () => {
       expect.assertions(1);

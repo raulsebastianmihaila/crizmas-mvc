@@ -27,11 +27,11 @@ export default () => <div>
       const letters = 'abcdefghijklmnopqrstuvwxyz';
 
       <RenderClip2D
-        controller={renderClip2dController}
+        controller={renderClip2DController}
         renderRow={({index, itemHeight, renderCells}) => {
           return <div key={index} style={{height: itemHeight}}>{renderCells()}</div>;
         }}
-        renderCell={({index, itemWidth, itemHeight, rowIndex}) {
+        renderCell={({index, itemWidth, itemHeight, rowIndex}) => {
           const rowLetter = letters[rowIndex % letters.length];
           const colLetter = letters[index % letters.length];
 

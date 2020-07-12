@@ -502,6 +502,7 @@ export default () => <div>
     text="router.isPathActive" /> and <Ticks text="router.isDescendantPathActive" />.</li>
     <li>The <Ticks text="to" /> prop should contain only the path, search and hash of a URL.</li>
     <li>The <Ticks text="replace" /> prop is optional.</li>
+    <li>Accepts a <Ticks text="className" /> prop.</li>
   </ul>
 
   <Api
