@@ -3,7 +3,7 @@ import React from 'react';
 export default () => <div>
   <h2>Applications</h2>
 
-  <ul>
+  <ul className="simple-list">
     <li>
       <a
         href="https://raulsebastianmihaila.github.io/crizmas-mvc-realworld-site/"

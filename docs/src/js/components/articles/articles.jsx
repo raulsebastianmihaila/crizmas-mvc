@@ -3,7 +3,7 @@ import React from 'react';
 export default () => <div>
   <h2>Articles</h2>
 
-  <ul>
+  <ul className="simple-list">
     <li>
       <a
         href="https://medium.com/@raul.mihaila/crizmas-status-update-and-the-form-interlaid-asynchronous-validations-4abf167a54bb"
