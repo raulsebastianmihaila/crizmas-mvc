@@ -227,13 +227,6 @@ export default () => <div>
     if it is passed. Otherwise, it's an ignored method that returns the input value.</li>
   </ul>
 
-  <Api id="input.setValue" text="input.setValue(value)" />
-
-  <ul className="simple-list">
-    <li>The setValue option passed in the configuration if it exists or a method that
-    sets the value property.</li>
-  </ul>
-
   <Api id="input.onChange" text="input.onChange(value)" />
 
   <ul className="simple-list">

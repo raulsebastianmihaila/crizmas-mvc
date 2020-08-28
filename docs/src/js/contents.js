@@ -549,10 +549,6 @@ export default [
             label: 'input.getValue()'
           },
           {
-            link: 'input.setValue',
-            label: 'input.setValue()'
-          },
-          {
             link: 'input.onChange',
             label: 'input.onChange()'
           },
