@@ -2,9 +2,49 @@ import React from 'react';
 import {Link} from 'crizmas-router';
 
 import Code from '../code';
+import Ticks from '../ticks';
+import Logo from '../logo';
 
 export default () => <div>
   <h2>Getting started</h2>
+
+  <p>The simplest way to get started is to use the <Ticks text="create-crizmas" /> command to
+  create a <Logo text="crizmas-mvc" /> project based on <a
+  href="https://www.npmjs.com/package/webpack" target="_blank">webpack</a>. In a new directory
+  that you create you can either run the command without any prior package installation:</p>
+
+  <Code text="npx create-crizmas -A" />
+
+  <p>or you can install the <Ticks text="create-crizmas" /> package globally:</p>
+
+  <Code text="npm i -g create-crizmas" />
+
+  <p>And after the installation you can run the command:</p>
+
+  <Code text="create-crizmas -A" />
+
+  <p>You can pass the following options (with space between them):</p>
+
+  <ul className="simple-list">
+    <li>-R or --router: adds crizmas-router and its dependencies;</li>
+    <li>-F or --form: adds crizmas-form and its dependencies;</li>
+    <li>-C or --components: adds crizmas-components and its dependencies;</li>
+    <li>-JSX or --jsx: adds jsx support;</li>
+    <li>-A or --all: equivalent to -R -F -C -JSX;</li>
+    <li>-GA or --github-app: adds support for deploying as a github page;</li>
+    <li>-H or --help: displays helpful information about the command.</li>
+  </ul>
+
+  <p>After running the command, you can run:</p>
+
+  <Code text={`
+    npm i # to install the dependencies
+    npm start # to run the application locally
+    npm run build # to build the application for production
+  `} />
+
+  <p>Alternatively, you can install the framework packages individually in your own project
+  structure.</p>
 
   <Code text={`
     npm i react
