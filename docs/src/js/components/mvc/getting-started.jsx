@@ -30,6 +30,8 @@ export default () => <div>
     <li>-F or --form: adds crizmas-form and its dependencies;</li>
     <li>-C or --components: adds crizmas-components and its dependencies;</li>
     <li>-JSX or --jsx: adds jsx support;</li>
+    <li>-L or --layout: adds a root layout component that renders a spinner during router
+    transitions and passes it to the Mvc instance. Requires the -R option;</li>
     <li>-A or --all: equivalent to -R -F -C -JSX;</li>
     <li>-GA or --github-app: adds support for deploying as a github page;</li>
     <li>-H or --help: displays helpful information about the command.</li>
