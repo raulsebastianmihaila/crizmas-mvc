@@ -20,6 +20,8 @@ The main advantages and features are:
   - synchronous and asynchronous event based validation
   - race conditions management in interlaid async validations
 
+You can run `npx create-crizmas -A` to create a crizmas project very quickly.
+
 Check out the [examples app](https://raulsebastianmihaila.github.io/crizmas-mvc-examples/) ([repo](https://github.com/raulsebastianmihaila/crizmas-mvc-examples)). Also the documentation (docs folder)
 is implemented with [crizmas-mvc](https://www.npmjs.com/package/crizmas-mvc).
 
