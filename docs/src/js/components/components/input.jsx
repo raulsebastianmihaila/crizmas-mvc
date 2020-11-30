@@ -81,7 +81,7 @@ export default () => <div>
     <li>
       debounce
       <ul>
-        <li>Number of milliseconds for change debounce.</li>
+        <li>Number of milliseconds for change and blur debounce.</li>
         <li>If it's 0 there will be no deobunce at all.</li>
       </ul>
     </li>
