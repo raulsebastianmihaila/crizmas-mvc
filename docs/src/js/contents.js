@@ -73,6 +73,10 @@ export default [
       {
         link: 'observing-proxies',
         label: 'Observing proxies'
+      },
+      {
+        link: 'unsynchronized-interleaved-rendering',
+        label: 'Unsynchronized interleaved rendering'
       }
     ]
   },

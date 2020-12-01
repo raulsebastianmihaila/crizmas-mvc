@@ -381,6 +381,87 @@ export default () => <div>
   pending state related properties because they could be located in different managed
   trees and so the pending state of the trees could become corrupt.</p>
 
+  <h4 id="unsynchronized-interleaved-rendering">Unsynchronized interleaved rendering</h4>
+
+  <p>Say we have the following observed async function:</p>
+
+  <Code text={`
+    Mvc.observe(async () => {
+      updateSomeState(await observedAsyncOperation());
+
+      ctrl.someOtherState = new ObservedConstructor();
+    });
+  `} />
+
+  <p>in which <Ticks text="observedAsyncOperation" /> and <Ticks text="ObservedConstructor" /> are
+  observed functions. This kind of cases can lead to unsynchronized state in relation to the
+  rendering process, in the context of async operations, depending on how we are using that state
+  in the view. After <Ticks text="observedAsyncOperation" /> is awaited, <Ticks
+  text="updateSomeState" /> will update state A, and the assignment that follows
+  updates <Ticks text="someOtherState" />, which we'll call state B. Since state A and state B
+  are updated synchronously one after the other, we may be tempted to check in the view if state A
+  was updated and, if it was, do something with state B. The issue here is that, even
+  if <Ticks text="updateSomeState" /> is not an observed function, <Ticks
+  text="ObservedConstructor" /> is observed and it causes rerendering after state A was updated
+  but before state B is updated and this can lead to an error that occurs in the view. Note that
+  if the function in which state A and state B are updated wasn't async, there would be no issues,
+  since the synchronous wrapper ensures that rerendering happens only once and only after the entire
+  operation finished. But since we're in an async function we can not detect when each await step
+  finishes and so after each await step, each observed operation that is not wrapped by another
+  observed operation is independent from the rest of observed operations with respect to rendering.
+  There are a few ways to deal with this.</p>
+
+  <p>The simplest approach, if possible, is to check in the view if the entire async operation
+  is pending instead of checking only if state A was updated, assuming that the async observed
+  function is a controller method for instance. This way, state A and state B will
+  be used only after the entire operation finishes.</p>
+
+  <p>If we don't want to do that, for instance if we have multiple await steps in the async
+  function and we don't want to wait for all of them, but we want the intermediary related state
+  updates to be reflected in the view as soon as possible, we can wrap those asynchronous
+  state updates in an observed boundary, which could be for instance an observed method of
+  the controller:</p>
+
+  <Code text={`
+    const ctrl = Mvc.controller({
+      doAsyncStuff: async () => {
+        updateAllRelatedState(await observedAsyncOperation());
+      },
+
+      updateAllRelatedState: (result) => {
+        updateSomeState(result);
+
+        ctrl.someOtherState = new ObservedConstructor();
+      }
+    });
+  `} />
+
+  <p>However this requires creating a new observed function, which in this example is a public
+  method, and we may not want to expose it. A simpler way of achieving the same result would be:</p>
+
+  <Code text={`
+    Mvc.observe(async () => {
+      const result = await observedAsyncOperation();
+
+      Mvc.apply(() => {
+        updateSomeState(result);
+
+        ctrl.someOtherState = new ObservedConstructor();
+      });
+    });
+  `} />
+
+  <p>And there is also the case that <Ticks text="observedAsyncOperation" /> itself updates some
+  state and we want that state to be synchronized with state A and state B in relation to rendering
+  and in that case we simply have to reorganize the code to make sure that such related state
+  is updated synchronously inside an observed boundary. Or, in case we have multiple await steps
+  in a bigger async function, split it in multiple observed async functions, while keeping the
+  related state udpates in one of them and check in the view if that child async operation
+  is pending. (We can do this even without exposing a public async function, by
+  using <Ticks text="Mvc.apply" /> with the controller and a custom key). Or, simply,
+  do multiple checks in the view (for state A, state B and whatever other state we're
+  interested in).</p>
+
   <p>Head over to the <Link to="/api">API</Link> section for more details about how
   to use the framework.</p>
 </div>;
