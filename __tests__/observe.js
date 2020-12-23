@@ -1,6 +1,6 @@
-'use strict';
+import {jest} from '@jest/globals';
 
-const observe = require('../src/observe.js');
+import * as observe from '../src/observe.js';
 
 describe('observe', () => {
   describe('observe', () => {

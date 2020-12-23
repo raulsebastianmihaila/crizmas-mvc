@@ -1,181 +1,125 @@
-(() => {
-  'use strict';
+import React from 'react';
+import ReactDom from 'react-dom';
 
-  const isModule = typeof module === 'object' && typeof module.exports === 'object';
+import {on, off, isReliablyObservable, observe} from './observe.js';
 
-  let React;
-  let ReactDOM;
-  let observe;
+const {createElement, cloneElement} = React;
+const {render, unmountComponentAtNode} = ReactDom;
 
-  if (isModule) {
-    React = require('react');
-    ReactDOM = require('react-dom');
-    observe = require('./observe');
-  } else {
-    ({React, ReactDOM, crizmas: {observe}} = window);
+export default function Mvc({element, component, domElement, router}) {
+  if (!element && !component && !router) {
+    throw new Error('An element or a component or a router must be provided');
   }
 
-  const {createElement} = React;
-
-  function Mvc({element, component, domElement, router}) {
-    if (!element && !component && !router) {
-      throw new Error('An element or a component or a router must be provided');
-    }
-
-    if (!domElement) {
-      throw new Error('A domElement must be provided');
-    }
-
-    if (element && component) {
-      throw new Error('Must not provide both element and component');
-    }
-
-    const mvc = {
-      isMounted: false
-    };
-
-    let notify;
-    let handledUrl = false;
-    let renderElement;
-
-    class Root extends React.Component {
-      constructor(...args) {
-        super(...args);
-
-        notify = this.forceUpdate.bind(this);
-
-        // make sure that we're observing early so that a new rendering process can be
-        // initiated if needed (for instance if an observed function is called in
-        // componentDidMount)
-        observe.on(notify);
-      }
-
-      componentDidMount() {
-        // jump to hash after rendering dynamically on page load
-        if (router) {
-          router.jumpToHash();
-        }
-      }
-
-      componentDidUpdate() {
-        if (handledUrl) {
-          handledUrl = false;
-
-          router.jumpToHash();
-        }
-      }
-
-      render() {
-        return createElement(Mvc.routerContext.Provider,
-          {value: router},
-          renderElement());
-      }
-    }
-
-    const init = () => {
-      const elementRenderFunc = element
-        ? React.cloneElement
-        : component
-          ? createElement
-          : null;
-      const elementRenderBaseArg = element || component;
-
-      renderElement = elementRenderFunc
-        ? router
-          ? () => elementRenderFunc(elementRenderBaseArg, {router}, router.getRootElement())
-          : () => elementRenderFunc(elementRenderBaseArg)
-        : () => router.getRootElement();
-    };
-
-    mvc.mount = () => {
-      if (!mvc.isMounted) {
-        if (router) {
-          router.mount();
-          router.onUrlHandle(handleUrl);
-        }
-
-        ReactDOM.render(createElement(Root), domElement);
-
-        mvc.isMounted = true;
-      }
-    };
-
-    const handleUrl = () => {
-      handledUrl = true;
-    };
-
-    mvc.unmount = () => {
-      if (mvc.isMounted) {
-        if (router) {
-          router.unmount();
-          router.offUrlHandle(handleUrl);
-        }
-
-        observe.off(notify);
-        ReactDOM.unmountComponentAtNode(domElement);
-
-        mvc.isMounted = false;
-      }
-    };
-
-    init();
-    mvc.mount();
-
-    return mvc;
+  if (!domElement) {
+    throw new Error('A domElement must be provided');
   }
 
-  Mvc.routerContext = React.createContext();
+  if (element && component) {
+    throw new Error('Must not provide both element and component');
+  }
 
-  Mvc.controller = (controller) => {
-    if (!observe.isReliablyObservable(controller)) {
-      throw new Error('Controller must be either a function or a non-promise object'
-        + ' and it must not be ignored.');
+  const mvc = {
+    isMounted: false
+  };
+
+  let notify;
+  let handledUrl = false;
+  let renderElement;
+
+  class Root extends React.Component {
+    constructor(...args) {
+      super(...args);
+
+      notify = this.forceUpdate.bind(this);
+
+      // make sure that we're observing early so that a new rendering process can be
+      // initiated if needed (for instance if an observed function is called in
+      // componentDidMount)
+      on(notify);
     }
 
-    return observe.observe(controller, {preventApply: true});
-  };
+    componentDidMount() {
+      // jump to hash after rendering dynamically on page load
+      if (router) {
+        router.jumpToHash();
+      }
+    }
 
-  Mvc.observe = (...args) => {
-    return observe.observe(...args);
-  };
+    componentDidUpdate() {
+      if (handledUrl) {
+        handledUrl = false;
 
-  Mvc.root = (value) => {
-    return observe.root(value);
-  };
+        router.jumpToHash();
+      }
+    }
 
-  Mvc.unroot = (value) => {
-    return observe.unroot(value);
-  };
-
-  Mvc.apply = (...args) => {
-    return observe.apply(...args);
-  };
-
-  Mvc.construct = (...args) => {
-    return observe.construct(...args);
-  };
-
-  Mvc.isObservedObject = (value) => {
-    return observe.isObservedObject(value);
-  };
-
-  Mvc.ignore = (value) => {
-    return observe.ignore(value);
-  };
-
-  Mvc.addObservedChild = (obj, child) => {
-    return observe.addObservedChild(obj, child);
-  };
-
-  Mvc.removeObservedChild = (obj, child) => {
-    return observe.removeObservedChild(obj, child);
-  };
-
-  const moduleExports = Mvc;
-
-  if (isModule) {
-    module.exports = moduleExports;
-  } else {
-    window.crizmas.Mvc = moduleExports;
+    render() {
+      return createElement(routerContext.Provider,
+        {value: router},
+        renderElement());
+    }
   }
-})();
+
+  const init = () => {
+    const elementRenderFunc = element
+      ? cloneElement
+      : component
+        ? createElement
+        : null;
+    const elementRenderBaseArg = element || component;
+
+    renderElement = elementRenderFunc
+      ? router
+        ? () => elementRenderFunc(elementRenderBaseArg, {router}, router.getRootElement())
+        : () => elementRenderFunc(elementRenderBaseArg)
+      : () => router.getRootElement();
+  };
+
+  mvc.mount = () => {
+    if (!mvc.isMounted) {
+      if (router) {
+        router.mount();
+        router.onUrlHandle(handleUrl);
+      }
+
+      render(createElement(Root), domElement);
+
+      mvc.isMounted = true;
+    }
+  };
+
+  const handleUrl = () => {
+    handledUrl = true;
+  };
+
+  mvc.unmount = () => {
+    if (mvc.isMounted) {
+      if (router) {
+        router.unmount();
+        router.offUrlHandle(handleUrl);
+      }
+
+      off(notify);
+      unmountComponentAtNode(domElement);
+
+      mvc.isMounted = false;
+    }
+  };
+
+  init();
+  mvc.mount();
+
+  return mvc;
+}
+
+export const routerContext = React.createContext();
+
+export const controller = (controller) => {
+  if (!isReliablyObservable(controller)) {
+    throw new Error('Controller must be either a function or a non-promise object'
+      + ' and it must not be ignored.');
+  }
+
+  return observe(controller, {preventApply: true});
+};

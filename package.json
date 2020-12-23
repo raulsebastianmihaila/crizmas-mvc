@@ -8,9 +8,8 @@
     "name": "Raul-Sebastian Mihăilă",
     "email": "raul.mihaila@gmail.com"
   },
-  "main": "./src/mvc.js",
+  "type": "module",
   "peerDependencies": {
-    "crizmas-utils": "^1.0.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
@@ -33,14 +32,12 @@
     "form"
   ],
   "scripts": {
-    "test": "jest",
-    "test-coverage": "jest --coverage"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test-coverage": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage"
   },
   "devDependencies": {
-    "crizmas-async-utils": "^1.0.2",
-    "crizmas-router": "^1.1.0",
-    "crizmas-utils": "^1.0.3",
-    "jest": "^25.0.0",
+    "crizmas-router": "^2.0.0",
+    "jest": "^26.6.3",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"

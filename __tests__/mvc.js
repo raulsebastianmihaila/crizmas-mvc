@@ -1,13 +1,12 @@
-'use strict';
+import {URLSearchParams} from 'url';
+import {jest} from '@jest/globals';
+import React from 'react';
+import Router from 'crizmas-router';
 
-const React = require('react');
-const url = require('url');
-const Router = require('crizmas-router');
+import Mvc, {routerContext, controller} from '../src/mvc.js';
+import {observe, ignore, on, off} from '../src/observe.js';
 
-const Mvc = require('../src/mvc.js');
-const observe = require('../src/observe.js');
-
-global.URLSearchParams = url.URLSearchParams;
+globalThis.URLSearchParams = URLSearchParams;
 
 describe('mvc', () => {
   describe('Mvc', () => {
@@ -29,7 +28,7 @@ describe('mvc', () => {
 
       const observation = jest.fn();
       const domElement = document.createElement('div');
-      const func = observe.observe(() => {});
+      const func = observe(() => {});
 
       expect(!!domElement.innerHTML).toBe(false);
 
@@ -125,7 +124,7 @@ describe('mvc', () => {
       expect.assertions(2);
 
       const observation = jest.fn();
-      const func = observe.observe(() => {});
+      const func = observe(() => {});
       const mvc = new Mvc({
         component: class extends React.Component {
           render() {
@@ -318,7 +317,7 @@ describe('mvc', () => {
 
       const observation = jest.fn();
       const domElement = document.createElement('div');
-      const func = observe.observe(() => {});
+      const func = observe(() => {});
       const mvc = new Mvc({
         component: class extends React.Component {
           render() {
@@ -439,7 +438,7 @@ describe('mvc', () => {
           {
             path: '*',
             component: () => {
-              return React.createElement(Mvc.routerContext.Consumer,
+              return React.createElement(routerContext.Consumer,
                 null,
                 (router_) => {
                   expect(router_).toBe(router);
@@ -464,7 +463,7 @@ describe('mvc', () => {
           {
             path: '*',
             component: () => {
-              return React.createElement(Mvc.routerContext.Consumer,
+              return React.createElement(routerContext.Consumer,
                 null,
                 (router_) => {
                   // called twice because the second router is mounted
@@ -481,7 +480,7 @@ describe('mvc', () => {
           {
             path: '*',
             component: () => {
-              return React.createElement(Mvc.routerContext.Consumer,
+              return React.createElement(routerContext.Consumer,
                 null,
                 (router_) => {
                   expect(router_).toBe(router2);
@@ -519,7 +518,7 @@ describe('mvc', () => {
         router,
         domElement: document.createElement('div'),
         component: () => {
-          return React.createElement(Mvc.routerContext.Consumer,
+          return React.createElement(routerContext.Consumer,
             null,
             (router_) => {
               expect(router_).toBe(router);
@@ -530,7 +529,7 @@ describe('mvc', () => {
         router,
         domElement: document.createElement('div'),
         component: () => {
-          return React.createElement(Mvc.routerContext.Consumer,
+          return React.createElement(routerContext.Consumer,
             null,
             (router_) => {
               expect(router_).toBe(router);
@@ -564,7 +563,7 @@ describe('mvc', () => {
 
       const observation = jest.fn();
       const domElement = document.createElement('div');
-      const func = observe.observe(() => {});
+      const func = observe(() => {});
       const mvc = new Mvc({
         component: class extends React.Component {
           render() {
@@ -618,7 +617,7 @@ describe('mvc', () => {
       expect.assertions(7);
 
       const observation = jest.fn();
-      const observedFunc = Mvc.observe(() => {});
+      const observedFunc = observe(() => {});
       const mvc1 = new Mvc({
         domElement: document.createElement('div'),
         component: () => {
@@ -653,32 +652,32 @@ describe('mvc', () => {
       expect.assertions(8);
 
       expect(() => {
-        Mvc.controller(1);
+        controller(1);
       }).toThrowError('Controller must be either a function or a non-promise object'
         + ' and it must not be ignored.');
       expect(() => {
-        Mvc.controller(1);
+        controller(1);
       }).toThrowError(Error);
       expect(() => {
-        Mvc.controller(Promise.resolve());
+        controller(Promise.resolve());
       }).toThrowError('Controller must be either a function or a non-promise object'
         + ' and it must not be ignored.');
       expect(() => {
-        Mvc.controller(Promise.resolve());
+        controller(Promise.resolve());
       }).toThrowError(Error);
       expect(() => {
-        Mvc.controller({then(r) { r(); }});
+        controller({then(r) { r(); }});
       }).toThrowError('Controller must be either a function or a non-promise object'
         + ' and it must not be ignored.');
       expect(() => {
-        Mvc.controller({then(r) { r(); }});
+        controller({then(r) { r(); }});
       }).toThrowError(Error);
       expect(() => {
-        Mvc.controller(observe.ignore({}));
+        controller(ignore({}));
       }).toThrowError('Controller must be either a function or a non-promise object'
         + ' and it must not be ignored.');
       expect(() => {
-        Mvc.controller(observe.ignore({}));
+        controller(ignore({}));
       }).toThrowError(Error);
     });
 
@@ -687,11 +686,11 @@ describe('mvc', () => {
 
       const observation = jest.fn();
 
-      observe.on(observation);
-      Mvc.controller({method(){}}).method();
+      on(observation);
+      controller({method(){}}).method();
       // 1 observed function call
       expect(observation.mock.calls.length).toBe(1);
-      observe.off(observation);
+      off(observation);
     });
 
     test('controller constructor is observed', () => {
@@ -699,14 +698,14 @@ describe('mvc', () => {
 
       const observation = jest.fn();
 
-      observe.on(observation);
+      on(observation);
 
-      const Constructor = Mvc.controller(class {});
+      const Constructor = controller(class {});
 
       new Constructor();
       // 1 observed construction
       expect(observation.mock.calls.length).toBe(1);
-      observe.off(observation);
+      off(observation);
     });
 
     test('object returned from controller constructor is a controller object', () => {
@@ -714,23 +713,23 @@ describe('mvc', () => {
 
       const observation = jest.fn();
 
-      observe.on(observation);
+      on(observation);
 
-      const Constructor = Mvc.controller(class {
+      const Constructor = controller(class {
         func() {}
       });
 
       new Constructor().func();
       // 1 observed construction and 1 observed function call
       expect(observation.mock.calls.length).toBe(2);
-      observe.off(observation);
+      off(observation);
     });
 
     test('controller constructor can not be applied', () => {
       expect.assertions(2);
-      expect(Mvc.controller(function () {}))
+      expect(controller(function () {}))
         .toThrowError('The observed constructor must be invoked with \'new\'.');
-      expect(Mvc.controller(function () {})).toThrowError(Error);
+      expect(controller(function () {})).toThrowError(Error);
     });
 
     test('function returned from controller constructor can be applied', () => {
@@ -738,9 +737,9 @@ describe('mvc', () => {
 
       const observation = jest.fn();
 
-      observe.on(observation);
+      on(observation);
 
-      const Func = Mvc.controller(function () {
+      const Func = controller(function () {
         return function () {};
       });
       const newFunc = new Func();
@@ -750,189 +749,7 @@ describe('mvc', () => {
       // 1 observed construction and 1 observed function call
       expect(observation.mock.calls.length).toBe(2);
       expect(Func).toThrowError('The observed constructor must be invoked with \'new\'.');
-      observe.off(observation);
-    });
-  });
-
-  describe('observe', () => {
-    test('observe a value', () => {
-      expect.assertions(1);
-
-      const observation = jest.fn();
-
-      observe.on(observation);
-      Mvc.observe({method(){}}).method();
-      // 1 observed function call
-      expect(observation.mock.calls.length).toBe(1);
-      observe.off(observation);
-    });
-  });
-
-  describe('root', () => {
-    test('root a value', () => {
-      expect.assertions(3);
-
-      const root = Mvc.root({startAsyncOperation: () => Promise.resolve()});
-
-      expect(root.isPending).toBe(false);
-
-      const promise = root.startAsyncOperation().then(() => {
-        expect(root.isPending).toBe(false);
-      });
-
-      expect(root.isPending).toBe(true);
-
-      return promise;
-    });
-  });
-
-  describe('unroot', () => {
-    test('unroot a value', () => {
-      expect.assertions(2);
-
-      const root = Mvc.root({startAsyncOperation: () => Promise.resolve()});
-      const finalPromise = root.startAsyncOperation().then(() => {
-        Mvc.unroot(root);
-
-        const promise = root.startAsyncOperation();
-
-        expect(root.isPending).toBe(false);
-
-        return promise;
-      });
-
-      expect(root.isPending).toBe(true);
-
-      return finalPromise;
-    });
-  });
-
-  describe('apply', () => {
-    test('observe function call', () => {
-      expect.assertions(2);
-
-      const observation = jest.fn();
-
-      observe.on(observation);
-      expect(Mvc.apply((a, b) => a + b, null, [1, 2])).toBe(3);
-      // 1 observed function call
-      expect(observation.mock.calls.length).toBe(1);
-      observe.off(observation);
-    });
-  });
-
-  describe('construct', () => {
-    test('observe constructor call', () => {
-      expect.assertions(3);
-
-      const observation = jest.fn();
-
-      observe.on(observation);
-
-      const obj = {x: null};
-
-      expect(Mvc.construct(
-        class {
-          constructor(x) {
-            obj.x = x;
-
-            return obj;
-          }
-        },
-
-        [5])).toBe(obj);
-      expect(obj.x).toBe(5);
-      // 1 observed construction
-      expect(observation.mock.calls.length).toBe(1);
-      observe.off(observation);
-    });
-  });
-
-  describe('isObservedObject', () => {
-    test('observed object is an observed object', () => {
-      expect.assertions(1);
-      expect(Mvc.isObservedObject(Mvc.observe({}))).toBe(true);
-    });
-  });
-
-  describe('ignore', () => {
-    test('ignore value', () => {
-      expect.assertions(1);
-
-      const observation = jest.fn();
-
-      observe.on(observation);
-      Mvc.observe(Mvc.ignore({method(){}})).method();
-      expect(observation.mock.calls.length).toBe(0);
-      observe.off(observation);
-    });
-  });
-
-  describe('addObservedChild', () => {
-    test('add observed child', () => {
-      expect.assertions(6);
-
-      const root = Mvc.root({obj: Mvc.observe({})});
-      const child = Mvc.observe({startAsyncOperation: () => Promise.resolve()});
-
-      Mvc.addObservedChild(root.obj, child);
-
-      expect(child.isPending).toBe(false);
-      expect(root.obj.isPending).toBe(false);
-
-      const promise = child.startAsyncOperation().then(() => {
-        expect(child.isPending).toBe(false);
-        expect(root.obj.isPending).toBe(false);
-      });
-
-      expect(child.isPending).toBe(true);
-      expect(root.obj.isPending).toBe(true);
-
-      return promise;
-    });
-  });
-
-  describe('removeObservedChild', () => {
-    test('remove observed child', () => {
-      expect.assertions(19);
-
-      const child = Mvc.observe({startAsyncOperation: () => Promise.resolve()});
-      const obj = Mvc.observe({child, startAsyncOperation: () => Promise.resolve()});
-      const root = Mvc.root({obj});
-
-      Mvc.removeObservedChild(obj, child);
-
-      expect(child.pending.has('startAsyncOperation')).toBe(false);
-      expect(child.isPending).toBe(false);
-      expect(obj.isPending).toBe(false);
-      expect(root.isPending).toBe(false);
-
-      const promise = child.startAsyncOperation().then(() => {
-        expect(child.pending.has('startAsyncOperation')).toBe(false);
-        expect(child.isPending).toBe(false);
-        expect(obj.pending.has('startAsyncOperation')).toBe(false);
-        expect(obj.isPending).toBe(false);
-        expect(root.isPending).toBe(false);
-
-        const promise = obj.startAsyncOperation().then(() => {
-          expect(obj.pending.has('startAsyncOperation')).toBe(false);
-          expect(obj.isPending).toBe(false);
-          expect(root.isPending).toBe(false);
-        });
-
-        expect(obj.pending.has('startAsyncOperation')).toBe(true);
-        expect(obj.isPending).toBe(true);
-        expect(root.isPending).toBe(true);
-
-        return promise;
-      });
-
-      expect(child.pending.has('startAsyncOperation')).toBe(true);
-      expect(child.isPending).toBe(false);
-      expect(obj.isPending).toBe(false);
-      expect(root.isPending).toBe(false);
-
-      return promise;
+      off(observation);
     });
   });
 });

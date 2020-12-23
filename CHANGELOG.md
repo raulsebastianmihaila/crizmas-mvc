@@ -1,3 +1,16 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.1.0...v2.0.0) (2021-01-01)
+
+### Breaking changes
+- Dropped support for non-module script tags.
+- Moved from commonjs modules to standard ES modules, which means the structure of the exports changed:
+controller, observe, root, unroot, ignore, apply, construct, addObservedChild and removeObservedChild are not properties of Mvc anymore.
+
+### Updates
+- Merged crizmas-utils, crizmas-async-utils and crizmas-promise-queue into this package.
+- Moved the docs to https://github.com/raulsebastianmihaila/crizmas-mvc-docs
+- Updated jest and crizmas-router dev dependencies.
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.0.3...v1.1.0) (2020-07-12)
 
