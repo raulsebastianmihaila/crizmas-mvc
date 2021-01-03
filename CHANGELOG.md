@@ -1,3 +1,10 @@
+<a name="2.0.1"></a>
+# [2.0.1](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v2.0.0...v2.0.1) (2021-01-03)
+
+### Updates
+- Added support for react 17.
+- Updated prop-types dev dependency.
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v1.1.0...v2.0.0) (2021-01-01)
 
