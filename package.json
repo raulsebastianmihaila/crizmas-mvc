@@ -10,8 +10,14 @@
   },
   "type": "module",
   "peerDependencies": {
+    "crizmas-router": "^2.0.4",
     "react": "^16.5.2 || ^17.0.2",
     "react-dom": "^16.5.2 || ^17.0.2"
+  },
+  "peerDependenciesMeta": {
+    "crizmas-router": {
+      "optional": true
+    }
   },
   "homepage": "https://raulsebastianmihaila.github.io/crizmas-mvc-docs",
   "repository": {
@@ -36,9 +42,9 @@
     "test-coverage": "NODE_OPTIONS='--experimental-vm-modules --experimental-abortcontroller' npx jest --coverage"
   },
   "devDependencies": {
-    "crizmas-router": "^2.0.3",
-    "jest": "^27.0.6",
-    "prop-types": "^15.7.2",
+    "crizmas-router": "^2.0.4",
+    "jest": "^27.5.1",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }

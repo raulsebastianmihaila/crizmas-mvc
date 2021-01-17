@@ -185,7 +185,15 @@ const observePromise = (promise, obj, key) => {
     return res;
   }, (err) => {
     unsetPendingProp(pendingWrapperPromise, promise);
-    notify();
+
+    try {
+      notify();
+    } catch (notifyErr) {
+      throw new AggregateError(
+        [notifyErr],
+        'An error occurred while observing a rejected promise.',
+        {cause: err});
+    }
 
     throw err;
   }));

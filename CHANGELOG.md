@@ -1,3 +1,13 @@
+<a name="2.0.4"></a>
+# [2.0.4](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v2.0.3...v2.0.4) (2022-02-27)
+
+### Updates
+- Throw aggregate error from observed rejected promise reaction if observation throws.
+- Add test for the new change for throwing aggregate error.
+- Update crizmas-router, prop-types and jest dev dependencies.
+- Add crizmas-router as optional peer dependency (which it has always been but before npm didn't have a way to mark a peer dependency as optional).
+- Configure npm to use legacy peer dependency behavior.
+
 <a name="2.0.3"></a>
 # [2.0.3](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v2.0.1...v2.0.3) (2021-08-22)
 
