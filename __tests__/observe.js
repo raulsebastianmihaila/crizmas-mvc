@@ -112,6 +112,27 @@ describe('observe', () => {
         });
       });
 
+      test('observed promise reports aggregate error if the observation throws', () => {
+        expect.assertions(3);
+
+        const observationError = new Error('observation error');
+
+        const observation = () => {
+          throw observationError;
+        };
+
+        observe.on(observation);
+
+        const val = {};
+
+        return observe.observe(Promise.reject(val)).catch((reason) => {
+          expect(reason.message).toBe('An error occurred while observing a rejected promise.');
+          expect(reason.cause).toBe(val);
+          expect(reason.errors[0]).toBe(observationError);
+          observe.off(observation);
+        });
+      });
+
       test('observed promise is ignored', () => {
         expect.assertions(3);
 
