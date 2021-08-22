@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import {URLSearchParams} from 'url';
 import {jest} from '@jest/globals';
 import React from 'react';

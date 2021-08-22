@@ -1,3 +1,11 @@
+<a name="2.0.3"></a>
+# [2.0.3](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v2.0.1...v2.0.3) (2021-08-22)
+
+### Updates
+- Updated react and react-dom peer and dev dependencies.
+- Updated crizmas-router and jest dev dependencies.
+- Enabled experimental node AbortController for testing.
+
 <a name="2.0.1"></a>
 # [2.0.1](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v2.0.0...v2.0.1) (2021-01-03)
 
