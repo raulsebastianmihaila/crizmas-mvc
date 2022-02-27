@@ -1,5 +1,5 @@
-<a name="2.0.4"></a>
-# [2.0.4](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v2.0.3...v2.0.4) (2022-02-27)
+<a name="2.0.5"></a>
+# [2.0.5](https://github.com/raulsebastianmihaila/crizmas-mvc/compare/v2.0.3...v2.0.5) (2022-02-27)
 
 ### Updates
 - Throw aggregate error from observed rejected promise reaction if observation throws.
